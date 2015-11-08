@@ -6,33 +6,6 @@ body{
 
 }
 
-.container{
-	width:960px;
-	margin: 0 auto;
-}
-
-.header{
-
-	width: 100%;
-	height: 75px;
-	background: #01A9DB;
-	position: fixed;
-	top: 0px;
-
-}
-
-.logo{
-
-	float:left;
-	color:white;
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-.nav{
-	float: right;
-	color: white;
-}
-
 li{
 	list-style: none;
 	float: left;
@@ -50,10 +23,6 @@ li a:hover{
 h1 a:hover{
 	color: #F7BE81;
 }
-.content{
-	padding-top: 60px;
-	background: #01DFD7
-}
 p {
 	color: black;
 	font-family: Arial, Helvetica, sans-serif;
@@ -63,10 +32,6 @@ p {
 	padding-right: 10px;
 }
 
-.article{
-	float: left;
-	padding: 10px;
-}
 header,footer{
 	text-align: center;
 	background: #F7BE81;
@@ -76,15 +41,47 @@ header,footer{
 	color: white;
 
 }
+footer a:hover{
+	color: black;
+}
+.container{
+	width:960px;
+	margin: 0 auto;
+}
+.header{
+
+	width: 100%;
+	height: 75px;
+	background: #01A9DB;
+	position: fixed;
+	top: 0px;
+
+}
+.logo{
+
+	float:left;
+	color:white;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav{
+	float: right;
+	color: white;
+}
+.content{
+	padding-top: 60px;
+	background: #01DFD7
+}
+.article{
+	float: left;
+	padding: 10px;
+}
 #footer_main{
 	width: 100%;
 	float: left;
 	background: black;
 	color: white;
 	height: 90px;
-}
-footer a:hover{
-	color: black;
 }
 #container1{
 	width: 960px;
@@ -98,4 +95,8 @@ footer a:hover{
 }
 #social_media{
 	float: right;
+}
+#loginLink{
+	float: right;
+	font-size: 10pt;
 }
