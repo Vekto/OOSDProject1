@@ -39,24 +39,50 @@
   }
 
 // updates an agents information
-  function updateAgent($agent){
-    $result;
-    $link = agencyConnect();
-    $keyvals = array();
-    $sql = "UPDATE agents SET ";
-    foreach ($agent as $k => $v){
-      $keyvals[] = "$k='$v'";
-      }
-    $setString = implode(", ", $keyvals);
-    $sql .= $setString;
-    $sql .= "WHERE AgentId=".$agent['AgentId'].";";
-    print($sql);
-    $result = mysqli_query($link,$sql);
-    print($result);
-    mysqli_close($link);
-    return $result;
-  }
+ // function updateAgent($agent){
+ //    $result;
+ //    $link = agencyConnect();
+ //    $keyvals = array();
+ //    $sql = "UPDATE agents SET ";
+ //    foreach ($agent as $k => $v){
+ //      $keyvals[] = "$k='$v'";
+ //      }
+ //    $setString = implode(", ", $keyvals);
+ //    $sql .= $setString;
+ //    $sql .= "WHERE AgentId=".$agent['AgentId'].";";
+ //    print($sql);
+ //    $result = mysqli_query($link,$sql);
+ //    print($result);
+ //    mysqli_close($link);
+ //    return $result;
+ //  }
+/*--Updates a table--------------------------------*/
+/*--Pass the function which table you are updating,*/
+/*--Followed by which Array you are wanting to use-*/
+/*--Followed by the Key for the table--------------*/
+ function updateTable($argTable, $argArray, $pKey)
+ {
+   array_pop($argArray);
+     $link = connectDatabase();
+     $sql = "UPDATE $argTable SET ";
+     $keyvals = array();
+     foreach($argArray as $k =>$v)
+     {
+       $keyvals[] = "$k = '$v'";
+     }
+     //array_pop($keyvals);
+     $setString = implode($keyvals ,", ");
+     $sql .=$setString;
+     $sql .= " WHERE $pKey  = $argArray[$pKey]";
+     print($sql);
+     print("<BR />");
+     $success = $link->query($sql);
+     print($link->error);
 
+
+     $link->close();
+     return $success;
+ }
   //Produces a select element of agents
   function getAgentSelect(){
     $link = agencyConnect();
