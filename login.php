@@ -15,24 +15,24 @@
 <?php
   	include("header.php");
 	$title = "Register - Travel Experts"
-?> 	
-	
+?>
+
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
-	
+
 	<!-- Form meant to authenticate users into the customer's section of the database. Used to finalize purchases on travel packages. -->
 	<form action="" method="post">
 		<label for="username">Username: </label>
 		<input type="text" name="username" value="" />
-		
+
 		<label for="password">Password: </label>
 		<input type="password" name="password" value="" />
-		
+
 		<input type="submit" value="Log in" />
 	</form>
 
 	<!--WRITE YOUR CODE ABOVE THIS LINE-->
 
-	
+
 
 	<?php
 

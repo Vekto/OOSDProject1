@@ -17,7 +17,7 @@
   }
 
 // Adds a single row into a specified table
-  function addAgent($newRow, $newTable="agents"){
+  function addAgent($newRow, $newTable="customer"){
     include_once('testingVars.php');
     $link = agencyConnect();
     $sql;

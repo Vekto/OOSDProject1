@@ -76,13 +76,17 @@ header,footer{
 	color: white;
 
 }
+
 #footer_main{
 	width: 100%;
 	float: left;
 	background: black;
 	color: white;
 	height: 90px;
+	position:absolute;
+	bottom: 20px;
 }
+
 footer a:hover{
 	color: black;
 }
@@ -98,4 +102,16 @@ footer a:hover{
 }
 #social_media{
 	float: right;
+}
+
+#CustRegForm{
+position:relative;
+top:80px;
+text-align: center;
+}
+
+#errorDisplay{
+	text-align: center;
+	position: relative;
+	top: 60px;
 }
