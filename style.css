@@ -41,10 +41,7 @@ header,footer{
 	color: white;
 
 }
-<<<<<<< HEAD
-footer a:hover{
-	color: black;
-}
+
 .container{
 	width:960px;
 	margin: 0 auto;
@@ -77,9 +74,7 @@ footer a:hover{
 	float: left;
 	padding: 10px;
 }
-=======
 
->>>>>>> origin/master
 #footer_main{
 	width: 100%;
 	float: left;
@@ -89,13 +84,11 @@ footer a:hover{
 	position:absolute;
 	bottom: 20px;
 }
-<<<<<<< HEAD
-=======
+
 
 footer a:hover{
 	color: black;
 }
->>>>>>> origin/master
 #container1{
 	width: 960px;
 	margin: 0 auto;
@@ -109,11 +102,11 @@ footer a:hover{
 #social_media{
 	float: right;
 }
-<<<<<<< HEAD
+
 #loginLink{
 	float: right;
 	font-size: 10pt;
-=======
+}
 
 #CustRegForm{
 position:relative;
@@ -125,5 +118,4 @@ text-align: center;
 	text-align: center;
 	position: relative;
 	top: 60px;
->>>>>>> origin/master
 }
