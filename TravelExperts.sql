@@ -1,1131 +1,1565 @@
-DROP DATABASE IF EXISTS TravelExperts;
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 09, 2015 at 04:24 PM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12
 
-CREATE DATABASE TravelExperts;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
-CREATE TABLE TravelExperts.`Affiliations`
-(`AffilitationId` VARCHAR(10) NOT NULL, 
-`AffName` VARCHAR(50) NULL, 
-`AffDesc` VARCHAR(50) NULL, 
-PRIMARY KEY(`AffilitationId`)) ENGINE InnoDB CHARACTER SET utf8;
 
-CREATE TABLE TravelExperts.`Agencies`
-(`AgencyId` INT NOT NULL AUTO_INCREMENT, 
-`AgncyAddress` VARCHAR(50) NULL, 
-`AgncyCity` VARCHAR(50) NULL, 
-`AgncyProv` VARCHAR(50) NULL, 
-`AgncyPostal` VARCHAR(50) NULL, 
-`AgncyCountry` VARCHAR(50) NULL, 
-`AgncyPhone` VARCHAR(50) NULL, 
-`AgncyFax` VARCHAR(50) NULL, 
-PRIMARY KEY(`AgencyId`)) ENGINE InnoDB CHARACTER SET utf8;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-CREATE TABLE TravelExperts.`Agents`
-(`AgentId` INT NOT NULL AUTO_INCREMENT, 
-`AgtFirstName` VARCHAR(20) NULL, 
-`AgtMiddleInitial` VARCHAR(5) NULL, 
-`AgtLastName` VARCHAR(20) NULL, 
-`AgtBusPhone` VARCHAR(20) NULL, 
-`AgtEmail` VARCHAR(50) NULL, 
-`AgtPosition` VARCHAR(20) NULL, 
-`AgencyId` INT NULL, 
-PRIMARY KEY(`AgentId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Database: `travelexperts`
+--
 
-CREATE TABLE TravelExperts.`BookingDetails`
-(`BookingDetailId` INT NOT NULL AUTO_INCREMENT, 
-`ItineraryNo` DOUBLE NULL, 
-`TripStart` DATETIME NULL, 
-`TripEnd` DATETIME NULL, 
-`Description` TEXT NULL, 
-`Destination` TEXT NULL, 
-`BasePrice` DECIMAL(19, 4) NULL, 
-`AgencyCommission` DECIMAL(19, 4) NULL, 
-`BookingId` INT NULL, 
-`RegionId` VARCHAR(5) NULL, 
-`ClassId` VARCHAR(5) NULL, 
-`FeeId` VARCHAR(10) NULL, 
-`ProductSupplierId` INT NULL, 
-PRIMARY KEY(`BookingDetailId`), 
-INDEX `Agency_Fee_Code`(`FeeId`), 
-INDEX `BookingId`(`BookingId`), 
-INDEX `BookingsBookingDetails`(`BookingId`), 
-INDEX `ClassesBookingDetails`(`ClassId`), 
-INDEX `Dest_ID`(`RegionId`), 
-INDEX `DestinationsBookingDetails`(`RegionId`), 
-INDEX `FeesBookingDetails`(`FeeId`), 
-INDEX `Products_SuppliersBookingDetails`(`ProductSupplierId`), 
-INDEX `ProductSupplierId`(`ProductSupplierId`)) ENGINE InnoDB CHARACTER SET utf8;
+-- --------------------------------------------------------
 
-CREATE TABLE TravelExperts.`Bookings`
-(`BookingId` INT NOT NULL AUTO_INCREMENT, 
-`BookingDate` DATETIME NULL, 
-`BookingNo` VARCHAR(50) NULL, 
-`TravelerCount` DOUBLE NULL, 
-`CustomerId` INT NULL, 
-`TripTypeId` VARCHAR(1) NULL, 
-`PackageId` INT NULL, 
-PRIMARY KEY(`BookingId`), 
-INDEX `BookingsCustomerId`(`CustomerId`), 
-INDEX `CustomersBookings`(`CustomerId`), 
-INDEX `PackageId`(`PackageId`), 
-INDEX `PackagesBookings`(`PackageId`), 
-INDEX `TripTypesBookings`(`TripTypeId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Table structure for table `affiliations`
+--
 
-CREATE TABLE TravelExperts.`Classes`
-(`ClassId` VARCHAR(5) NOT NULL, 
-`ClassName` VARCHAR(20) NOT NULL, 
-`ClassDesc` VARCHAR(50) NULL, 
-PRIMARY KEY(`ClassId`)) ENGINE InnoDB CHARACTER SET utf8;
+CREATE TABLE `affiliations` (
+  `AffilitationId` varchar(10) NOT NULL,
+  `AffName` varchar(50) DEFAULT NULL,
+  `AffDesc` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE TravelExperts.`CreditCards`
-(`CreditCardId` INT NOT NULL AUTO_INCREMENT, 
-`CCName` VARCHAR(10) NOT NULL, 
-`CCNumber` VARCHAR(50) NOT NULL, 
-`CCExpiry` DATETIME NOT NULL, 
-`CustomerId` INT NOT NULL, 
-PRIMARY KEY(`CreditCardId`), 
-INDEX `CustomersCreditCards`(`CustomerId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Dumping data for table `affiliations`
+--
 
-CREATE TABLE TravelExperts.`Customers`
-(`CustomerId` INT NOT NULL AUTO_INCREMENT, 
-`CustFirstName` VARCHAR(25) NOT NULL, 
-`CustLastName` VARCHAR(25) NOT NULL, 
-`CustAddress` VARCHAR(75) NOT NULL, 
-`CustCity` VARCHAR(50) NOT NULL, 
-`CustProv` VARCHAR(2) NOT NULL, 
-`CustPostal` VARCHAR(7) NOT NULL, 
-`CustCountry` VARCHAR(25) NULL, 
-`CustHomePhone` VARCHAR(20) NULL, 
-`CustBusPhone` VARCHAR(20) NOT NULL, 
-`CustEmail` VARCHAR(50) NOT NULL, 
-`AgentId` INT NULL, 
-PRIMARY KEY(`CustomerId`), 
-INDEX `EmployeesCustomers`(`AgentId`)) ENGINE InnoDB CHARACTER SET utf8;
+INSERT INTO `affiliations` (`AffilitationId`, `AffName`, `AffDesc`) VALUES
+('ACTA', 'Association of Canadian Travel Agents', NULL),
+('ACTANEW', NULL, NULL),
+('ACTANEWP', NULL, NULL),
+('ACTAPGY', NULL, NULL),
+('NEW', NULL, NULL),
+('NEWPGY', NULL, NULL),
+('PGY', NULL, NULL);
 
-CREATE TABLE TravelExperts.`Customers_Rewards`
-(`CustomerId` INT NOT NULL, 
-`RewardId` INT NOT NULL, 
-`RwdNumber` VARCHAR(25) NOT NULL, 
-PRIMARY KEY(`CustomerId`,`RewardId`), 
-INDEX `CustomersCustomers_Rewards`(`CustomerId`), 
-INDEX `RewardsCustomers_Rewards`(`RewardId`)) ENGINE InnoDB CHARACTER SET utf8;
+-- --------------------------------------------------------
 
-CREATE TABLE TravelExperts.`Employees`
-(`EmpFirstName` VARCHAR(20) NOT NULL, 
-`EmpMiddleInitial` VARCHAR(5) NULL, 
-`EmpLastName` VARCHAR(20) NOT NULL, 
-`EmpBusPhone` VARCHAR(20) NOT NULL, 
-`EmpEmail` VARCHAR(50) NOT NULL, 
-`EmpPosition` VARCHAR(20) NOT NULL) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Table structure for table `agencies`
+--
 
-CREATE TABLE TravelExperts.`Fees`
-(`FeeId` VARCHAR(10) NOT NULL, 
-`FeeName` VARCHAR(50) NOT NULL, 
-`FeeAmt` DECIMAL(19, 4) NOT NULL, 
-`FeeDesc` VARCHAR(50) NULL, 
-PRIMARY KEY(`FeeId`)) ENGINE InnoDB CHARACTER SET utf8;
+CREATE TABLE `agencies` (
+  `AgencyId` int(11) NOT NULL,
+  `AgncyAddress` varchar(50) DEFAULT NULL,
+  `AgncyCity` varchar(50) DEFAULT NULL,
+  `AgncyProv` varchar(50) DEFAULT NULL,
+  `AgncyPostal` varchar(50) DEFAULT NULL,
+  `AgncyCountry` varchar(50) DEFAULT NULL,
+  `AgncyPhone` varchar(50) DEFAULT NULL,
+  `AgncyFax` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE TravelExperts.`Packages`
-(`PackageId` INT NOT NULL AUTO_INCREMENT, 
-`PkgName` VARCHAR(50) NOT NULL, 
-`PkgStartDate` DATETIME NULL, 
-`PkgEndDate` DATETIME NULL, 
-`PkgDesc` VARCHAR(50) NULL, 
-`PkgBasePrice` DECIMAL(19, 4) NOT NULL, 
-`PkgAgencyCommission` DECIMAL(19, 4) NULL, 
-PRIMARY KEY(`PackageId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Dumping data for table `agencies`
+--
 
-CREATE TABLE TravelExperts.`Packages_Products_Suppliers`
-(`PackageId` INT NOT NULL, 
-`ProductSupplierId` INT NOT NULL, 
-PRIMARY KEY(`PackageId`,`ProductSupplierId`), 
-INDEX `PackagesPackages_Products_Suppliers`(`PackageId`), 
-INDEX `Products_SuppliersPackages_Products_Suppliers`(`ProductSupplierId`), 
-INDEX `ProductSupplierId`(`ProductSupplierId`)) ENGINE InnoDB CHARACTER SET utf8;
+INSERT INTO `agencies` (`AgencyId`, `AgncyAddress`, `AgncyCity`, `AgncyProv`, `AgncyPostal`, `AgncyCountry`, `AgncyPhone`, `AgncyFax`) VALUES
+(1, '1155 8th Ave SW', 'Calagary', 'AB', 'T2P1N3', 'Canada', '4032719873', '4032719872'),
+(2, '110 Main Street', 'Okatokes', 'AB', 'T7R3J5', 'Canada', '4035632381', '4035632382');
 
-CREATE TABLE TravelExperts.`Products`
-(`ProductId` INT NOT NULL AUTO_INCREMENT, 
-`ProdName` VARCHAR(50) NOT NULL, 
-PRIMARY KEY(`ProductId`), 
-INDEX `ProductId`(`ProductId`)) ENGINE InnoDB CHARACTER SET utf8;
+-- --------------------------------------------------------
 
-CREATE TABLE TravelExperts.`Products_Suppliers`
-(`ProductSupplierId` INT NOT NULL AUTO_INCREMENT, 
-`ProductId` INT NULL, 
-`SupplierId` INT NULL, 
-PRIMARY KEY(`ProductSupplierId`), 
-INDEX `Product_Supplier_ID`(`SupplierId`), 
-INDEX `ProductId`(`ProductId`), 
-INDEX `ProductsProducts_Suppliers1`(`ProductId`), 
-INDEX `ProductSupplierId`(`ProductSupplierId`), 
-INDEX `SuppliersProducts_Suppliers1`(`SupplierId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Table structure for table `agents`
+--
 
-CREATE TABLE TravelExperts.`Regions`
-(`RegionId` VARCHAR(5) NOT NULL, 
-`RegionName` VARCHAR(25) NULL, 
-PRIMARY KEY(`RegionId`)) ENGINE InnoDB CHARACTER SET utf8;
+CREATE TABLE `agents` (
+  `AgentId` int(11) NOT NULL,
+  `AgtFirstName` varchar(20) DEFAULT NULL,
+  `AgtMiddleInitial` varchar(5) DEFAULT NULL,
+  `AgtLastName` varchar(20) DEFAULT NULL,
+  `AgtBusPhone` varchar(20) DEFAULT NULL,
+  `AgtEmail` varchar(50) DEFAULT NULL,
+  `AgtPosition` varchar(20) DEFAULT NULL,
+  `AgencyId` int(11) DEFAULT NULL,
+  `AgtUserId` varchar(40) NOT NULL,
+  `AgtPassword` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE TravelExperts.`Rewards`
-(`RewardId` INT NOT NULL, 
-`RwdName` VARCHAR(50) NULL, 
-`RwdDesc` VARCHAR(50) NULL, 
-PRIMARY KEY(`RewardId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Dumping data for table `agents`
+--
 
-CREATE TABLE TravelExperts.`SupplierContacts`
-(`SupplierContactId` INT NOT NULL, 
-`SupConFirstName` VARCHAR(50) NULL, 
-`SupConLastName` VARCHAR(50) NULL, 
-`SupConCompany` TEXT NULL, 
-`SupConAddress` TEXT NULL, 
-`SupConCity` TEXT NULL, 
-`SupConProv` TEXT NULL, 
-`SupConPostal` TEXT NULL, 
-`SupConCountry` TEXT NULL, 
-`SupConBusPhone` VARCHAR(50) NULL, 
-`SupConFax` VARCHAR(50) NULL, 
-`SupConEmail` TEXT NULL, 
-`SupConURL` TEXT NULL, 
-`AffiliationId` VARCHAR(10) NULL, 
-`SupplierId` INT NULL, 
-PRIMARY KEY(`SupplierContactId`), 
-INDEX `AffiliationsSupCon`(`AffiliationId`), 
-INDEX `SuppliersSupCon`(`SupplierId`)) ENGINE InnoDB CHARACTER SET utf8;
+INSERT INTO `agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`, `AgtUserId`, `AgtPassword`) VALUES
+(1, 'Janet', NULL, 'Delton', '(403) 210-7801', 'janet.delton@travelexperts.com', 'Senior Agent', 1, 'user1', 'a722c63db8ec8625af6cf71cb8c2d939'),
+(2, 'Judy', NULL, 'Lisle', '(403) 210-7802', 'judy.lisle@travelexperts.com', 'Intermediate Agent', 1, 'user2', 'c1572d05424d0ecb2a65ec6a82aeacbf'),
+(3, 'Dennis', 'C.', 'Reynolds', '(403) 210-7843', 'dennis.reynolds@travelexperts.com', 'Junior Agent', 1, 'user3', '3afc79b597f88a72528e864cf81856d2'),
+(4, 'John', NULL, 'Coville', '(403) 210-7823', 'john.coville@travelexperts.com', 'Intermediate Agent', 1, 'user4', 'fc2921d9057ac44e549efaf0048b2512'),
+(5, 'Janice', 'W.', 'Dahl', '(403) 210-7865', 'janice.dahl@travelexperts.com', 'Senior Agent', 1, 'user5', 'd35f6fa9a79434bcd17f8049714ebfcb'),
+(6, 'Bruce', 'J.', 'Dixon', '(403) 210-7867', 'bruce.dixon@travelexperts.com', 'Intermediate Agent', 2, 'user6', 'e9568c9ea43ab05188410a7cf85f9f5e'),
+(7, 'Beverly', 'S.', 'Jones', '(403) 210-7812', 'beverly.jones@travelexperts.com', 'Intermediate Agent', 2, 'user7', '8c96c3884a827355aed2c0f744594a52'),
+(8, 'Jane', NULL, 'Merrill', '(403) 210-7868', 'jane.merrill@travelexperts.com', 'Senior Agent', 2, 'user8', 'ccd3cd18225730c5edfc69f964b9d7b3'),
+(9, 'Brian', 'S.', 'Peterson', '(403) 210-7833', 'brian.peterson@travelexperts.com', 'Junior Agent', 2, 'user9', 'c28cce9cbd2daf76f10eb54478bb0454');
 
-CREATE TABLE TravelExperts.`Suppliers`
-(`SupplierId` INT NOT NULL, 
-`SupName` TEXT NULL, 
-PRIMARY KEY(`SupplierId`), 
-INDEX `SupplierId`(`SupplierId`)) ENGINE InnoDB CHARACTER SET utf8;
+-- --------------------------------------------------------
 
-CREATE TABLE TravelExperts.`TripTypes`
-(`TripTypeId` VARCHAR(1) NOT NULL, 
-`TTName` VARCHAR(25) NULL, 
-PRIMARY KEY(`TripTypeId`)) ENGINE InnoDB CHARACTER SET utf8;
+--
+-- Table structure for table `bookingdetails`
+--
 
-USE TravelExperts;
+CREATE TABLE `bookingdetails` (
+  `BookingDetailId` int(11) NOT NULL,
+  `ItineraryNo` double DEFAULT NULL,
+  `TripStart` datetime DEFAULT NULL,
+  `TripEnd` datetime DEFAULT NULL,
+  `Description` text,
+  `Destination` text,
+  `BasePrice` decimal(19,4) DEFAULT NULL,
+  `AgencyCommission` decimal(19,4) DEFAULT NULL,
+  `BookingId` int(11) DEFAULT NULL,
+  `RegionId` varchar(5) DEFAULT NULL,
+  `ClassId` varchar(5) DEFAULT NULL,
+  `FeeId` varchar(10) DEFAULT NULL,
+  `ProductSupplierId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('ACTA', 'Association of Canadian Travel Agents', NULL);
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('ACTANEW', NULL, NULL);
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('ACTANEWP', NULL, NULL);
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('ACTAPGY', NULL, NULL);
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('NEW', NULL, NULL);
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('NEWPGY', NULL, NULL);
-INSERT INTO `Affiliations` (`AffilitationId`, `AffName`, `AffDesc`)  VALUES('PGY', NULL, NULL);
-INSERT INTO `Agencies` (`AgencyId`, `AgncyAddress`, `AgncyCity`, `AgncyProv`, `AgncyPostal`, `AgncyCountry`, `AgncyPhone`, `AgncyFax`)  VALUES(1, '1155 8th Ave SW', 'Calagary', 'AB', 'T2P1N3', 'Canada', '4032719873', '4032719872');
-INSERT INTO `Agencies` (`AgencyId`, `AgncyAddress`, `AgncyCity`, `AgncyProv`, `AgncyPostal`, `AgncyCountry`, `AgncyPhone`, `AgncyFax`)  VALUES(2, '110 Main Street', 'Okatokes', 'AB', 'T7R3J5', 'Canada', '4035632381', '4035632382');
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(1, 'Janet', NULL, 'Delton', '(403) 210-7801', 'janet.delton@travelexperts.com', 'Senior Agent', 1);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(2, 'Judy', NULL, 'Lisle', '(403) 210-7802', 'judy.lisle@travelexperts.com', 'Intermediate Agent', 1);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(3, 'Dennis', 'C.', 'Reynolds', '(403) 210-7843', 'dennis.reynolds@travelexperts.com', 'Junior Agent', 1);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(4, 'John', NULL, 'Coville', '(403) 210-7823', 'john.coville@travelexperts.com', 'Intermediate Agent', 1);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(5, 'Janice', 'W.', 'Dahl', '(403) 210-7865', 'janice.dahl@travelexperts.com', 'Senior Agent', 1);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(6, 'Bruce', 'J.', 'Dixon', '(403) 210-7867', 'bruce.dixon@travelexperts.com', 'Intermediate Agent', 2);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(7, 'Beverly', 'S.', 'Jones', '(403) 210-7812', 'beverly.jones@travelexperts.com', 'Intermediate Agent', 2);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(8, 'Jane', NULL, 'Merrill', '(403) 210-7868', 'jane.merrill@travelexperts.com', 'Senior Agent', 2);
-INSERT INTO `Agents` (`AgentId`, `AgtFirstName`, `AgtMiddleInitial`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition`, `AgencyId`)  VALUES(9, 'Brian', 'S.', 'Peterson', '(403) 210-7833', 'brian.peterson@travelexperts.com', 'Junior Agent', 2);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(11,  168.0, 20010317000000, 20010322000000, 'Calgary/Vancouver/Calgary', 'Vancouver',  450.0,  22.5, 11, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(15,  306.0, 20010509000000, 20010603000000, 'all-inclusive European tour', 'London, England',  3000.0,  112.5, 15, 'EU', 'ECN', 'GR', 14);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(16,  306.0, 20010509000000, 20010603000000, 'all-inclusive European tour', 'London, England',  3000.0,  112.5, 15, 'EU', 'ECN', 'GR', 14);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(17,  178.0, 20010718000000, 20010801000000, 'Calgary/Calcutta/Calgary', 'Calcutta, India',  799.0,  39.95, 17, 'MEAST', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(34,  142.0, 20010508000000, 20010602000000, 'Calgary/Athens/Calgary', 'Athens, Greece',  1000.0,  32.5, 34, 'MED', 'ECN', 'BK', 12);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(46,  141.0, 20010514000000, 20010607000000, 'midsize car', 'Toronto',  900.0,  29.25, 46, 'NA', 'NA', 'NC', 20);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(49,  201.0, 20010512000000, 20010531000000, 'Calgary/Victoria/Calgary', 'Victoria',  199.0,  2.2885, 49, 'NA', 'ECN', 'BK', 12);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(52,  225.0, 20010514000000, 20010607000000, ' ', 'Toronto',  1700.0,  55.25, 52, 'NA', 'DLX', 'BK', 12);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(55,  771.0, 20010514000000, 20010607000000, 'Calgary/Toronto/Calgary', 'Toronto',  1200.0,  60.0, 55, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(57,  893.0, 20010924000000, 20011015000000, 'Calgary/London/Calgary', 'London, England',  750.0,  75.0, 57, 'EU', 'ECN', 'BK', 13);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(62,  964.0, 20020109000000, 20020119000000, 'Calgary/Victoria/Calgary', 'Victoria',  205.0,  10.25, 62, 'NA', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(65,  204.0, 20020131000000, 20020213000000, 'Calgary/Cairo/Calgary', 'Cairo, Egypt',  350.0,  17.5, 65, 'MEAST', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(73,  220.0, 20020313000000, 20020318000000, 'Calgary/Grande Prairie/Calgary', 'Grande Prairie',  150.0,  7.5, 73, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(79,  185.0, 20020329000000, 20020428000000, 'Calgary/Sydney/Calgary', 'Sydney, Australia',  2200.0,  264.0, 79, 'ANZ', 'ECN', 'BK', 30);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(80,  256.0, 20020329000000, 20020411000000, 'Calgary/Victoria/Calgary', 'Victoria',  190.0,  9.5, 80, 'NA', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(84,  185.0, 20020401000000, 20020425000000, 'Australian trek', ' ',  6250.0,  234.375, 84, 'ANZ', 'NA', 'BK', 15);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(85,  185.0, 20020401000000, 20020425000000, 'Australian trek', ' ',  6250.0,  234.375, 84, 'ANZ', 'NA', 'BK', 15);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(89,  279.0, 20020417000000, 20020422000000, 'Calgary/Toronto/Calgary', 'Toronto',  628.0,  31.4, 89, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(98,  230.0, 20020505000000, 20020510000000, 'Calgary/Vancouver/Calgary', 'Vancouver',  1048.0,  52.4, 98, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(108,  193.0, 20020519000000, 20020601000000, 'Calgary/Athens/Calgary', 'Athens, Greece',  1200.0,  60.0, 108, 'MED', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(122,  300.0, 20020523000000, 20020607000000, 'Calgary/Victoria/Calgary', 'Victoria',  175.0,  8.75, 124, 'NA', 'ECN', 'BK', 16);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(138,  397.0, 20020712000000, 20020716000000, 'Calgary/Montreal/Calgary', 'Montreal',  645.0,  32.25, 138, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(141,  244.0, 20020715000000, 20020719000000, 'Calgary/Toronto/Calgary', 'Toronto',  499.0,  24.95, 141, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(148,  805.0, 20020725000000, 20020811000000, 'Calgary/Athens/Calgary', 'Athens, Greece',  2300.0,  70.0, 148, 'MED', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(152,  1134.0, 20020929000000, 20021012000000, 'Calgary/Montreal/Calgary', 'Montreal',  780.0,  39.0, 152, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(156,  139.0, 20021107000000, 20021112000000, 'Calgary/Toronto/Calgary', 'Toronto',  620.0,  31.0, 156, 'NA', 'BSN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(161,  518.0, 19991107000000, 19991112000000, 'Calgary/London/Calgary', 'London, England',  620.0,  31.0, 161, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(162,  218.0, 20021112000000, 20021118000000, 'Calgary/Toronto/Calgary', 'Toronto',  620.0,  31.0, 162, 'NA', 'BSN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(172,  686.0, 19991107000000, 19991112000000, 'Calgary/London/Calgary', 'London, England',  629.0,  31.45, 172, 'EU', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(187,  449.0, 19990215000000, 19990220000000, 'Calgary/Houston/Calgary', 'Houston',  2875.0,  60.0, 187, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(199,  286.0, 19990301000000, 19990316000000, 'Calgary/Hong Kong/Calgary', 'Hong Kong, China',  3625.0,  70.0, 199, 'ASIA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(204,  933.0, 19990304000000, 19990309000000, 'Calgary/Toronto/Calgary', 'Toronto',  620.0,  31.0, 204, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(220,  932.0, 19990221000000, 19990226000000, 'Calgary/Houston/Calgary', 'Houston',  620.0,  31.0, 220, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(226,  460.0, 19991003000000, 19991008000000, 'Calgary/Montreal/Calgary', 'Montreal',  2585.0,  60.0, 226, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(228,  573.0, 19991203000000, 19991207000000, 'Ramada', 'Vancouver',  700.0,  8.05, 228, 'NA', 'SNG', 'BK', 35);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(263,  255.0, 19990501000000, 19990601000000, 'Calgary/Sydney/Calgary', 'Sydney, Australia',  2500.0,  70.0, 263, 'ANZ', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(265,  306.0, 19990502000000, 19990531000000, 'European golf package', 'Paris, France',  3000.0,  112.5, 264, 'EU', 'NA', 'GR', 36);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(266,  1076.0, 19990502000000, 19990531000000, 'Calgary/Paris/Calgary', 'Paris, France',  3000.0,  70.0, 266, 'EU', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(270,  331.0, 19990501000000, 19990529000000, 'Calgary/London/Calgary', 'London, England',  800.0,  40.0, 273, 'EU', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(273,  776.0, 19990501000000, 19990529000000, 'Calgary/London/Calgary', 'London, England',  800.0,  40.0, 273, 'EU', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(275,  255.0, 19990506000000, 19990529000000, 'Australian trek', ' ',  7900.0,  296.25, 263, 'ANZ', 'NA', 'BK', 15);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(276,  1132.0, 19990501000000, 19990529000000, 'Calgary/London/Calgary', 'London, England',  800.0,  40.0, 273, 'EU', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(287,  980.0, 19990529000000, 19990603000000, 'Calgary/Rio de Janeiro/Calgary', 'Rio de Janeiro, Brazil',  3590.0,  70.0, 287, 'SA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(305,  979.0, 19990605000000, 19990610000000, 'Calgary/Toronto/Calgary', 'Toronto',  2580.0,  60.0, 305, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(312,  398.0, 19990612000000, 19990617000000, 'Calgary/Montreal/Calgary', 'Montreal',  615.0,  30.75, 312, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(313,  775.0, 19990612000000, 19990617000000, 'Calgary/Montreal/Calgary', 'Montreal',  2258.0,  60.0, 313, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(322,  404.0, 19990711000000, 19990718000000, 'Calgary/Toronto/Calgary', 'Toronto',  630.0,  31.5, 322, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(325,  874.0, 19990717000000, 19990802000000, 'Calgary/Montreal/Calgary', 'Montreal',  630.0,  31.5, 325, 'NA', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(327,  228.0, 19990725000000, 19990810000000, 'Calgary/London/Calgary', 'London, England',  900.0,  45.0, 98, 'EU', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(369,  481.0, 19991001000000, 19991006000000, 'intermediate car', 'Paris, France',  500.0,  15.5, 369, 'EU', 'NA', 'BK', 32);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(375,  492.0, 19991001000000, 19991006000000, 'Hilton', 'Paris, France',  650.0,  7.475, 375, 'EU', 'DLX', 'BK', 31);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(381,  610.0, 19991001000000, 19991006000000, 'Calgary/Paris/Calgary', 'Paris, France',  3560.0,  70.0, 381, 'EU', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(382,  619.0, 19991007000000, 19991012000000, 'Hilton', 'London, England',  620.0,  7.13, 382, 'EU', 'DLX', 'BK', 31);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(384,  644.0, 19991007000000, 19991012000000, 'Calgary/London/Calgary', 'London, England',  600.0,  30.0, 384, 'EU', 'ECN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(409,  492.0, 19991022000000, 19991103000000, 'Medium size car', 'Greece',  500.0,  15.5, 409, 'MED', 'NA', 'NC', 55);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(410,  624.0, 19991021000000, 19991104000000, 'Calgary-Athens-Calgary', 'Greece',  1300.0,  65.0, 410, 'MED', 'ECN', 'BK', 7);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(424,  492.0, 19991027000000, 19991030000000, 'cruise on the Greek\'s islands', 'Greece',  650.0,  19.5, 425, 'MED', 'INT', 'NC', 49);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(425,  492.0, 19991027000000, 19991030000000, 'cruise on the Greek\'s islands', 'Greece',  650.0,  19.5, 425, 'MED', 'INT', 'NC', 49);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(442,  654.0, 19991104000000, 19991109000000, 'Calgary/London/Calgary', 'London, England',  629.0,  31.45, 442, 'EU', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(443,  691.0, 19991105000000, 19991110000000, 'Calgary/Paris/Calgary', 'Paris, France',  4599.0,  70.0, 443, 'EU', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(449,  645.0, 19991106000000, 19991111000000, 'Calgary/Toronto/Calgary', 'Toronto',  599.0,  29.95, 449, 'NA', 'ECN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(458,  323.0, 19991208000000, 19991212000000, 'Calgary/Edmonton/Calgary', 'Edmonton',  300.0,  15.0, 517, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(482,  740.0, 19991117000000, 19991123000000, 'Hilton', 'Sydney, Australia',  590.0,  6.785, 482, 'ANZ', 'DLX', 'BK', 31);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(484,  549.0, 19991114000000, 19991119000000, 'Calgary/Toronto/Calgary', 'Toronto',  600.0,  30.0, 484, 'NA', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(488,  601.0, 19991114000000, 19991119000000, 'Niagara on the Lake', 'Niagara',  675.0,  7.7625, 488, 'NA', 'DLX', 'BK', 33);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(489,  1040.0, 19991117000000, 19991123000000, 'Calgary/Sydney/Calgary', 'Sydney, Australia',  625.0,  31.25, 489, 'ANZ', 'FST', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(510,  587.0, 19991202000000, 19991206000000, 'Ramada', 'Toronto',  650.0,  7.475, 510, 'NA', 'SNG', 'BK', 35);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(511,  745.0, 19991116000000, 19991122000000, 'Niagara on the Lake', 'Niagara',  620.0,  7.13, 511, 'NA', 'DLX', 'BK', 33);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(512,  903.0, 19991116000000, 19991122000000, 'Calgary/Toronto/Calgary', 'Toronto',  499.0,  24.95, 512, 'NA', 'ECN', 'BK', 23);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(517,  695.0, 19991202000000, 19991206000000, 'Calgary/Toronto/Calgary', 'Toronto',  700.0,  35.0, 517, 'NA', 'FST', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(529,  479.0, 19991212000000, 19991219000000, 'Calgary/Vancouver/Calgary', 'Vancouver',  350.0,  17.5, 529, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(546,  482.0, 20000110000000, 20000115000000, 'Calgary/Montreal/Calgary', 'Montreal',  800.0,  40.0, 546, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(553,  233.0, 20000113000000, 20000118000000, 'Calgary/Montreal/Calgary', 'Montreal',  750.0,  37.5, 553, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(594,  497.0, 20000120000000, 20000125000000, 'Calgary/Toronto/Calgary', 'Toronto',  650.0,  32.5, 594, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(596,  343.0, 20000206000000, 20000210000000, 'Calgary/London/Calgary', 'London, England',  850.0,  42.5, 596, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(598,  401.0, 20000206000000, 20000210000000, 'Calgary/London/Calgary', 'London, England',  850.0,  42.5, 598, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(600,  642.0, 20000206000000, 20000210000000, 'cancellation/medical policy # 97543', ' ',  200.0,  4.0, 600, 'EU', 'NA', 'NC', 39);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(604,  651.0, 20000206000000, 20000211000000, 'Calgary/Toronto/Calgary', 'Toronto',  700.0,  35.0, 604, 'NA', 'FST', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(605,  780.0, 20000208000000, 20000212000000, 'Calgary/Toronto/Calgary', 'Toronto',  700.0,  35.0, 605, 'NA', 'FST', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(609,  588.0, 20000130000000, 20000210000000, ' ', 'Hong Kong, China',  900.0,  10.35, 609, 'ASIA', 'DLX', 'BK', 41);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(613,  629.0, 20000130000000, 20000210000000, 'Calgary/Hong Kong/Calgary', 'Hong Kong, China',  5200.0,  260.0, 613, 'ASIA', 'FST', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(614,  629.0, 20000130000000, 20000210000000, 'cancellation/medical policy # 98123', ' ',  250.0,  5.0, 614, 'ASIA', 'NA', 'NC', 39);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(618,  790.0, 20000206000000, 20000210000000, 'Calgary/Toronto/Calgary', 'Toronto',  700.0,  35.0, 618, 'NA', 'FST', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(622,  863.0, 20000206000000, 20000210000000, 'Radisson', 'London, England',  990.0,  11.385, 622, 'EU', 'DLX', 'BK', 37);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(631,  172.0, 20000205000000, 20000209000000, 'Calgary/Toronto/Calgary', 'Toronto',  750.0,  37.5, 631, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(665,  502.0, 20000229000000, 20000303000000, 'Calgary/Rio de Janeiro/Calgary', 'Rio de Janeiro, Brazil',  1130.0,  56.5, 665, 'SA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(676,  695.0, 20000303000000, 20000306000000, 'Calgary/Toronto/Calgary', 'Toronto',  800.0,  40.0, 676, 'NA', 'FST', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(677,  574.0, 20000229000000, 20000303000000, 'Radisson', 'Rio de Janeiro, Brazil',  1000.0,  32.5, 677, 'SA', 'DLX', 'BK', 37);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(682,  686.0, 20000229000000, 20000303000000, 'cancellation/medical policy # 92165', ' ',  230.0,  4.6, 682, 'SA', 'NA', 'NC', 45);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(689,  570.0, 20000314000000, 20000405000000, 'Calgary, Toronto,Montreal, Ottawa t', 'Canada',  3550.0,  133.125, 776, 'NA', 'NA', 'BK', 46);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(709,  471.0, 20000308000000, 20000312000000, 'Calgary/Houston/Calgary', 'Houston',  720.0,  36.0, 709, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(714,  555.0, 20000307000000, 20000311000000, 'Calgary/Toronto/Calgary', 'Toronto',  725.0,  36.25, 714, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(722,  548.0, 20000225000000, 20000301000000, 'Calgary/London/Calgary', 'London, England',  800.0,  40.0, 722, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(739,  1020.0, 20000315000000, 20000405000000, 'Calgary, Toronto,Montreal, Ottawa t', 'Canada',  3550.0,  133.125, 776, 'NA', 'NA', 'BK', 46);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(740,  589.0, 20000313000000, 20000318000000, 'Calgary/Houston/Calgary', 'Houston',  720.0,  36.0, 740, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(777,  672.0, 20000316000000, 20000406000000, 'cancellation policy # 11191817', 'USA, Mexic',  180.0,  3.6, 777, 'NA', 'NA', 'NC', 69);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(805,  833.0, 20000316000000, 20000406000000, 'CALGARY-LOS ANGELES-MexicoCity-CALG', 'USA, Mexic',  5175.0,  194.0625, 805, 'NA', 'NA', 'BK', 67);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(826,  675.0, 20000323000000, 20000417000000, 'Calgary, Toronto,montreal, Ottawa t', 'Canada',  4780.0,  179.25, 826, 'NA', 'NA', 'BK', 57);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(827,  716.0, 20000327000000, 20000327000000, 'Ride Niagara', 'Canada',  150.0,  0.0, 827, 'NA', 'NA', 'BK', 58);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(838,  259.0, 20000410000000, 20000415000000, 'Calgary/Sydney/Calgary', 'Sydney, Australia',  2100.0,  105.0, 838, 'ANZ', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(852,  271.0, 20000414000000, 20000419000000, 'Calgary/Sydney/Calgary', 'Sydney, Australia',  2100.0,  105.0, 852, 'ANZ', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(857,  781.0, 20000414000000, 20000419000000, 'full-size car', 'Sydney, Australia',  800.0,  24.8, 857, 'ANZ', 'NA', 'NC', 61);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(866,  851.0, 20000414000000, 20000419000000, 'World Access', 'Sydney, Australia',  1900.0,  61.75, 866, 'ANZ', 'DLX', 'BK', 60);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(876,  1116.0, 20000414000000, 20000419000000, 'cancellation/medical policy # 95678', ' ',  230.0,  4.6, 876, 'ANZ', 'NA', 'NC', 47);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(880,  857.0, 20000410000000, 20000415000000, 'World Access', 'Sydney, Australia',  1900.0,  61.75, 880, 'ANZ', 'DLX', 'BK', 60);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(886,  1117.0, 20000410000000, 20000415000000, 'midsize car', 'Sydney, Australia',  900.0,  27.9, 884, 'ANZ', 'NA', 'NC', 61);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(902,  751.0, 20000425000000, 20000516000000, 'Calgary-Auckland flight', 'NZ',  3000.0,  150.0, 902, 'ANZ', 'BSN', 'BK', 19);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(910,  150.0, 20000516000000, 20000525000000, 'Calgary/London/Calgary', 'London, England',  900.0,  45.0, 910, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(940,  1131.0, 20000505000000, 20000602000000, 'Calgary/Toronto/Montreal tour', 'Canada',  2600.0,  97.5, 939, 'NA', 'FST', 'BK', 67);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(943,  821.0, 20000506000000, 20000603000000, 'Tahiti - South Seas', ' ',  8562.0,  256.86, 943, 'SP', 'INT', 'NC', 70);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(955,  141.0, 20000513000000, 20000522000000, 'Calgary/Paris/Calgary', 'Paris, France',  950.0,  47.5, 973, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(960,  186.0, 20000514000000, 20000523000000, 'Calgary/Toronto/Calgary', 'Toronto',  650.0,  32.5, 960, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(967,  392.0, 20000513000000, 20000522000000, 'World Access', 'Paris, France',  1200.0,  39.0, 973, 'EU', 'DLX', 'BK', 60);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(972,  812.0, 20000513000000, 20000522000000, 'midsize car', 'Paris, France',  850.0,  26.35, 973, 'EU', 'NA', 'NC', 61);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(973,  812.0, 20000513000000, 20000522000000, 'cancellation policy # 4987140', ' ',  300.0,  6.0, 973, 'EU', 'NA', 'NC', 47);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(988,  301.0, 20000519000000, 20000619000000, 'cancellation/medical policy #923665', 'Peru, argentina, Bollivi',  345.0,  6.9, 988, 'SA', 'NA', 'NC', 50);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(990,  757.0, 20000519000000, 20000619000000, 'Peru, Argentina, Bolivia tour', ' ',  3980.0,  149.25, 989, 'SA', 'NA', 'BK', 28);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1002,  846.0, 20000522000000, 20000529000000, 'Alaska', ' ',  2531.0,  75.93, 1001, 'NA', 'INT', 'NC', 68);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1024,  346.0, 20000601000000, 20000616000000, 'Asia-Africa-Mediteranean', ' ',  12630.0,  378.9, 1075, 'MED', 'ECN', 'NC', 70);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1034,  716.0, 20000603000000, 20000628000000, 'Calgary-Vancouver flight', 'canada',  139.0,  6.95, 1034, 'NA', 'FST', 'BK', 19);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1067,  720.0, 20000606000000, 20000701000000, 'Calgary-toronto-montreal flight', 'Canada',  1000.0,  50.0, 1067, 'NA', 'FST', 'BK', 64);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1073,  761.0, 20000606000000, 20000701000000, 'Toronto-Montreal-ottawa tour', 'Canada',  3080.0,  115.5, 1073, 'NA', 'NA', 'BK', 48);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1089,  827.0, 20000530000000, 20000607000000, 'Alaska plus air', ' ',  3652.0,  109.56, 1089, 'NA', 'INT', 'NC', 75);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1105,  831.0, 20000530000000, 20000614000000, 'Ryndam - Time Travel', ' ',  5506.0,  165.18, 1105, 'SA', 'OCNV', 'NC', 70);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1141,  816.0, 20000520000000, 20000520000000, 'Royal Ontario Museum', 'Canada',  25.0,  0.0, 1141, 'NA', 'NA', 'NC', 79);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1165,  355.0, 20000708000000, 20000716000000, 'Calgary/London/Calgary', 'London, England',  850.0,  42.5, 1165, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1178,  846.0, 20000708000000, 20000713000000, 'Calgary/London/Calgary', 'London, England',  850.0,  42.5, 1178, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1188,  631.0, 20000729000000, 20000816000000, 'Explorer cruise plus air', ' ',  7593.0,  227.79, 1187, 'SA', 'OCNV', 'NC', 75);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1192,  250.0, 20000812000000, 20000816000000, 'Calgary/Cape Town/Calgary', 'Cape Town, South Africa',  2500.0,  125.0, 1192, 'AFR', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1194,  375.0, 20000812000000, 20000815000000, 'Calgary/Montreal/Calgary', 'Montreal',  870.0,  43.5, 1194, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1202,  154.0, 20000827000000, 20000901000000, 'Calgary/Hong Kong/Calgary', 'Hong Kong, China',  1700.0,  85.0, 1202, 'ASIA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1206,  605.0, 20000825000000, 20000830000000, 'Calgary/Toronto/Calgary', 'Toronto',  750.0,  37.5, 1206, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1207,  188.0, 20000827000000, 20000901000000, ' ', 'Hong Kong, China',  2000.0,  65.0, 1207, 'ASIA', 'BSN', 'NC', 41);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1228,  527.0, 20000824000000, 20000829000000, 'Calgary/London/Calgary', 'London, England',  900.0,  45.0, 1228, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1230,  864.0, 20000824000000, 20000829000000, 'Calgary/Athens/Calgary', 'Athens, Greece',  1100.0,  55.0, 1230, 'MED', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1240,  435.0, 20000926000000, 20001001000000, 'Calgary/Montreal/Calgary', 'Montreal',  950.0,  47.5, 1240, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1248,  421.0, 20000925000000, 20000930000000, 'Calgary/Montreal/Calgary', 'Montreal',  950.0,  47.5, 1248, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1251,  177.0, 20000923000000, 20000928000000, 'Calgary/London/Calgary', 'London, England',  900.0,  45.0, 1251, 'EU', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1254,  420.0, 20000923000000, 20000928000000, ' ', 'London, England',  1500.0,  48.75, 1254, 'EU', 'DLX', 'BK', 82);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1270,  239.0, 20001201000000, 20001210000000, 'Calgary/Cape Town/Calgary', 'Cape Town, South Africa',  2700.0,  135.0, 1270, 'AFR', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1293,  596.0, 20001201000000, 20001210000000, ' ', 'Cape Town, South Africa',  2500.0,  81.25, 1293, 'AFR', 'DLX', 'BK', 42);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1301,  534.0, 20010105000000, 20010109000000, 'Calgary/Cape Town/Calgary', 'Cape Town, South Africa',  2700.0,  135.0, 1301, 'AFR', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1302,  535.0, 20010105000000, 20010109000000, 'Calgary/Winnipeg/Calgary', 'Winnipeg',  450.0,  22.5, 1302, 'NA', 'BSN', 'BK', 44);
-INSERT INTO `BookingDetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`)  VALUES(1303,  902.0, 20010105000000, 20010109000000, ' ', 'Cape Town, South Africa',  2500.0,  81.25, 1303, 'AFR', 'DLX', 'BK', 42);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(11, 20010131000000, 'DFS3',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(15, 20010305000000, 'WDR898',  1.0, 135, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(17, 20010306000000, 'FES3',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(34, 20010324000000, 'S935',  2.0, 138, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(46, 20010330000000, 'SKJ329',  2.0, 133, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(49, 20010331000000, 'S943',  2.0, 114, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(52, 20010401000000, 'S934',  2.0, 133, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(55, 20010403000000, 'SDFJ3982',  2.0, 133, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(57, 20010808000000, 'FJKD344',  2.0, 130, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(62, 20011125000000, 'SCR39',  2.0, 130, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(65, 20011217000000, 'HK777',  1.0, 143, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(73, 20020127000000, 'SW34',  1.0, 143, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(79, 20020212000000, 'MKI333',  2.0, 120, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(80, 20020213000000, 'MKI334',  2.0, 122, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(84, 20020215000000, 'KK890',  2.0, 120, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(89, 20020303000000, 'DF344',  1.0, 109, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(98, 20020322000000, 'JI8787',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(108, 20020404000000, 'MKI338',  2.0, 138, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(124, 20020429000000, 'SJKDK89',  2.0, 114, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(138, 20020528000000, 'HJK78',  1.0, 109, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(141, 20020601000000, 'KL888',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(148, 20020628000000, 'LJ888',  2.0, 133, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(152, 20020815000000, 'WS343',  2.0, 130, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(156, 20020923000000, 'JKKO9',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(161, 20020927000000, 'SG4SD',  1.0, 105, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(162, 20020928000000, 'GFRER4',  1.0, 109, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(172, 20021003000000, 'FGFD64',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(187, 19990101000000, 'ZAQ344',  1.0, 109, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(199, 19990115000000, 'JSD39',  1.0, 143, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(204, 19990118000000, 'XVV67',  1.0, 141, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(220, 19990129000000, 'BCV5',  1.0, 127, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(226, 19990219000000, 'DS3DF',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(228, 19990220000000, 'KF83',  1.0, 119, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(263, 19990317000000, 'CBB34',  2.0, 120, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(264, 19990318000000, 'SDF890',  1.0, 135, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(266, 19990318000000, 'AZX24',  2.0, 135, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(273, 19990321000000, 'DGG33',  2.0, 122, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(287, 19990415000000, '7898797',  1.0, 141, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(305, 19990421000000, 'XC2',  1.0, 127, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(312, 19990428000000, 'SDSD33',  1.0, 130, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(313, 19990429000000, 'SD46',  1.0, 120, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(322, 19990527000000, 'FJSDKL833',  1.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(325, 19990602000000, 'HJJK77',  1.0, 121, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(369, 19990818000000, 'KJ392',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(375, 19990821000000, 'SDJF382',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(381, 19990823000000, 'JDKJF8343',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(382, 19990823000000, 'FDJ93',  1.0, 119, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(384, 19990824000000, 'JHJH7',  1.0, 119, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(409, 19990907000000, 'FD53767',  2.0, 139, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(410, 19990907000000, 'JHK7',  2.0, 140, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(425, 19990912000000, 'FG879',  4.0, 140, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(442, 19990921000000, 'S53423',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(443, 19990921000000, 'T345',  1.0, 119, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(449, 19990923000000, 'RD4EW5',  1.0, 140, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(482, 19991003000000, 'SKFJ32',  1.0, 127, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(484, 19991004000000, 'GDEWR3',  1.0, 106, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(488, 19991005000000, 'JDFS39',  1.0, 106, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(489, 19991005000000, 'SDR54',  1.0, 127, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(510, 19991019000000, 'HKK7',  1.0, 140, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(511, 19991020000000, 'FJK3892',  1.0, 141, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(512, 19991020000000, 'SG444',  1.0, 141, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(517, 19991021000000, 'FSDW2',  1.0, 140, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(529, 19991028000000, 'FKJD32',  1.0, 119, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(546, 19991127000000, 'NKU7',  1.0, 140, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(553, 19991129000000, 'KKU7',  1.0, 109, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(594, 19991206000000, 'HNN77',  1.0, 119, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(596, 19991212000000, 'FDKJ898',  1.0, 106, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(598, 19991213000000, 'FDSK3',  1.0, 121, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(600, 19991214000000, 'ILJ878',  2.0, 106, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(604, 19991215000000, 'KFKESJK5',  1.0, 104, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(605, 19991215000000, 'SDJ89342',  1.0, 140, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(609, 19991216000000, 'KJLK89',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(613, 19991217000000, 'FD2323',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(614, 19991217000000, 'FGG66',  2.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(618, 19991218000000, 'CMFJ39',  1.0, 119, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(622, 19991219000000, 'JJJ77',  1.0, 106, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(631, 19991222000000, 'MM78I879',  1.0, 130, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(665, 20000116000000, 'FDSK83',  1.0, 140, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(676, 20000118000000, 'SJK5',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(677, 20000118000000, 'KJKJ88',  1.0, 140, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(682, 20000119000000, 'GF887',  3.0, 140, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(709, 20000125000000, 'MNHY15',  1.0, 104, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(714, 20000126000000, 'KKJ91',  1.0, 140, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(722, 20000127000000, 'FDJS32',  1.0, 119, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(740, 20000129000000, 'MNHY19',  1.0, 119, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(776, 20000202000000, '345435F',  2.0, 109, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(777, 20000202000000, 'AS54676',  2.0, 143, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(798, 20000204000000, 'A7667900',  1.0, 143, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(805, 20000205000000, '456546DFD',  1.0, 143, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(826, 20000220000000, '62323',  4.0, 128, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(827, 20000220000000, 'D869990',  2.0, 128, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(838, 20000225000000, 'GFF84',  1.0, 141, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(852, 20000229000000, 'GFF79',  1.0, 127, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(857, 20000301000000, 'SFDFSD54',  2.0, 127, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(866, 20000302000000, 'SFDFSD53',  1.0, 127, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(876, 20000303000000, 'SFDFSD55',  1.0, 127, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(880, 20000304000000, 'GFF85',  1.0, 141, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(884, 20000305000000, 'GFF86',  2.0, 141, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(899, 20000315000000, 'QERQ1322',  2.0, 121, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(902, 20000317000000, 'D569767',  2.0, 121, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(910, 20000319000000, 'GFF102',  1.0, 114, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(939, 20000325000000, '86431RT',  2.0, 120, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(943, 20000326000000, '34265Q67L',  2.0, 140, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(960, 20000330000000, 'GFF105',  1.0, 122, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(973, 20000401000000, 'GFF104',  2.0, 133, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(988, 20000404000000, '76584847',  1.0, 139, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(989, 20000404000000, '4656757Q',  1.0, 139, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1001, 20000407000000, '53165616',  2.0, 133, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1034, 20000419000000, 'F789900',  2.0, 105, 'G', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1047, 20000420000000, '234244S',  2.0, 105, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1067, 20000422000000, '4325434RE',  2.0, 117, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1073, 20000423000000, '68798890',  2.0, 117, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1075, 20000423000000, '78755U',  2.0, 123, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1089, 20000424000000, 'T6657D',  2.0, 142, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1105, 20000426000000, '53165765R',  1.0, 119, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1141, 20000504000000, '35653B',  1.0, 120, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1165, 20000525000000, 'LJJ113',  1.0, 127, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1178, 20000530000000, 'LJJ108',  1.0, 118, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1187, 20000614000000, 'R4777FG',  1.0, 143, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1192, 20000628000000, 'LJJ115',  1.0, 109, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1194, 20000629000000, 'LJJ114',  1.0, 141, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1202, 20000714000000, 'LJJ126',  1.0, 135, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1206, 20000715000000, 'LJJ131',  1.0, 121, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1207, 20000715000000, 'FJS3492',  2.0, 135, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1228, 20000801000000, 'LJJ120',  1.0, 106, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1230, 20000803000000, 'LJJ121',  1.0, 107, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1240, 20000814000000, 'FSDFJ357',  1.0, 127, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1248, 20000817000000, 'FSDFJ358',  1.0, 141, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1251, 20000909000000, 'FSDFJ349',  1.0, 130, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1254, 20000912000000, 'KJFKD89',  1.0, 130, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1270, 20001017000000, 'FSD82937',  1.0, 130, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1293, 20001022000000, 'KJLK89234',  1.0, 130, 'L', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1301, 20001121000000, 'FSD82940',  1.0, 127, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1302, 20001122000000, 'FSD82941',  1.0, 141, 'B', NULL);
-INSERT INTO `Bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`)  VALUES(1303, 20001123000000, 'KJk934',  1.0, 127, 'B', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('BSN', 'Business Class', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('DBL', 'Double', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('DLX', 'Delux', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('ECN', 'Economy', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('FST', 'First Class', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('INT', 'Interior', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('NA', 'Not Applicable', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('OCNV', 'Ocean View', NULL);
-INSERT INTO `Classes` (`ClassId`, `ClassName`, `ClassDesc`)  VALUES('SNG', 'Single', NULL);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(2, 'AMEX', '12342324248393', 20030403000000, 123);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(26, 'AMEX', '33454212345651', 20030929000000, 127);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(28, 'AMEX', '3422343212433430', 20030719000000, 107);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(30, 'AMEX', '34458998784345', 20020822000000, 140);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(31, 'AMEX', '345433789979389', 19991105000000, 130);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(41, 'AMEX', '3522354387984530', 20020609000000, 106);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(63, 'AMEX', '632456487984533', 20030102000000, 142);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(69, 'AMEX', '78789007977999', 20020822000000, 104);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(91, 'AMEX', '904883289756439', 20020119000000, 133);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(99, 'Diners', '12093458976902', 20021102000000, 143);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(123, 'Diners', '24348343482482', 20031125000000, 109);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(141, 'Diners', '3749234924723790', 20030501000000, 128);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(163, 'Diners', '6788922940392940', 20021012000000, 139);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(167, 'Diners', '699834387984533', 20030104000000, 118);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(169, 'Diners', '7482794729742320', 20020412000000, 117);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(185, 'Diners', '8901128935238970', 19991020000000, 141);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(201, 'MC', '3424345432894320', 20020122000000, 120);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(230, 'VISA', '12122387984533', 20031213000000, 121);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(239, 'VISA', '2311240543980120', 20021103000000, 114);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(243, 'VISA', '23958389028923', 20020822000000, 119);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(252, 'VISA', '3456683343353430', 20021029000000, 135);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(272, 'VISA', '6543254233444530', 20020122000000, 122);
-INSERT INTO `CreditCards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`)  VALUES(279, 'VISA', '78789007977999', 20020822000000, 105);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(104, 'Laetia', 'Enison', '144-61 87th Ave, NE', 'Calgary', 'AB', 'T2J 6B6', 'Canada', '4032791223', '4032557865', '                                                  ', 4);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(105, 'Angel', 'Moskowitz', '320 John St., NE', 'Calgary', 'AB', 'T2J 7E3', 'Canada', '4032794228', '4036409874', 'amoskowitz@home.com                               ', 3);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(106, 'Judith', 'Olvsade', '29 Elmwood Ave.,', 'Calgary', 'AB', 'T2Z 3M9', 'Canada', '4032795652', '4036861598', 'jolvsade@aol.com                                  ', 1);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(107, 'Catherine', 'Mierzwa', '22-70 41st St.,NW', 'Calgary', 'AB', 'T2Z 2Z9', 'Canada', '4032796878', '4036404563', 'cmierzwa@msn.com                                  ', 5);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(108, 'Judy', 'Sethi', '63 Stratton Hall, SW', 'Calgary', 'AB', 'T1Y 6N4', 'Canada', '4032795111', '4036204789', 'judysehti@home.com                                ', 7);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(109, 'Larry', 'Walter', '38 Bay 26th ST. #2A, NE', 'Calgary', 'AB', 'T2J 6B6', 'Canada', '4032793254', '4032845588', 'lwalter@aol.com                                   ', 4);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(114, 'Winsome', 'Laporte', '268 E.3rd St, SW', 'Calgary', 'AB', 'T1Y 6N4', 'Canada', '4032691125', '4032844565', '                                                  ', 8);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(117, 'Nancy', 'Kuehn', '44-255 9th St., SW', 'Calgary', 'AB', 'T1Y 6N5', 'Canada', '4032693965', '4032843211', '                                                  ', 6);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(118, 'Hiedi', 'Lopez', '168 Rowayton Ave, NW', 'Calgary', 'AB', 'T3A 4ZG', 'Canada', '4032699856', '4035901587', 'hlopez@aol.com                                    ', 5);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(119, 'Mardig', 'Abdou', '160-04 32nd Ave., SW', 'Calgary', 'AB', 'T2P 2G7', 'Canada', '4032691429', '4032251952', '                                                  ', 9);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(120, 'Ralph', 'Alexander', '2054 73rd St, SW', 'Calgary', 'AB', 'T2P 2G7', 'Canada', '4032691634', '4032256547', '                                                  ', 1);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(121, 'Sean', 'Pineda', '3 Salem Rd., NW', 'Calgary', 'AB', 'T2K 3E3', 'Canada', '4032691954', '4036864444', 'spineda@hotmail.com                               ', 3);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(122, 'Julita', 'Lippen', '51-76 VanKleeck St., NW', 'Calgary', 'AB', 'T2K 6C5', 'Canada', '4032551956', '4035901478', 'jlippen@cadvision.co                              ', 4);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(123, 'Pierre', 'Radicola', '322 Atkins Ave., SE', 'Calgary', 'AB', 'T3G 2C6', 'Canada', '4032551677', '4036867536', 'pradicola@home.com                                ', 8);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(127, 'Gary', 'Aung', '135-32 Louis Blvd, NE', 'Calgary', 'AB', 'T2V 2K5', 'Canada', '4032807858', '4037501587', '                                                  ', 9);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(128, 'Jeff', 'Runyan', '109-15 Queens Blvd., NE', 'Calgary', 'AB', 'T2V 2K6', 'Canada', '4032809635', '4036201122', 'jrunyan@aol.com                                   ', 5);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(130, 'Lula', 'Oates', '11A Emory St., NE', 'Calgary', 'AB', 'T3E 3Z4', 'Canada', '4032439653', '4036861587', 'loates@aol.com                                    ', 9);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(133, 'James', 'Reed', '109-621 96th St, NE', 'Calgary', 'AB', 'T3E 4A1', 'Canada', '4032432358', '4037201155', 'jreed@aol.com                                     ', 2);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(135, 'Michelle', 'Masser', '379 Ovington Ave, NE', 'Calgary', 'AB', 'T2J 2S9', 'Canada', '4032441586', '4035908522', 'mmasser@aol.com                                   ', 6);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(138, 'John', 'Smith', '45 Plaza St. West #2D, NE', 'Calgary', 'AB', 'T3E 5C7', 'Canada', '4032449653', '4032837896', 'johnSmith@hotmail.co                              ', 7);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(139, 'Angelo', 'Garshman', '82 Western Ave., NE', 'Calgary', 'AB', 'T3E 5C8', 'Canada', '4032259966', '4032696541', '                                                  ', 3);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(140, 'Derrick', 'Baltazar', '9111 Church Ave. #3N, NE', 'Calgary', 'AB', 'T3E 5C9', 'Canada', '4032255231', '4037502547', '                                                  ', 6);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(141, 'Robert', 'Boyd', '96-04 57th Ave #12A, NE', 'Calgary', 'AB', 'T3E 5C5', 'Canada', '4032255647', '4037509512', '                                                  ', 3);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(142, 'Monica', 'Waldman', '257 Depot Rd., NE', 'Calgary', 'AB', 'T2J 6P3', 'Canada', '4032255629', '4032844566', 'mwaldman@aol.com                                  ', 2);
-INSERT INTO `Customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`)  VALUES(143, 'Gerard', 'Biers', '205 19th St., NE', 'Calgary', 'AB', 'T2J 6B6', 'Canada', '4032251952', '4037506578', '                                                  ', 8);
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(104, 1, '123456 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(104, 2, '5435 678 CF');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(105, 2, '1435 678 CA');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(106, 1, '123456 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(106, 4, '4643 23 5435');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(107, 2, '5735 638 CF');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(107, 5, '2354 4583 63A');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(108, 1, '129456 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(109, 4, '4343 23 5435');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(109, 5, '2784 4553 63F');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(114, 2, '5875 678 CG');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(117, 1, '123456 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(118, 3, 'FG2343 785');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(123, 2, '5435 678 CF');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(127, 1, '113526 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(138, 1, '124256 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(140, 4, '4343 23 5435');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(142, 1, '123456 4322');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(142, 3, 'FG2343 785');
-INSERT INTO `Customers_Rewards` (`CustomerId`, `RewardId`, `RwdNumber`)  VALUES(142, 5, '2254 4553 63Z');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Janet', NULL, 'Delton', '(403) 210-7801', 'janet.delton@travelexperts.com', 'Senior Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Judy', NULL, 'Lisle', '(403) 210-7802', 'judy.lisle@travelexperts.com', 'Intermediate Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Dennis', 'C.', 'Reynolds', '(403) 210-7843', 'dennis.reynolds@travelexperts.com', 'Junior Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('John', NULL, 'Coville', '(403) 210-7823', 'john.coville@travelexperts.com', 'Intermediate Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Janice', 'W.', 'Dahl', '(403) 210-7865', 'janice.dahl@travelexperts.com', 'Manager');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Bruce', 'J.', 'Dixon', '(403) 210-7867', 'bruce.dixon@travelexperts.com', 'Intermediate Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Beverly', 'S.', 'Jones', '(403) 210-7812', 'beverly.jones@travelexperts.com', 'Intermediate Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Jane', NULL, 'Merrill', '(403) 210-7868', 'jane.merrill@travelexperts.com', 'Senior Agent');
-INSERT INTO `Employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`)  VALUES('Brian', 'S.', 'Peterson', '(403) 210-7833', 'brian.peterson@travelexperts.com', 'Junior Agent');
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('BK', 'Booking Charge',  25.0, NULL);
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('CH', 'Change',  15.0, NULL);
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('GR', 'Group Booking',  100.0, NULL);
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('NC', 'No Charge',  0.0, NULL);
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('NSF', 'Insufficient Funds',  25.0, NULL);
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('RF', 'Refund',  25.0, NULL);
-INSERT INTO `Fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`)  VALUES('RS', 'Research',  50.0, NULL);
-INSERT INTO `Packages` (`PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgAgencyCommission`)  VALUES(1, 'Caribbean New Year', 20051225000000, 20060104000000, 'Cruise the Caribbean & Celebrate the New Year.',  4800.0,  400.0);
-INSERT INTO `Packages` (`PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgAgencyCommission`)  VALUES(2, 'Polynesian Paradise', 20051212000000, 20051220000000, '8 Day All Inclusive Hawaiian Vacation',  3000.0,  310.0);
-INSERT INTO `Packages` (`PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgAgencyCommission`)  VALUES(3, 'Asian Expedition', 20060514000000, 20060528000000, 'Airfaire, Hotel and Eco Tour.',  2800.0,  300.0);
-INSERT INTO `Packages` (`PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgAgencyCommission`)  VALUES(4, 'European Vacation', 20051101000000, 20051114000000, 'Euro Tour with Rail Pass and Travel Insurance',  3000.0,  280.0);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(1, 65);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(1, 93);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(2, 32);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(2, 33);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(2, 90);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(3, 28);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(3, 82);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(3, 87);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(4, 9);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(4, 65);
-INSERT INTO `Packages_Products_Suppliers` (`PackageId`, `ProductSupplierId`)  VALUES(4, 84);
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(1, 'Air');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(2, 'Attractions');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(3, 'Car rental');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(4, 'Cruise');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(5, 'Hotel');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(6, 'Motor Coach');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(7, 'Railroad');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(8, 'Tours');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(9, 'Travel Insurance');
-INSERT INTO `Products` (`ProductId`, `ProdName`)  VALUES(10, 'Yacht/Boat Charters');
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(1, 1, 5492);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(2, 1, 6505);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(3, 8, 796);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(4, 1, 4196);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(6, 8, 1040);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(7, 1, 3576);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(8, 3, 845);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(9, 7, 828);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(10, 8, 5777);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(11, 8, 5827);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(12, 5, 3273);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(13, 1, 80);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(14, 8, 9396);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(15, 8, 3589);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(16, 1, 69);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(19, 1, 3376);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(20, 3, 323);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(23, 1, 3549);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(24, 5, 1918);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(25, 3, 11156);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(26, 8, 8837);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(28, 8, 8089);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(29, 1, 1028);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(30, 1, 2466);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(31, 5, 1406);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(32, 3, 1416);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(33, 5, 13596);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(34, 1, 9323);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(35, 5, 11237);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(36, 8, 9785);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(37, 5, 11163);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(39, 9, 11172);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(40, 8, 9285);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(41, 5, 3622);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(42, 5, 9323);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(43, 1, 1766);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(44, 1, 3212);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(45, 9, 11174);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(46, 8, 3600);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(47, 9, 11160);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(48, 8, 11549);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(49, 4, 2827);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(50, 9, 12657);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(51, 8, 7377);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(52, 5, 6550);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(53, 4, 1634);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(54, 8, 2140);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(55, 3, 317);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(56, 1, 1205);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(57, 8, 3633);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(58, 2, 6873);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(59, 1, 7377);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(60, 5, 7244);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(61, 3, 2938);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(63, 2, 5081);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(64, 1, 3119);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(65, 9, 2998);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(66, 8, 3576);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(67, 8, 2592);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(68, 4, 100);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(69, 9, 2987);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(70, 4, 1005);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(71, 4, 908);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(72, 1, 5796);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(73, 10, 2386);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(74, 1, 3650);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(75, 4, 1425);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(76, 8, 6346);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(78, 1, 1685);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(79, 2, 2588);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(80, 6, 1620);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(81, 4, 1542);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(82, 5, 9766);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(83, 5, 5228);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(84, 6, 9396);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(87, 1, 1859);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(90, 1, 1713);
-INSERT INTO `Products_Suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`)  VALUES(93, 4, 3650);
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('AFR', 'Africa                   ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('ANZ', 'Australia & New Zealand  ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('ASIA', 'Asia                     ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('EU', 'Europe & United Kingdom  ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('MEAST', 'Middle East              ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('MED', 'Mediterranean            ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('NA', 'North America            ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('OTHR', 'Other                    ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('SA', 'South America            ');
-INSERT INTO `Regions` (`RegionId`, `RegionName`)  VALUES('SP', 'South Pacific            ');
-INSERT INTO `Rewards` (`RewardId`, `RwdName`, `RwdDesc`)  VALUES(1, 'Air Miles', NULL);
-INSERT INTO `Rewards` (`RewardId`, `RwdName`, `RwdDesc`)  VALUES(2, 'AeroPlan', NULL);
-INSERT INTO `Rewards` (`RewardId`, `RwdName`, `RwdDesc`)  VALUES(3, 'AeroPlan Gold', NULL);
-INSERT INTO `Rewards` (`RewardId`, `RwdName`, `RwdDesc`)  VALUES(4, 'Coast Rewards', NULL);
-INSERT INTO `Rewards` (`RewardId`, `RwdName`, `RwdDesc`)  VALUES(5, 'Mariott Rewards', NULL);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(16, NULL, NULL, 'PACIFIC WINGS: Oahu-Molokai-Maui-Hawaii', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.newconcepts.ca', NULL, 69);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(17, NULL, NULL, 'WINAIR / WINDWARD ISLANDS AIRWAYS INTERNATIONAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.newconcepts.ca', NULL, 69);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(18, 'A.', 'Haziza', 'NEW CONCEPTS - CANADA', '1595 Calverton Court', 'Mississauga', 'ON', 'L5G 2W4', ' ', '9052748508', '9052714603', 'alhaziza@newconcepts.ca', 'http://www.newconcepts.ca', 'ACTAPGY', 69);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(19, 'A.', 'Haziza', 'DIVI RESORTS', '1595 Calverton Court', 'Mississauga', 'ON', 'L5G 2W4', ' ', '9052748508', '9052714603', 'alhaziza@newconcepts.ca', 'http://www.newconcepts.ca', NULL, 69);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(20, 'A.', 'Haziza', 'TIMBERWOODS VACATION VILLAS', '7964 Timberwood Circle', 'Sarasota', 'FL', '34238', 'USA', '9419234966', '9419243109', 'reserve@timberwoods.com', 'www.timberwoods.com', NULL, 69);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(26, 'Nick', 'Kissanis', 'AMALIA HOTELS (GREECE)', '214 Bedford Rd', 'Toronto', 'ON', 'M5R 2K9', ' ', '4169674333', '4169676147', ' ', ' ', 'ACTAPGY', 80);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(27, 'Nick', 'Kissanis', 'CHAT/TRAVELINE', '214 Bedford Rd', 'Toronto', 'ON', 'M5R 2K9', ' ', '4169674333', '4169676147', ' ', ' ', 'ACTAPGY', 80);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(28, 'Nick', 'Kissanis', 'CHAT TOURS', '214 Bedford Rd', 'Toronto', 'ON', 'M5R 2K9', ' ', '4169674333', '4169676147', ' ', ' ', 'ACTAPGY', 80);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(47, 'Dr. Carlos', 'Pechtel de A', 'GLOBAL QUEST', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', NULL, 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(48, 'Dr. Carlos', 'Pechtel de A', 'MARINE EXPEDITIONS', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', NULL, 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(49, 'Dr. Carlos', 'Pechtel de A', 'AMAZON RIVER CRUISES', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', NULL, 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(51, NULL, NULL, 'EUROPE RIVER CRUISES/CROISI EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(52, NULL, NULL, 'QUARK EXPEDITIONS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(53, 'Dr. Carlos', 'Pechtel de A', 'AVILA TOURS INC.', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', 'ACTAPGY', 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(56, NULL, NULL, 'TUMBACO GALAPAGOS YACHT CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 100);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(65, NULL, NULL, 'CUBA CRUISE CORPORATION', '13 Hazelton Ave', 'Toronto', 'ON', 'M5R 2E1', ' ', '4169642569', '4169645644', 'cuba@blythtravel.com', 'http://www.cubacruising.com', 'PGY', 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(66, 'Sam', 'Blyth', 'BLYTH & COMPANY TRAVEL LTD.', '13 Hazelton Ave', 'Toronto', 'ON', 'M5R 2E1', ' ', '4169642569', '4169643416', 'blythco@blythtravel.com', 'http://www.blythtravel.com', 'PGY', 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(67, NULL, NULL, 'THE ROYAL SCOTSMAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(68, NULL, NULL, 'THE EASTERN & ORIENTAL EXPRESS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(70, NULL, NULL, 'THE BRITISH PULLMAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(71, NULL, NULL, 'THE VENICE SIMPLON ORIENT EXPRESS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(73, NULL, NULL, 'MOUNTAIN TRAVEL *SOBEK', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(74, NULL, NULL, 'BACKROADS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(75, NULL, NULL, 'EXOTIC SUN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(113, 'M.', 'Pangallo', 'COMPAGNIA ITALIANA TURISMO INC', '666 Sherbrooke W', 'Montreal', 'PQ', 'H3A 1E7', ' ', '5148454310', '5148459137', 'citmontreal@cittours.com', ' ', 'ACTAPGY', 323);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(114, NULL, NULL, 'ITALY/EURAILPASS/EUROPASS/GERMAN PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 323);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(121, 'Mary', 'Papamichael', 'CYPRUS AIRWAYS LTD', '34-09 Broadway', 'Astoria', 'NY', '11106', 'USA', '7182676882', '7182676885', 'kinisisusa@aol.com', ' ', NULL, 796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(123, 'Mary', 'Papamichael', 'KINISIS TRAVEL & TOURS', '34-09 Broadway', 'Astoria', 'NY', '11106', 'USA', '7182676880', '7182676885', 'kinisisusa@aol.com', ' ', NULL, 796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(127, NULL, NULL, 'BRITISH HERITAGE PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(128, 'Charlotte', ' Mikolaiczyk', 'DER TRAVEL SERVICE LTD', '904 The East Mall', 'Toronto (Etobicoke)', 'ON', 'M9B 6K2', ' ', '4166951209', '4166951210', 'der@dercanada.com', 'http://www.dercanada.com', 'ACTAPGY', 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(129, NULL, NULL, 'EUROLINE BUS PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(131, 'Charlotte', ' Mikolaiczyk', 'DERRAIL - EUROPEAN RAIL SERVICES', '904 The East Mall', 'Toronto (Etobicoke)', 'ON', 'M9B 6K2', ' ', '4166951209', '4166951210', 'der@dercanada.com', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(132, NULL, NULL, 'BENELUX PASS (BELGIUM LUXEMBOURG THE NETHERLANDS)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(133, NULL, NULL, 'BRITRAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(134, NULL, NULL, 'GREEK RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(135, NULL, NULL, 'EURAIL/EURO PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(136, NULL, NULL, 'BALKAN RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(137, NULL, NULL, 'GERMAN RAIL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(138, NULL, NULL, 'EUROPEAN EAST PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(139, NULL, NULL, 'SCANRAIL NORWAY SWEDEN RAILPASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(140, NULL, NULL, 'PARIS METRO PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(141, NULL, NULL, 'IBERIC FLEXIPASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(142, NULL, NULL, 'SPAIN RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(143, NULL, NULL, 'HOLLAND RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(144, NULL, NULL, 'ITALIAN RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(145, NULL, NULL, 'AUSTRIAN RAILPASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(146, NULL, NULL, 'LONDON VISITOR CARD', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(147, NULL, NULL, 'EUROSTAR SERVICES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(150, 'Joanne', 'Lundy', 'DISCOVER THE WORLD MARKETING', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(151, NULL, NULL, 'BRITISH MIDLAND', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(152, 'Joanne', 'Lundy', 'AEROMEXICO', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(153, 'Joanne', 'Lundy', 'AOM FRENCH AIRLINES', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(154, NULL, NULL, 'AMERICA WEST AIRLINES', '4000 E Sky Harbor Blvd', 'Phoenix', 'AZ', '85034', ' ', '8002929378', NULL, 'toronto@discovertheworld.ca', 'http://www.americawest.com', NULL, 845);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(156, 'Joanne', 'Lundy', 'HYATT NORTH AMERICA/CARIBBEAN', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9052331234', '9058918026', 'toronto@discovertheworld.ca', 'www.hyatt.com', 'PGY', 845);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(161, 'Angie', 'Lo', 'ELITE ORIENT TOURS INC.', '170 University Ave', 'Toronto', 'ON', 'M5H 3B3', ' ', '4169773026', '4169773104', ' ', ' ', 'ACTAPGY', 908);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(165, 'Angie', 'Lo', 'JAPAN RAIL PASS', '170 University Ave', 'Toronto', 'ON', 'M5H 3B3', ' ', '4169773026', '4169773104', ' ', ' ', NULL, 908);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(167, 'Aideen', 'Hennessy', 'ENCORE CRUISES', '160 Bloor St E', 'Toronto', 'ON', 'M4W 1B9', ' ', '4169602516', '4169670303', ' ', ' ', 'ACTAPGY', 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(168, NULL, NULL, 'CUNARD LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(169, NULL, NULL, 'WINDSTAR CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(170, NULL, NULL, 'CELEBRITY CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(171, NULL, NULL, 'SEABOURN CRUISE LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(172, NULL, NULL, 'ORIENT LINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(173, NULL, NULL, 'SILVERSEA CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(174, NULL, NULL, 'STAR CLIPPERS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(175, NULL, NULL, 'ROYAL CARIBBEAN INTERNATIONAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(176, NULL, NULL, 'ROYAL OLYMPIC CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(177, NULL, NULL, 'HOLLAND AMERICA LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(178, NULL, NULL, 'RADISSON SEVEN SEAS CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(181, 'Maria', 'Conte', 'EUROCRUISES INC.', '33 Little W 12th St', 'New York', 'NY', '10014', 'USA', '2126912099', '2123664747', 'info@eurocruises.com', 'http://www.eurocruises.com', 'PGY', 1406);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(182, NULL, NULL, 'DELPHIN CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.eurocruises.com', NULL, 1406);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(184, NULL, NULL, 'KRISTINA CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.eurocruises.com', NULL, 1406);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(185, NULL, NULL, 'FRED. OLSEN CRUISE LINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.eurocruises.com', NULL, 1406);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(186, 'Marcel', 'Paoli', 'EUROP-AUTO-VACANCES/HOLIDAYS', '5174 Cote des Neiges', 'Montreal', 'PQ', 'H3T 1X8', ' ', '5147353083', '5143428802', 'europauto@netrover.com', 'http://www.europauto.qc.ca', 'ACTANEWP', 1028);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(187, NULL, NULL, 'EUROPCAR', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.europauto.qc.ca', NULL, 1028);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(188, 'M.', 'Schon', 'EXECUTIVE SUITES', 'Emerald Business Centre', 'Mississauga', 'ON', 'L5R 3K6', ' ', '9055029550', '9055020355', 'execsuit@idirect.com', 'http://www.execsuit.com', 'PGY', 1040);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(189, NULL, NULL, 'PARK SUITES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1040);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(210, 'Rochelle', 'Goldman', 'GOLDMAN MARKETING STRATEGY INC', '80 St Clair Ave E', 'Toronto', 'ON', 'M4T 1N6', ' ', '4169235705', '4169235628', 'gms@on.aibn.com', ' ', 'PGY', 1205);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(211, 'Rochelle', 'Goldman', 'HEBRIDEAN ISLAND CRUISES: THE HEBRIDEAN PRINCESS', '80 St Clair Ave E', 'Toronto', 'ON', 'M4T 1N6', ' ', '4169235705', '4169235628', 'gms@on.aibn.com', ' ', 'PGY', 1205);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(214, 'Bruce', 'Hodge', 'GOWAY TRAVEL LTD.', '3284 Yonge St', 'Toronto', 'ON', 'M4N 3M7', ' ', '4163221034', '4163221109', 'res@goway.com', 'http://www.goway.com', 'ACTAPGY', 1685);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(215, NULL, NULL, 'GREAT BARRIER REEF CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(216, NULL, NULL, 'FIJI (BLUE LAGOON) CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(217, NULL, NULL, 'YANTZE RIVER CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(219, 'Bruce', 'Hodge', 'AUSTRALIAN RAIL', '3284 Yonge St', 'Toronto', 'ON', 'M4N 3M7', ' ', '4163221034', '4163221109', 'res@goway.com', 'http://www.goway.com', NULL, 1685);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(221, NULL, NULL, 'AAT KINGS AUSTRALIAN TOURS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(245, 'Marc', 'Vezina', 'TOURS MAISON - THE HOLIDAY NETWORK', '2155 Guy St', 'Montreal', 'PQ', 'H3H 2R9', ' ', '5149357103', '5149854492', ' ', 'http://www.holidaynetwork.ca', 'ACTAPGY', 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(249, NULL, NULL, 'WOODS CAR RENTAL - BRITAIN', ' ', ' ', ' ', ' ', ' ', '8002688354', '4163671749', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(250, NULL, NULL, 'ALAMO RENT A CAR', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(251, NULL, NULL, 'DOLLAR HAWAII', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(252, NULL, NULL, 'AVIS RENT A CAR', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(257, NULL, NULL, 'KD RIVER CRUISES OF EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(258, NULL, NULL, 'DISNEY CRUISE LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(259, NULL, NULL, 'CRYSTAL CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(260, NULL, NULL, 'PRINCESS CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(261, NULL, NULL, 'SILVERSEA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(262, NULL, NULL, 'NORWEGIAN CRUISE LINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(263, NULL, NULL, 'COSTA CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(264, NULL, NULL, 'SUN CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(266, 'Astrinos', ' Kozoronis', 'CARRIERS TRAVEL INTERNATIONAL INC. - THE HOLIDAY NETWORK', '75 The Donway W', 'Toronto', 'ON', 'M3C 2E9', ' ', '4164299000', '4164297159', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(267, 'Leanda', 'Townsend', 'HOLIDAY HOUSE', '26 Wellington St E 5th Fl', 'Toronto', 'ON', 'M5E 1S2', ' ', '4163645100', '4163671836', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(268, 'Leanda', 'Townsend', 'SIVER FERN - THE HOLIDAY NETWORK', '26 Wellington St E 5th Fl', 'Toronto', 'ON', 'M5E 1S2', ' ', '4163645100', '4163671836', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(272, 'Erik', 'Elvejord', 'HOLLAND AMERICA LINE WESTOURS INC', '300 Elliott Ave W', 'Seattle', 'WA', '98119', 'USA', '8004260327', '2062863229', ' ', ' ', 'ACTAPGY', 1425);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(274, NULL, NULL, 'WESTOURS INC.', '300 Elliott Ave W', 'Seattle', 'WA', '98119', 'USA', '8004260327', '2064260329', ' ', ' ', 'ACTAPGY', 1425);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(282, NULL, NULL, 'EVAN EVANS TOURS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1542);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(283, 'Helen', 'Panagides', 'INSIGHT VACATIONS CANADA LTD.', '2300 Yonge St', 'Toronto', 'ON', 'M4P 1E4', ' ', '4164822116', '4164824307', ' ', ' ', 'ACTAPGY', 1542);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(288, 'Jacques', 'Darcy', 'INTAIR TRANSIT', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142869747', '5148437678', ' ', ' ', 'ACTANEWP', 1620);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(289, 'Jacques', 'Darcy', 'INTAIR VACATIONS', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142862800', '5142861655', ' ', ' ', NULL, 1620);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(290, 'Jacques', 'Darcy', 'BOOMERANG TOURS', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142866035', '5142861655', ' ', ' ', NULL, 1620);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(291, 'Jacques', 'Darcy', 'INTAIR VACATIONS / INTAIR USA / INTAIR CRUISES', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142862800', '5142861655', ' ', ' ', NULL, 1620);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(294, NULL, NULL, 'TALL SHIP CRUISES (MAINE THE CARIBBEAN SOUTH PACIFIC)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(295, NULL, NULL, 'IVARAN CRUISE LINE (FREIGHTER CRUISES)-SOUTH AMERICA/CARIBBEAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(296, NULL, NULL, 'ZEUS TALL SHIP CRUISES-GREECE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(297, NULL, NULL, 'TEMPTRESS CRUISES-COSTA RICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(298, NULL, NULL, 'ARANUI CRUISES (FREIGHTER CRUISES) - TAHITI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(299, NULL, NULL, 'CROWN BLUE LINE/FRANCE CANAL & RIVER POWER BOATS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(300, NULL, NULL, 'AMAZING GRACE (FREIGHTER CRUISES)-CARIBBEAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(301, 'Michael', 'Tomlinson', 'WINDJAMMER BAREFOOT CRUISES', '200 10441-124th St', 'Edmonton', 'AB', 'T5N 1R7', ' ', '7804825022', '7804825328', 'islands@cruising.nu', 'http://www.cruising.nu', 'ACTAPGY', 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(302, 'Michael', 'Tomlinson', 'ISLANDS IN THE SUN CRUISES', '200 10441-124th St', 'Edmonton', 'AB', 'T5N 1R7', ' ', '7804825022', '7804825328', 'islands@cruising.nu', 'http://www.cruising.nu', 'ACTAPGY', 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(303, NULL, NULL, 'NEILSON CYCLING HOLIDAYS-GREECE/TURKEY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(304, NULL, NULL, 'ISLANDS IN THE SUN CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(305, NULL, NULL, 'SUNSAIL SAIL & STAY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(306, NULL, NULL, 'MOORINGS THE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(307, NULL, NULL, 'VIRGIN ISLANDS CHARTER YACHT LEAGUE CREWED YACHT HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(308, NULL, NULL, 'CLUB MARINER SAIL & STAY HOLIDAYS-ST. LUCIA/GRENADA/BVI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(309, NULL, NULL, 'NEILSON FLOTILLA SAILING-GREECE/TURKEY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(310, NULL, NULL, 'TRAWLERS IN PARADISE - CARIBBEAN USVI\'S', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(311, NULL, NULL, 'VIKING TOURS AND TALL SHIP CRUISES OF GREECE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(312, NULL, NULL, 'WINDJAMMER BAREFOOT CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(313, NULL, NULL, 'DIVE BELIZE-AGGRESSOR DIVE FLEET', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(314, NULL, NULL, 'SUNSAIL YACHT CHARTERS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(315, NULL, NULL, 'SOUTH FLORIDA SAILING SCHOOL & YACHT CHARTERS - FLORIDA KEYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(316, NULL, NULL, 'BAREBOAT YACHT CHARTERS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(317, NULL, NULL, 'NEILSON CYCLING HOLIDAYS-DOMINICAN REPUBLIC/GRENADA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(318, NULL, NULL, 'SUNSAIL CLUB ANTIGUA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(319, NULL, NULL, 'HORIZON POWER/SAIL BVI\'S', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(320, NULL, NULL, 'AGGRESSOR DIVE HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(321, NULL, NULL, 'HOSEASONS - UK CANALBOATS (U-DRIVE) FRANCE/EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(322, NULL, NULL, 'QUEENSLAND YACHT CHARTERS - AUSTRALIAN BARRIER REEF', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(323, NULL, NULL, 'COPPER SKY-NW PACIFIC', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(330, 'Kenny', 'Lee', 'JETPACIFIC HOLIDAYS INC.', '120-8877 Odlin Cres', 'Richmond', 'BC', 'V6X 3Z7', ' ', '6042148932', '6042148933', 'jetpac@infoserve.net', ' ', 'ACTAPGY', 1713);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(331, NULL, NULL, 'BANGKOK AIRWAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1713);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(333, NULL, NULL, 'BALI HAI CRUISES - BALI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1713);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(334, NULL, NULL, 'STAR CRUISES - SINGAPORE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1713);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(342, 'Chris', 'Rivers', 'KLM ROYAL DUTCH AIRLINES', '777 Bay St', 'Toronto', 'ON', 'M5G 2C8', ' ', '4162045151', '4162049708', ' ', ' ', 'ACTAPGY', 1766);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(343, NULL, NULL, 'NORTHWEST AIRLINES & KLM ROYAL DUTCH AIRLINES (NW/KL)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1766);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(357, 'Emile', 'Habib', 'LOTUS HOLIDAYS', '792 Kennedy Rd', 'Toronto (Scarborough)', 'ON', 'M1K 2C8', ' ', '4167517025', '4167510608', ' ', ' ', 'PGY', 1859);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(359, NULL, NULL, 'NILE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1859);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(369, 'Corinne', 'Martin', 'MARKET SQUARE TOURS', '273 Donald St', 'Winnipeg', 'MB', 'R3C 1M9', ' ', '2049564279', '2049490188', 'sales@gctc-mst.com', 'http://www.greatcanadiantravel.com', 'ACTAPGY', 1918);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(370, 'Corinne', 'Martin', 'THE GREAT CANADIAN TRAVEL COMPANY LTD', '273 Donald St', 'Winnipeg', 'MB', 'R3C 1M9', ' ', '2049490199', '2049490188', 'sales@gctc-mst.com', 'http://www.greatcanadiantravel.com', NULL, 1918);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(371, 'Antonio', 'Alonso', 'MARKETING AHEAD', '433 Fifth Ave.', 'New York', 'NY', '10016', 'USA', '2126869213', '2126860271', ' ', ' ', 'PGY', 3273);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(372, NULL, NULL, 'PARADORES OF SPAIN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 3273);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(373, NULL, NULL, 'POUSADAS OF PORTUGAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 3273);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(375, 'S.R.', 'Vale', 'MARTINAIR SERVICES', '111 Richmond St W', 'Toronto', 'ON', 'M5H 2G4', ' ', '4163643672', '4163643886', ' ', ' ', 'ACTAPGY', 3376);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(376, 'S.R.', 'Vale', 'MARTINAIR HOLLAND', '111 Richmond St W', 'Toronto', 'ON', 'M5H 2G4', ' ', '4163643672', '4163643886', ' ', ' ', 'PGY', 3376);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(396, 'Pat', 'Nagel', 'NAGEL TOURS LTD', 'Edmonton Inn', 'Edmonton', 'AB', 'T5G 0X5', ' ', '7804527345', '7804786666', ' ', 'http://www.nageltours.com', 'PGY', 2140);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(397, 'Pat', 'Nagel', 'OKANAGAN VALLEY WINE TRAIN', 'Edmonton Inn', 'Edmonton', 'AB', 'T5G 0X5', ' ', '7804888725', '7804827666', ' ', 'http://www.okanaganwinetrain.com', 'PGY', 2140);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(419, NULL, NULL, 'HOTEL NARROW BOATS/UK', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(420, NULL, NULL, 'CROWN BLUE LINE FRANCE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(421, NULL, NULL, 'LOCABOAT - SELF-SKIPPERED PENICHETTES - EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(422, NULL, NULL, 'EUROPE RIVER CRUISES/CROISI EUROPE (ALSACE CROISIERES)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(423, NULL, NULL, 'CONTINENTAL WATERWAYS - HOTEL-BARGE CRUISES FRANCE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(424, NULL, NULL, 'BARGE CRUISES EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(425, NULL, NULL, 'CANAL & RIVER CRUISES EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(426, 'Janet', 'Pavlik', 'PAVLIK TRAVEL GROUP', '2221 Panorama Dr', 'N Vancouver', 'BC', 'V7G 1V4', ' ', '6049297911', '6049240634', 'pavlik@infomatch.com', 'http://www.infomatch.com/~pavlik', 'PGY', 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(428, NULL, NULL, 'ANGLO WELSH SELF SKIPPERED BOATS(BRITAIN)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(429, NULL, NULL, 'IRELAND - SELF SKIPPERED CANAL BOATS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(430, NULL, NULL, 'HOLLAND - CANAL BOATING', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(431, NULL, NULL, 'CROWN BLUE LINE (FRANCE)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(434, 'Patricia', 'Fargeon', 'PLANET FRANCE INC.', '7351 Victoria Park Ave', 'Markham', 'ON', 'L3R 3A5', ' ', '9054796121', '9054795411', 'planet.pat@sympatico.ca', ' ', 'PGY', 2466);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(435, 'Patricia', 'Fargeon', 'PLANET EUROPE GROUP', '7351 Victoria Park Ave', 'Markham', 'ON', 'L3R 3A5', ' ', '9054797069', '9054795411', 'planet.pat@sympatico.ca', ' ', 'PGY', 2466);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(466, 'Gary C.', 'Sadler', 'UNIQUE VACATIONS (CANADA) INC.', '4211 Yonge St', 'Toronto (North York)', 'ON', 'M2P 2A9', ' ', '4162230028', '4162233306', ' ', ' ', 'ACTA', 2588);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(467, NULL, NULL, 'SANDALS AND BEACHES RESORTS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', 'ACTA', 2588);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(476, 'Ash', 'Mukherjee', 'ESPRIT/SERVICENTRE HOLIDAYS', '5945 Airport Rd', 'Mississauga', 'ON', 'L4V 1R9', ' ', '9056733333', '9056733327', 'tscash@aol.com', 'http://www.espritvacations.com', 'PGY', 2592);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(477, NULL, NULL, 'CLUBAVANTAGE GROUP TRAVE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.espritvacations.com', NULL, 2592);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(496, 'Julio', 'Erhart', 'HOTEL NETS', '1235 Bay St', 'Toronto', 'ON', 'M5R 3K4', ' ', '4169214012', '4169698916', 'southwin@ican.net', ' ', NULL, 2827);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(497, 'Julio', 'Erhart', 'SOUTH WIND TOURS LTD.', '1235 Bay St', 'Toronto', 'ON', 'M5R 3K4', ' ', '4169214012', '4169698916', 'southwin@ican.net', ' ', NULL, 2827);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(500, 'Mela', 'Pascoe', 'SUN & LEISURE TRAVEL CORP', '401 The West Mall', 'Toronto (Etobicoke)', 'ON', 'M9C 5J5', ' ', '4166265199', '4166200009', ' ', ' ', 'PGY', 2938);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(501, NULL, NULL, 'CANADIAN TOURS INTERNATIONAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 2938);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(517, NULL, NULL, 'YANGTZE RIVER CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(518, NULL, NULL, 'EASTERN & ORIENTAL EXPRESS/ROAD TO MANDALAY CRUISE BURMA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(519, NULL, NULL, 'STAR CRUISE LINES-SINGAPORE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(520, NULL, NULL, 'STAR CLIPPER-ASIA-CARIBBEAN-MEDITERRANEAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(521, 'Miki', 'Friendly', 'TOURCAN VACATIONS INC', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvacations@tourcanvacations.com', 'http://www.tourcanvacations.com', 'ACTAPGY', 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(522, 'Miki', 'Friendly', 'ROVOS RAIL - SOUTH AFRICA', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvacations@tourcanvacations.com', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(523, NULL, NULL, 'ROYAL SCOTSMAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(524, NULL, NULL, 'VENICE SIMPLON - ORIENT - EXPRESS - LONDON/VENICE OR V.V. EASTERN & ORI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(525, 'Miki', 'Friendly', 'VENICE SIMPLON -- ORIENT EXPRESS - EUROPE EASTERN & ORIENTAL ORIENT EXP', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvac', ' ', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(526, 'Miki', 'Friendly', 'PALACE ON WHEELS - INDIA', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvacations@tourcanvacations.com', 'http://www.tourcanvacations.com', NULL, 2987);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(532, 'Elisabeth', 'Dupuis', 'ALIOTOURS', '1410 Stanley St', 'Montreal', 'PQ', 'H3A 1P8', ' ', '5142871066', '5148435680', ' ', ' ', 'ACTA', 2998);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(533, 'Elisabeth', 'Dupuis', 'ALIO TOURS DIV. TOURS NEW YORK', '1410 Stanley St', 'Montreal', 'PQ', 'H3A 1P8', ' ', '5142871066', '5148435680', ' ', ' ', 'ACTA', 2998);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(538, 'Joaquin', 'Murillo', 'TRANS WORLD AIRLINES INC. (TWA)', '1751 Richardson St', 'Montreal', 'PQ', 'H3K 1G6', ' ', '5148448242', '5148440921', 'aviaction@median-aviation.com', 'http://www.median-aviation.com', 'PGY', 3119);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(540, 'Joaquin', 'Murillo', 'AVIACTION', 'Airway Centre 1 5955 Airport', 'Mississauga', 'ON', 'L4V 1R9', ' ', '9056778242', '9056779394', 'aviaction@median-aviation.com', 'http://www.median-aviation.com', 'PGY', 3119);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(550, 'Terri', 'Ronneseth', 'TREK AIR', '8412 - 109 St', 'Edmonton', 'AB', 'T6G 1E2', ' ', '7804399118', '7804335494', 'airfares@trekholidays.com', 'http://www.trekholidays.com', 'ACTAPGY', 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(551, 'Terri', 'Ronneseth', 'TREK HOLIDAYS', '8412 - 109 St', 'Edmonton', 'AB', 'T6G 1E2', ' ', '7804399118', '7804335494', 'adventures@trekholidays.com', 'http://www.trekholidays.com', 'ACTAPGY', 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(552, NULL, NULL, 'KARIBU SAFARIS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(553, NULL, NULL, 'PEREGRINE ADVENTURES/GECKO ADVENTURES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(554, NULL, NULL, 'EXPLORE WORLDWIDE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(555, NULL, NULL, 'DRAGOMAN HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(556, NULL, NULL, 'KIRRA TOURS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(557, NULL, NULL, 'IMAGINATIVE TRAVELLER', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(558, NULL, NULL, 'ENCOUNTER OVERLAND', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(568, 'Vicky', 'Alberto', 'VIP INTERNATIONAL', '727-7th Ave SW', 'Calgary', 'AB', 'T2P 0Z5', ' ', '4032693566', '4032612046', 'info@vipintcorp.com', ' ', 'PGY', 3633);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(569, 'Kelly', 'Blake', 'ALL SUITES INTERNATIONAL', '727-7th Ave SW', 'Calgary', 'AB', 'T2P 0Z5', ' ', '4032664776', '4032665228', 'info@vipintcorp.com', ' ', 'PGY', 3633);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(586, 'Jeronimo', 'Rius', 'BONANZA HOLIDAYS', '1224 Stanley St', 'Montreal', 'PQ', 'H3B 2S7', ' ', '5143939501', '5143939504', 'bonanza@globalserve.net', ' ', 'ACTAPGY', 3549);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(598, NULL, NULL, 'AUSTRIA HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(599, NULL, NULL, 'CEDOK CZECH TOURIST/TRAVEL AGENCY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(600, NULL, NULL, 'VIENNA INTERNATIONAL HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(601, NULL, NULL, 'DANUBIUS SPA HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(602, NULL, NULL, 'HUNGARIAN HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(604, NULL, NULL, 'GRAYLINE FRANCE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(605, NULL, NULL, 'GRAYLINE AUSTRIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(606, NULL, NULL, 'GRAYLINE ITALY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(607, NULL, NULL, 'GRAYLINE SPAIN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(609, 'Madeline', 'Ferenzy', 'BLUE DANUBE HOLIDAYS', '80 Richmond St W', 'Toronto', 'ON', 'M5H 2A4', ' ', '4163625000', '4163628024', 'bluedanube@bluedanubeholidays.com', 'http://www.bluedanubeholidays.com', 'PGY', 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(610, NULL, NULL, 'MAHART-HYDROFOIL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(620, 'Susan', 'Savoie', 'GOLDEN ESCAPES', '75 The Donway W', 'Toronto', 'ON', 'M3C 2E9', ' ', '4164477683', '4164474824', 'admin@goldenescapes.com', 'http://www.goldenescapes.com', 'PGY', 3600);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(621, NULL, NULL, 'BACK ROADS TOURING COMPANY of Great Britain', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goldenescapes.com', NULL, 3600);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(622, 'Sandra', 'Mirkovic', 'G.A.P ADVENTURES INC', 'The Great Adventure People', 'Toronto', 'ON', 'M5H 3H1', ' ', '4162600999', '4162601888', 'adventure@gap.ca', 'http://www.gap.ca', 'ACTAPGY', 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(623, NULL, NULL, 'TREK AMERICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(624, NULL, NULL, 'EXODUS WORLDWIDE ADVENTURE HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(625, NULL, NULL, 'TREK AUSTRALIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(626, NULL, NULL, 'INTREPID SOUTH EAST ASIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(627, NULL, NULL, 'GUERBA EXPEDITIONS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(628, NULL, NULL, 'AMADABLAM ADVENTURES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(639, 'Paul', 'Chu', 'CHINA TRAVEL SERVICE (CANADA) INC', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', 'ACTAPGY', 3622);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(641, 'Paul', 'Chu', 'CHINA TRAVEL AIR SERVICE HONG KONG LTD.', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(642, 'Paul', 'Chu', 'SHENZHEN AIRLINE CHINA', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(644, 'Paul', 'Chu', 'YANGTZE RIVER SPLENDID CHINA CRUISE LTD.', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(646, 'Paul', 'Chu', 'CHINA TRAVEL HOTEL MANAGEMENT SERVICES HONG KONG LTD.', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(648, 'Paul', 'Chu', 'CHINA NATIONAL RAILWAY', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(662, NULL, NULL, 'CUNARD LINES', '6100 Blue Lagoon Drive', 'Miami', 'FL', '33126', ' ', '8007286273', NULL, ' ', 'http://www.cunard.com', 'ACTAPGY', 3650);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(681, 'Nigel', 'Wood', 'TRAVEL STUDIO', 'Suite 890', 'Vancouver', 'BC', 'V6C 1N5', ' ', '8005656670', '8006652998', 'tsyvr@baxter.net', 'http://www.travelstudio.com', NULL, 4196);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(683, NULL, NULL, 'ROVOS RAIL - SOUTH AFRICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelstudio.com', NULL, 4196);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(684, NULL, NULL, 'BLUE TRAIN - SOUTH AFRICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelstudio.com', NULL, 4196);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(706, 'Randy', 'Anger', 'ANHEUSER-BUSCH ADVENTURE PARKS', '358 Broadway Ave', 'Toronto', 'ON', 'M4P 1X2', ' ', '4164839410', '4164835982', ' ', ' ', 'PGY', 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(707, NULL, NULL, 'BUSCH GARDENS TAMPA BAY, FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(708, NULL, NULL, 'ADVENTURE ISLAND TAMPA BAY, FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(709, NULL, NULL, 'SESAME PLACE, LANGHORNE PENNSYLVANIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(710, NULL, NULL, 'SEAWORLD ADVENTURE PARK, ORLANDO FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(711, NULL, NULL, 'SEAWORLD ADVENTURE PARK, CLEVELAND OHIO', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(712, NULL, NULL, 'SEAWORLD ADVENTURE PARK, SAN DIEGO CALIFORNIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(713, NULL, NULL, 'BUSCH GARDENS, WILLIAMSBURG VIRGINIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(714, NULL, NULL, 'WATER COUNTRY USA, WILLIAMSBURG VIRGINIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(715, NULL, NULL, 'SEAWORLD ADVENTURE PARK, SAN ANTONIO TEXAS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(716, NULL, NULL, 'DISCOVERY COVE, ORLANDO FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(726, 'Maybelle', 'Ravin', 'THE RMR GROUP INC', 'Taurus House', 'Toronto', 'ON', 'M4R 2E3', ' ', '4164858724', '4164858256', 'assoc@thermrgroup.ca', 'http://www.thermrgroup.ca', 'PGY', 5228);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(727, 'Maybelle', 'Ravin', 'KLM uk/buzz', 'Taurus House', 'Toronto', 'ON', 'M4R 2E3', ' ', '4164858724', '4164858256', 'assoc@thermrgroup.ca', 'http://www.thermrgroup.ca', 'PGY', 5228);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(728, 'Jackie', 'Lutz', 'THE RMR GROUP INC', 'Taurus House', 'Toronto', 'ON', 'M4R 2E3', ' ', '4164844864', '4164858256', 'assoc@thermrgroup.ca', 'http://www.thermrgroup.ca', 'PGY', 5228);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(733, 'Lourdes', 'Freire', 'SKYWAYS INTERNATIONAL', '486 College St', 'Toronto', 'ON', 'M6G 1A4', ' ', '4169238949', '4169601339', 'skyways@netcom.ca', 'http://www.addictravel.com', 'PGY', 5492);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(734, 'Lourdes', 'Freire', 'AEROCONTINENTE (CODE N6) PERUVIAN AIRLINES', '486 College St', 'Toronto', 'ON', 'M6G 1A4', ' ', '4169238949', '4169601339', 'skyways@netcom.ca', 'http://www.addictravel.com', 'PGY', 5492);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(739, 'Hope', 'Burridge', 'TRAVEL BY RAIL', '34 Flintridge Rd', 'Toronto (Scarborough)', 'ON', 'M1P 1G3', ' ', '4167010756', '4167010751', 'travelbyrail@hotmail.com', 'http://www.travelbyrail.com', 'PGY', 5777);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(740, NULL, NULL, 'BAUDHHA PARIKRAMA EXPRESS - INDIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(741, NULL, NULL, 'PALACE ON WHEELS - INDIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(742, NULL, NULL, 'ROYAL ORIENT - INDIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(743, NULL, NULL, 'RAZDAN HOLIDAYS (INDIA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(744, 'Paulo', 'Karbach', 'REPWORLD INC', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', 'ACTAPGY', 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(745, 'Paulo', 'Karbach', 'LTU INTERNATIONAL AIRWAYS', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(746, 'Paulo', 'Karbach', 'LLOYD AEREO BOLIVIANO', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(747, 'Paulo', 'Karbach', 'ACES (Aerolineas Centrales De Colombia S.A.)', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(748, 'Paulo', 'Karbach', 'HARBOUR AIR SEAPLANES', '4760 Inglis Dr', 'Richmond', 'BC', 'V7B 1W4', ' ', '6042783478', '6042789897', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(749, 'Paulo', 'Karbach', 'HELIUSA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(750, 'Paulo', 'Karbach', 'ECUATORIANA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(751, 'Paulo', 'Karbach', 'SRI LANKAN AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(752, 'Paulo', 'Karbach', 'AERO CALIFORNIA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(753, 'Paulo', 'Karbach', 'LAUDA AIR', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(754, 'Paulo', 'Karbach', 'SURINAM AIRWAYS', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(755, 'Paulo', 'Karbach', 'ETHIOPIAN AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(756, 'Paulo', 'Karbach', 'ICELANDAIR', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(757, 'Paulo', 'Karbach', 'MERIDIANA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(758, 'Paulo', 'Karbach', 'ASIANA AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(759, 'Paulo', 'Karbach', 'TURKISH AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(760, 'Paulo', 'Karbach', 'TAM BRAZILIAN AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(761, 'Paulo', 'Karbach', 'GHANA AIRWAYS', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(764, 'Tina', 'Myers', 'RESORT MARKETING INC', '19495 Biscayne Blvd', 'Aventura', 'FL', '33180-2', 'USA', '8004320221', '3059320023', 'radcblebch@aol.com', 'http://www.radisson.com/nassaubs', 'ACTAPGY', 5827);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(765, 'Tina', 'Myers', 'RESORT MARKETING', '19495 Biscayne Blvd', 'Aventura', 'FL', '33180-2', 'USA', '8004320221', '3059320023', 'radcblebch@aol.com', 'http://www.radisson.com/nassaubs', 'ACTAPGY', 5827);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(766, NULL, NULL, 'RADISSON CABLE BEACH RESORT', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5827);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(767, 'Catherine', 'Evans', 'TOURS OF EXPLORATION', 'PO Box 48225', 'Vancouver', 'BC', 'V7X 1N8', ' ', '6048867300', '6048867304', 'info@toursexplore.com', 'http://www.toursexplore.com', 'PGY', 5857);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(768, NULL, NULL, 'DIRECTIONS IN TRVL SPECIALTY TRS INC', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.toursexplore.com', NULL, 5857);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(769, 'Gary', 'Murtagh', 'PASSAGES EXPEDITIONS', '597 Markham St', 'Toronto', 'ON', 'M6G 2L7', ' ', '4165885000', '4165889839', 'eldertreks@eldertreks.com', 'http://www.eldertreks.com', 'PGY', 6346);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(770, 'Gary', 'Murtagh', 'ELDERTREKS', '597 Markham St', 'Toronto', 'ON', 'M6G 2L7', ' ', '4165885000', '4165889839', 'eldertreks@eldertreks.com', 'http://www.eldertreks.com', 'PGY', 6346);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(776, 'Nilufer', 'Mama', 'GULF AIR', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(777, 'Nilufer', 'Mama', 'AEROMAR', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(778, 'Nilufer', 'Mama', 'AERO ASIA', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(779, 'Nilufer', 'Mama', 'JET AIRWAYS', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(780, 'Nilufer', 'Mama', 'TRADE WINDS ASSOCIATES CANADA INC', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', 'ACTAPGY', 6505);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(781, 'D.', 'Soota', 'LTI TOURS', '719 Yonge St', 'Toronto', 'ON', 'M4Y 2B5', ' ', '4169629661', '4169625910', 'info@ltitours.com', 'http://www.ltitours.com', 'PGY', 6550);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(783, NULL, NULL, 'EASTERN & ORIENTAL EXPRESS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.ltitours.com', NULL, 6550);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(784, NULL, NULL, 'PALACE ON WHEELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.ltitours.com', NULL, 6550);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(786, 'Ashraf', 'Khan', 'BIMAN BANGLADESH AIRLINES', '206 Bloor St W', 'Toronto', 'ON', 'M5S IT8', ' ', '4169200110', '4169209598', ' ', ' ', 'PGY', 6873);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(788, 'Ashraf', 'Khan', 'AIR EXPRESS TRAVEL INC', '206 Bloor St W', 'Toronto', 'ON', 'M5S IT8', ' ', '4169200110', '4169209598', ' ', ' ', 'PGY', 6873);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(822, 'Rosie', 'Melkonian', 'WORLD ACCESS MARKETING', '33 Blue Ridge Rd', 'Toronto (North York)', 'ON', 'M2K 1R8', ' ', '4162235506', '4162220319', 'reservations@outrigger.com', ' ', 'PGY', 7244);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(823, 'Rosie', 'Melkonian', 'OUTRIGGER HOTELS & RESORTS', '33 Blue Ridge Rd', 'Toronto (North York)', 'ON', 'M2K 1R8', ' ', '4162235506', '4162220319', 'reservations@outrigger.com', ' ', 'PGY', 7244);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(825, NULL, NULL, 'BALKAN AIRLINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 7377);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(826, 'Subash', 'Chauhan', 'MAJESTIC TOURS', '545 N Rivermede Rd', 'Concord', 'ON', 'L4K 4H1', ' ', '9056604704', '9056603055', ' ', ' ', 'PGY', 7377);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(834, 'Robert', 'Townshend', 'MUSTIQUE AIRWAYS', '2011 Lawrence Ave W', 'Toronto', 'ON', 'M9N 3V3', ' ', '4162407700', '4162407701', 'travel@totaladvantage.com', ' ', 'PGY', 11160);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(835, 'Robert', 'Townshend', 'TOTAL ADVANTAGE TRAVEL & TOURS INC', '2011 Lawrence Ave W', 'Toronto', 'ON', 'M9N 3V3', ' ', '4162407700', '4162407701', 'travel@totaladvantage.com', ' ', 'PGY', 11160);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(839, 'Mary', 'Warner', 'EXCLUSIVE TOURS', '145 King St W', 'Toronto', 'ON', 'M5H 1J8', ' ', '4163688558', '4169559869', 'et@merit.ca', ' ', 'PGY', 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(840, NULL, NULL, 'DANUBE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(841, NULL, NULL, 'CONTINENTAL WATERWAYS - HOTEL BARGE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(842, NULL, NULL, 'VIKING RIVER CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(843, NULL, NULL, 'BARGE CANAL & RIVER CRUISES EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(845, NULL, NULL, 'EUROPEAN WATERWAYS/LUXURY EUROPEAN BARGE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(846, NULL, NULL, 'PETER DEILMANN EUROPAMERICA CRUISES:', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(849, NULL, NULL, 'UNIWORLD EUROPE RIVER CRUISES & WATERWAYS OF RUSSIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(862, 'Ross', 'de Gregorio', 'MANDITOURS - ITALY', '9625 Yonge St', 'Richmond Hill', 'ON', 'L4C 5T2', ' ', '9055088190', '9057372978', 'mandi@italia-magica.com', ' ', 'PGY', 9785);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(867, 'Stephen', 'Yo', 'KINTETSU INTERNATIONAL EXPRESS', '1550 Enterprises Rd', 'Mississauga', 'ON', 'L4W 4P4', ' ', '9056708710', '9056702238', 'outbound@kiecan.com', 'http://www.kiecan.com/outbound', 'PGY', 9766);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(868, 'Stephen', 'Yo', 'JAPAN RAIL PASS', '1550 Enterprises Rd', 'Mississauga', 'ON', 'L4W 4P4', ' ', '9056708710', '9056702238', 'outbound@kiecan.com', 'http://www.kiecan.com/outbound', 'PGY', 9766);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(872, 'Timo', 'Jokinen', 'SCANDITOURS', '191 Eglinton Ave E', 'Toronto', 'ON', 'M4P 1K1', ' ', '4164823006', '4164829447', 'toronto@scanditours.com', 'http://www.scanditours.com', 'PGY', 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(873, NULL, NULL, 'STENA LINE (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(874, NULL, NULL, 'GOTA CANAL (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(875, NULL, NULL, 'DFDS SEAWAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(876, NULL, NULL, 'VIKING LINE (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(877, NULL, NULL, 'ESTLINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(878, NULL, NULL, 'FRED OLSEN LINE (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(886, 'Vonna', 'McDonald', 'BONAVENTURE TOURS', '205-221 W Esplanade', 'N Vancouver', 'BC', 'V7M 3J3', ' ', '6049907390', '6049907394', 'info@bonaventuretours.com', 'http://www.bonaventuretours.com', 'PGY', 9323);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(887, 'Vonna', 'McDonald', 'BONAVENTURE TOURS - UK & IRELAND - CANAL BOAT CHARTERS', '205-221 W Esplanade', 'N Vancouver', 'BC', 'V7M 3J3', ' ', '6049907390', '6049907394', 'info@bonaventuretours.com', 'http://www.bonaventuretours.com', 'PGY', 9323);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(888, 'Jim', 'Cohen', 'HOTELINK', '1027 Yonge St', 'Toronto', 'ON', 'M4W 2K9', ' ', '4169232003', '4169442245', 'info@skylinkholidays.com', ' ', 'PGY', 9396);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(895, 'Mari', 'Abe', 'JTB INTERNATIONAL (CANADA) LTD', '77 King St W', 'Toronto', 'ON', 'M5K 1E7', ' ', '4163675824', '4163674859', 'sales@jtbcnd.com', ' ', 'PGY', 9285);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(897, 'Mari', 'Abe', 'JAPAN RAIL PASS', '77 King St W', 'Toronto', 'ON', 'M5K 1E7', ' ', '4163675824', '4163674859', 'sales@jtbcnd.com', ' ', 'PGY', 9285);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(899, 'Mari', 'Abe', 'SUNRISE TOURS', '77 King St W', 'Toronto', 'ON', 'M5K 1E7', ' ', '4163675824', '4163674859', 'sales@jtbcnd.com', ' ', 'PGY', 9285);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(908, 'Eric', 'Douay', 'D-TOUR MARKETING', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(909, 'Eric', 'Douay', 'RIVAGES CROISIERES THE CARIBBEAN INTIMATE YACHT CRUISES', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketin', NULL, 11163);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(910, 'Eric', 'Douay', 'CONCORDE HOTELS (WORLDWIDE)', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(911, 'Eric', 'Douay', 'PRIMEREVE \'ALL-SUITE\' HOTEL (Martinique)', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(912, 'Eric', 'Douay', 'CHATEAUX & HOTELS DE FRANCE', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(913, 'Michael', 'Merrithew', 'MERIT TRAVEL GROUP INC', '145 King St W', 'Toronto', 'ON', 'M5H 1J8', ' ', '4163688558', '4169559869', 'golf@merit.ca', ' ', 'PGY', 11172);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(914, 'Michael', 'Merrithew', 'GOLF HOLIDAYS', '145 King St W', 'Toronto', 'ON', 'M5H 1J8', ' ', '4163688558', '4169559869', 'golf@merit.ca', ' ', 'PGY', 11172);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(938, 'Hugo', 'Maggi', 'GRUPO TACA', '1235 Bay St', 'Toronto', 'ON', 'M5R 3K4', ' ', '4169682222', '4169680363', ' ', 'http://www.grupotaca.com', 'PGY', 11174);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(939, NULL, NULL, 'LACSA AIRLINES OF COSTA RICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 11174);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(942, 'Loreen', 'Walter', 'DKM COACH LINES LTD', '1908 Spruce Hill Rd', 'Pickering', 'ON', 'L1V 1S7', ' ', '4164104680', '4168313384', 'dkmcl@home.com', 'http://www.dkmtravel.com', 'PGY', 11237);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(943, NULL, NULL, 'CASINO DIRECT', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 11237);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(957, NULL, NULL, 'ALITOURS CAR RENTAL BY HERTZ', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 11156);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(958, 'Tony', 'Veca', 'ALITOURS INTERNATIONAL INC.', '792 St. Clair Ave W', 'Toronto', 'ON', 'M6C 1B6', ' ', '4166537751', '4166539010', 'alitours@baxter.net', 'http://www.alitours.com', 'PGY', 11156);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1113, 'Cindy', ' Harris', 'TRANS SIBERIAN RAILWAY', '1847 W 4th Ave', 'Vancouver', 'BC', 'V6J 1M4', ' ', '6046061830', '6047378854', 'adventure@freshtracks.com', 'http://www.goactivevacations.com', 'PGY', 11549);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1114, 'Cindy', ' Harris', 'GO ACTIVE VACATIONS', '1847 W 4th Ave', 'Vancouver', 'BC', 'V6J 1M4', ' ', '6046061830', '6047378854', 'team@goactivevacations.com', 'http://www.goactivevacations.com', 'PGY', 11549);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1115, 'Cindy', ' Harris', 'FRESH TRACKS CANADA', '1847 W 4th Ave', 'Vancouver', 'BC', 'V6J 1M4', ' ', '6047378743', '6047185110', 'adventure@freshtracks.com', 'http://www.goactivevacations.com', 'PGY', 11549);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1126, 'Bashiruddin', 'Ahmed', 'SAAAI TRAVEL INC.', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149311100', '5149311200', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1127, 'Bashiruddin', 'Ahmed', 'BIMAN BANGLADESH AIRLINES', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149311100', '5149311200', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1128, 'Bashiruddin', 'Ahmed', 'SAAAI TRAVEL', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149314070', '5149339992', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1129, 'Bashiruddin', 'Ahmed', 'S.I. TRAVELS', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149314070', '5149339992', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1158, 'Kristin', 'Karbach', 'A & TIC SUPPORT INC.', '80 John Stiver Cres', 'Markham', 'ON', 'L3R 9B3', ' ', '9059439763', '9059439764', 'elcotour-na@netcom.ca', ' ', 'PGY', 13596);
-INSERT INTO `SupplierContacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`)  VALUES(1159, 'Kristin', 'Karbach', 'ELCOTOUR - BRAZIL TOUR SPECIALISTS', '80 John Stiver Cres', 'Markham', 'ON', 'L3R 9B3', ' ', '9059439763', '9059439764', 'elcotour-na@netcom.ca', ' ', 'PGY', 13596);
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(69, 'NEW CONCEPTS - CANADA');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(80, 'CHAT / TRAVELINE');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(100, 'AVILA TOURS INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(317, 'BLYTH & COMPANY TRAVEL');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(323, 'COMPAGNIA ITALIANA TURISM');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(796, 'CYPRUS AIRWAYS LTD');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(828, 'DER TRAVEL SERVICE LTD');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(845, 'DISCOVER THE WORLD MARKET');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(908, 'ELITE ORIENT TOURS INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1005, 'ENCORE CRUISES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1028, 'EUROP-AUTO-VACANCES/HOLIDAYS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1040, 'EXECUTIVE SUITES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1205, 'GOLDMAN MARKETING');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1406, 'EUROCRUISES INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1416, 'THE HOLIDAY NETWORK');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1425, 'HOLLAND AMERICA LINE WEST');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1542, 'INSIGHT VACATIONS CANADA');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1620, 'INTAIR VACATIONS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1634, 'ISLANDS IN THE SUN CRUISE');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1685, 'GOWAY TRAVEL LTD.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1713, 'JETPACIFIC HOLIDAYS INC');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1766, 'KLM ROYAL DUTCH AIRLINES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1859, 'LOTUS HOLIDAYS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(1918, 'MARKET SQUARE TOURS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2140, 'NAGEL TOURS LTD');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2386, 'PAVLIK TRAVEL GROUP');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2466, 'PLANET FRANCE/PLANET EURO');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2588, 'UNIQUE VACATIONS (CANADA)');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2592, 'ESPRIT/SERVICENTRE HOLIDAYS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2827, 'SOUTH WIND TOURS LTD.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2938, 'SUN & LEISURE TRAVEL CORP.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2987, 'TOURCAN VACATIONS INC');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(2998, 'ALIOTOURS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3119, 'MEDIAN AVIATION RESOURCES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3212, 'TREK HOLIDAYS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3273, 'MARKETING AHEAD');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3376, 'MARTINAIR SERVICES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3549, 'BONANZA HOLIDAYS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3576, 'BLUE DANUBE HOLIDAYS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3589, 'G.A.P ADVENTURES INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3600, 'GOLDEN ESCAPES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3622, 'CHINA TRAVEL SERVICE (CAN)');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3633, 'VIP INTERNATIONAL');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(3650, 'CUNARD LINES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(4196, 'TRAVEL STUDIO');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5081, 'ANHEUSER-BUSCH ADVENTURE');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5228, 'THE RMR GROUP INC');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5492, 'SKYWAYS INTERNATIONAL');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5777, 'TRAVEL BY RAIL');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5796, 'REPWORLD INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5827, 'RESORT MARKETING INC');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(5857, 'TOURS OF EXPLORATION');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(6346, 'PASSAGES EXPEDITIONS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(6505, 'TRADE WINDS ASSOCIATES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(6550, 'LTI TOURS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(6873, 'BIMAN BANGLADESH AIRLINES');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(7244, 'WORLD ACCESS MARKETING');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(7377, 'MAJESTIC TOURS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(8089, 'EXCLUSIVE TOURS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(8837, 'SCANDITOURS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(9285, 'JTB INTERNATIONAL (CANADA)');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(9323, 'BONAVE');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(9396, 'SKYLINK TICKET CENTRE');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(9766, 'KINTETSU INTERNATIONAL');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(9785, 'MANDITOURS INTL INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11156, 'ALITOURS INTERNATIONAL INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11160, 'TOTAL ADVANTAGE TRAVEL');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11163, 'D-TOUR MARKETING');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11172, 'MERIT TRAVEL GROUP INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11174, 'GRUPO TACA');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11237, 'DKM COACH LINES LTD');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(11549, 'GO ACTIVE VACATIONS');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(12657, 'SAAAI TRAVEL INC.');
-INSERT INTO `Suppliers` (`SupplierId`, `SupName`)  VALUES(13596, 'A & TIC SUPPORT INC.');
-INSERT INTO `TripTypes` (`TripTypeId`, `TTName`)  VALUES('B', 'Business                 ');
-INSERT INTO `TripTypes` (`TripTypeId`, `TTName`)  VALUES('G', 'Group                    ');
-INSERT INTO `TripTypes` (`TripTypeId`, `TTName`)  VALUES('L', 'Leisure                  ');
+--
+-- Dumping data for table `bookingdetails`
+--
+
+INSERT INTO `bookingdetails` (`BookingDetailId`, `ItineraryNo`, `TripStart`, `TripEnd`, `Description`, `Destination`, `BasePrice`, `AgencyCommission`, `BookingId`, `RegionId`, `ClassId`, `FeeId`, `ProductSupplierId`) VALUES
+(11, 168, '2001-03-17 00:00:00', '2001-03-22 00:00:00', 'Calgary/Vancouver/Calgary', 'Vancouver', '450.0000', '22.5000', 11, 'NA', 'FST', 'BK', 23),
+(15, 306, '2001-05-09 00:00:00', '2001-06-03 00:00:00', 'all-inclusive European tour', 'London, England', '3000.0000', '112.5000', 15, 'EU', 'ECN', 'GR', 14),
+(16, 306, '2001-05-09 00:00:00', '2001-06-03 00:00:00', 'all-inclusive European tour', 'London, England', '3000.0000', '112.5000', 15, 'EU', 'ECN', 'GR', 14),
+(17, 178, '2001-07-18 00:00:00', '2001-08-01 00:00:00', 'Calgary/Calcutta/Calgary', 'Calcutta, India', '799.0000', '39.9500', 17, 'MEAST', 'FST', 'BK', 23),
+(34, 142, '2001-05-08 00:00:00', '2001-06-02 00:00:00', 'Calgary/Athens/Calgary', 'Athens, Greece', '1000.0000', '32.5000', 34, 'MED', 'ECN', 'BK', 12),
+(46, 141, '2001-05-14 00:00:00', '2001-06-07 00:00:00', 'midsize car', 'Toronto', '900.0000', '29.2500', 46, 'NA', 'NA', 'NC', 20),
+(49, 201, '2001-05-12 00:00:00', '2001-05-31 00:00:00', 'Calgary/Victoria/Calgary', 'Victoria', '199.0000', '2.2885', 49, 'NA', 'ECN', 'BK', 12),
+(52, 225, '2001-05-14 00:00:00', '2001-06-07 00:00:00', ' ', 'Toronto', '1700.0000', '55.2500', 52, 'NA', 'DLX', 'BK', 12),
+(55, 771, '2001-05-14 00:00:00', '2001-06-07 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '1200.0000', '60.0000', 55, 'NA', 'FST', 'BK', 23),
+(57, 893, '2001-09-24 00:00:00', '2001-10-15 00:00:00', 'Calgary/London/Calgary', 'London, England', '750.0000', '75.0000', 57, 'EU', 'ECN', 'BK', 13),
+(62, 964, '2002-01-09 00:00:00', '2002-01-19 00:00:00', 'Calgary/Victoria/Calgary', 'Victoria', '205.0000', '10.2500', 62, 'NA', 'ECN', 'BK', 23),
+(65, 204, '2002-01-31 00:00:00', '2002-02-13 00:00:00', 'Calgary/Cairo/Calgary', 'Cairo, Egypt', '350.0000', '17.5000', 65, 'MEAST', 'FST', 'BK', 23),
+(73, 220, '2002-03-13 00:00:00', '2002-03-18 00:00:00', 'Calgary/Grande Prairie/Calgary', 'Grande Prairie', '150.0000', '7.5000', 73, 'NA', 'FST', 'BK', 23),
+(79, 185, '2002-03-29 00:00:00', '2002-04-28 00:00:00', 'Calgary/Sydney/Calgary', 'Sydney, Australia', '2200.0000', '264.0000', 79, 'ANZ', 'ECN', 'BK', 30),
+(80, 256, '2002-03-29 00:00:00', '2002-04-11 00:00:00', 'Calgary/Victoria/Calgary', 'Victoria', '190.0000', '9.5000', 80, 'NA', 'ECN', 'BK', 23),
+(84, 185, '2002-04-01 00:00:00', '2002-04-25 00:00:00', 'Australian trek', ' ', '6250.0000', '234.3750', 84, 'ANZ', 'NA', 'BK', 15),
+(85, 185, '2002-04-01 00:00:00', '2002-04-25 00:00:00', 'Australian trek', ' ', '6250.0000', '234.3750', 84, 'ANZ', 'NA', 'BK', 15),
+(89, 279, '2002-04-17 00:00:00', '2002-04-22 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '628.0000', '31.4000', 89, 'NA', 'FST', 'BK', 23),
+(98, 230, '2002-05-05 00:00:00', '2002-05-10 00:00:00', 'Calgary/Vancouver/Calgary', 'Vancouver', '1048.0000', '52.4000', 98, 'NA', 'FST', 'BK', 23),
+(108, 193, '2002-05-19 00:00:00', '2002-06-01 00:00:00', 'Calgary/Athens/Calgary', 'Athens, Greece', '1200.0000', '60.0000', 108, 'MED', 'ECN', 'BK', 23),
+(122, 300, '2002-05-23 00:00:00', '2002-06-07 00:00:00', 'Calgary/Victoria/Calgary', 'Victoria', '175.0000', '8.7500', 124, 'NA', 'ECN', 'BK', 16),
+(138, 397, '2002-07-12 00:00:00', '2002-07-16 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '645.0000', '32.2500', 138, 'NA', 'FST', 'BK', 23),
+(141, 244, '2002-07-15 00:00:00', '2002-07-19 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '499.0000', '24.9500', 141, 'NA', 'FST', 'BK', 23),
+(148, 805, '2002-07-25 00:00:00', '2002-08-11 00:00:00', 'Calgary/Athens/Calgary', 'Athens, Greece', '2300.0000', '70.0000', 148, 'MED', 'FST', 'BK', 23),
+(152, 1134, '2002-09-29 00:00:00', '2002-10-12 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '780.0000', '39.0000', 152, 'NA', 'FST', 'BK', 23),
+(156, 139, '2002-11-07 00:00:00', '2002-11-12 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '620.0000', '31.0000', 156, 'NA', 'BSN', 'BK', 23),
+(161, 518, '1999-11-07 00:00:00', '1999-11-12 00:00:00', 'Calgary/London/Calgary', 'London, England', '620.0000', '31.0000', 161, 'EU', 'BSN', 'BK', 44),
+(162, 218, '2002-11-12 00:00:00', '2002-11-18 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '620.0000', '31.0000', 162, 'NA', 'BSN', 'BK', 23),
+(172, 686, '1999-11-07 00:00:00', '1999-11-12 00:00:00', 'Calgary/London/Calgary', 'London, England', '629.0000', '31.4500', 172, 'EU', 'FST', 'BK', 23),
+(187, 449, '1999-02-15 00:00:00', '1999-02-20 00:00:00', 'Calgary/Houston/Calgary', 'Houston', '2875.0000', '60.0000', 187, 'NA', 'FST', 'BK', 23),
+(199, 286, '1999-03-01 00:00:00', '1999-03-16 00:00:00', 'Calgary/Hong Kong/Calgary', 'Hong Kong, China', '3625.0000', '70.0000', 199, 'ASIA', 'FST', 'BK', 23),
+(204, 933, '1999-03-04 00:00:00', '1999-03-09 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '620.0000', '31.0000', 204, 'NA', 'FST', 'BK', 23),
+(220, 932, '1999-02-21 00:00:00', '1999-02-26 00:00:00', 'Calgary/Houston/Calgary', 'Houston', '620.0000', '31.0000', 220, 'NA', 'FST', 'BK', 23),
+(226, 460, '1999-10-03 00:00:00', '1999-10-08 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '2585.0000', '60.0000', 226, 'NA', 'FST', 'BK', 23),
+(228, 573, '1999-12-03 00:00:00', '1999-12-07 00:00:00', 'Ramada', 'Vancouver', '700.0000', '8.0500', 228, 'NA', 'SNG', 'BK', 35),
+(263, 255, '1999-05-01 00:00:00', '1999-06-01 00:00:00', 'Calgary/Sydney/Calgary', 'Sydney, Australia', '2500.0000', '70.0000', 263, 'ANZ', 'FST', 'BK', 23),
+(265, 306, '1999-05-02 00:00:00', '1999-05-31 00:00:00', 'European golf package', 'Paris, France', '3000.0000', '112.5000', 264, 'EU', 'NA', 'GR', 36),
+(266, 1076, '1999-05-02 00:00:00', '1999-05-31 00:00:00', 'Calgary/Paris/Calgary', 'Paris, France', '3000.0000', '70.0000', 266, 'EU', 'ECN', 'BK', 23),
+(270, 331, '1999-05-01 00:00:00', '1999-05-29 00:00:00', 'Calgary/London/Calgary', 'London, England', '800.0000', '40.0000', 273, 'EU', 'ECN', 'BK', 23),
+(273, 776, '1999-05-01 00:00:00', '1999-05-29 00:00:00', 'Calgary/London/Calgary', 'London, England', '800.0000', '40.0000', 273, 'EU', 'ECN', 'BK', 23),
+(275, 255, '1999-05-06 00:00:00', '1999-05-29 00:00:00', 'Australian trek', ' ', '7900.0000', '296.2500', 263, 'ANZ', 'NA', 'BK', 15),
+(276, 1132, '1999-05-01 00:00:00', '1999-05-29 00:00:00', 'Calgary/London/Calgary', 'London, England', '800.0000', '40.0000', 273, 'EU', 'ECN', 'BK', 23),
+(287, 980, '1999-05-29 00:00:00', '1999-06-03 00:00:00', 'Calgary/Rio de Janeiro/Calgary', 'Rio de Janeiro, Brazil', '3590.0000', '70.0000', 287, 'SA', 'FST', 'BK', 23),
+(305, 979, '1999-06-05 00:00:00', '1999-06-10 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '2580.0000', '60.0000', 305, 'NA', 'FST', 'BK', 23),
+(312, 398, '1999-06-12 00:00:00', '1999-06-17 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '615.0000', '30.7500', 312, 'NA', 'FST', 'BK', 23),
+(313, 775, '1999-06-12 00:00:00', '1999-06-17 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '2258.0000', '60.0000', 313, 'NA', 'FST', 'BK', 23),
+(322, 404, '1999-07-11 00:00:00', '1999-07-18 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '630.0000', '31.5000', 322, 'NA', 'FST', 'BK', 23),
+(325, 874, '1999-07-17 00:00:00', '1999-08-02 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '630.0000', '31.5000', 325, 'NA', 'FST', 'BK', 23),
+(327, 228, '1999-07-25 00:00:00', '1999-08-10 00:00:00', 'Calgary/London/Calgary', 'London, England', '900.0000', '45.0000', 98, 'EU', 'ECN', 'BK', 23),
+(369, 481, '1999-10-01 00:00:00', '1999-10-06 00:00:00', 'intermediate car', 'Paris, France', '500.0000', '15.5000', 369, 'EU', 'NA', 'BK', 32),
+(375, 492, '1999-10-01 00:00:00', '1999-10-06 00:00:00', 'Hilton', 'Paris, France', '650.0000', '7.4750', 375, 'EU', 'DLX', 'BK', 31),
+(381, 610, '1999-10-01 00:00:00', '1999-10-06 00:00:00', 'Calgary/Paris/Calgary', 'Paris, France', '3560.0000', '70.0000', 381, 'EU', 'FST', 'BK', 23),
+(382, 619, '1999-10-07 00:00:00', '1999-10-12 00:00:00', 'Hilton', 'London, England', '620.0000', '7.1300', 382, 'EU', 'DLX', 'BK', 31),
+(384, 644, '1999-10-07 00:00:00', '1999-10-12 00:00:00', 'Calgary/London/Calgary', 'London, England', '600.0000', '30.0000', 384, 'EU', 'ECN', 'BK', 44),
+(409, 492, '1999-10-22 00:00:00', '1999-11-03 00:00:00', 'Medium size car', 'Greece', '500.0000', '15.5000', 409, 'MED', 'NA', 'NC', 55),
+(410, 624, '1999-10-21 00:00:00', '1999-11-04 00:00:00', 'Calgary-Athens-Calgary', 'Greece', '1300.0000', '65.0000', 410, 'MED', 'ECN', 'BK', 7),
+(424, 492, '1999-10-27 00:00:00', '1999-10-30 00:00:00', 'cruise on the Greek''s islands', 'Greece', '650.0000', '19.5000', 425, 'MED', 'INT', 'NC', 49),
+(425, 492, '1999-10-27 00:00:00', '1999-10-30 00:00:00', 'cruise on the Greek''s islands', 'Greece', '650.0000', '19.5000', 425, 'MED', 'INT', 'NC', 49),
+(442, 654, '1999-11-04 00:00:00', '1999-11-09 00:00:00', 'Calgary/London/Calgary', 'London, England', '629.0000', '31.4500', 442, 'EU', 'ECN', 'BK', 23),
+(443, 691, '1999-11-05 00:00:00', '1999-11-10 00:00:00', 'Calgary/Paris/Calgary', 'Paris, France', '4599.0000', '70.0000', 443, 'EU', 'FST', 'BK', 23),
+(449, 645, '1999-11-06 00:00:00', '1999-11-11 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '599.0000', '29.9500', 449, 'NA', 'ECN', 'BK', 44),
+(458, 323, '1999-12-08 00:00:00', '1999-12-12 00:00:00', 'Calgary/Edmonton/Calgary', 'Edmonton', '300.0000', '15.0000', 517, 'NA', 'BSN', 'BK', 44),
+(482, 740, '1999-11-17 00:00:00', '1999-11-23 00:00:00', 'Hilton', 'Sydney, Australia', '590.0000', '6.7850', 482, 'ANZ', 'DLX', 'BK', 31),
+(484, 549, '1999-11-14 00:00:00', '1999-11-19 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '600.0000', '30.0000', 484, 'NA', 'ECN', 'BK', 23),
+(488, 601, '1999-11-14 00:00:00', '1999-11-19 00:00:00', 'Niagara on the Lake', 'Niagara', '675.0000', '7.7625', 488, 'NA', 'DLX', 'BK', 33),
+(489, 1040, '1999-11-17 00:00:00', '1999-11-23 00:00:00', 'Calgary/Sydney/Calgary', 'Sydney, Australia', '625.0000', '31.2500', 489, 'ANZ', 'FST', 'BK', 23),
+(510, 587, '1999-12-02 00:00:00', '1999-12-06 00:00:00', 'Ramada', 'Toronto', '650.0000', '7.4750', 510, 'NA', 'SNG', 'BK', 35),
+(511, 745, '1999-11-16 00:00:00', '1999-11-22 00:00:00', 'Niagara on the Lake', 'Niagara', '620.0000', '7.1300', 511, 'NA', 'DLX', 'BK', 33),
+(512, 903, '1999-11-16 00:00:00', '1999-11-22 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '499.0000', '24.9500', 512, 'NA', 'ECN', 'BK', 23),
+(517, 695, '1999-12-02 00:00:00', '1999-12-06 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '700.0000', '35.0000', 517, 'NA', 'FST', 'BK', 44),
+(529, 479, '1999-12-12 00:00:00', '1999-12-19 00:00:00', 'Calgary/Vancouver/Calgary', 'Vancouver', '350.0000', '17.5000', 529, 'NA', 'BSN', 'BK', 44),
+(546, 482, '2000-01-10 00:00:00', '2000-01-15 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '800.0000', '40.0000', 546, 'NA', 'BSN', 'BK', 44),
+(553, 233, '2000-01-13 00:00:00', '2000-01-18 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '750.0000', '37.5000', 553, 'NA', 'BSN', 'BK', 44),
+(594, 497, '2000-01-20 00:00:00', '2000-01-25 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '650.0000', '32.5000', 594, 'NA', 'BSN', 'BK', 44),
+(596, 343, '2000-02-06 00:00:00', '2000-02-10 00:00:00', 'Calgary/London/Calgary', 'London, England', '850.0000', '42.5000', 596, 'EU', 'BSN', 'BK', 44),
+(598, 401, '2000-02-06 00:00:00', '2000-02-10 00:00:00', 'Calgary/London/Calgary', 'London, England', '850.0000', '42.5000', 598, 'EU', 'BSN', 'BK', 44),
+(600, 642, '2000-02-06 00:00:00', '2000-02-10 00:00:00', 'cancellation/medical policy # 97543', ' ', '200.0000', '4.0000', 600, 'EU', 'NA', 'NC', 39),
+(604, 651, '2000-02-06 00:00:00', '2000-02-11 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '700.0000', '35.0000', 604, 'NA', 'FST', 'BK', 44),
+(605, 780, '2000-02-08 00:00:00', '2000-02-12 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '700.0000', '35.0000', 605, 'NA', 'FST', 'BK', 44),
+(609, 588, '2000-01-30 00:00:00', '2000-02-10 00:00:00', ' ', 'Hong Kong, China', '900.0000', '10.3500', 609, 'ASIA', 'DLX', 'BK', 41),
+(613, 629, '2000-01-30 00:00:00', '2000-02-10 00:00:00', 'Calgary/Hong Kong/Calgary', 'Hong Kong, China', '5200.0000', '260.0000', 613, 'ASIA', 'FST', 'BK', 44),
+(614, 629, '2000-01-30 00:00:00', '2000-02-10 00:00:00', 'cancellation/medical policy # 98123', ' ', '250.0000', '5.0000', 614, 'ASIA', 'NA', 'NC', 39),
+(618, 790, '2000-02-06 00:00:00', '2000-02-10 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '700.0000', '35.0000', 618, 'NA', 'FST', 'BK', 44),
+(622, 863, '2000-02-06 00:00:00', '2000-02-10 00:00:00', 'Radisson', 'London, England', '990.0000', '11.3850', 622, 'EU', 'DLX', 'BK', 37),
+(631, 172, '2000-02-05 00:00:00', '2000-02-09 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '750.0000', '37.5000', 631, 'NA', 'BSN', 'BK', 44),
+(665, 502, '2000-02-29 00:00:00', '2000-03-03 00:00:00', 'Calgary/Rio de Janeiro/Calgary', 'Rio de Janeiro, Brazil', '1130.0000', '56.5000', 665, 'SA', 'BSN', 'BK', 44),
+(676, 695, '2000-03-03 00:00:00', '2000-03-06 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '800.0000', '40.0000', 676, 'NA', 'FST', 'BK', 44),
+(677, 574, '2000-02-29 00:00:00', '2000-03-03 00:00:00', 'Radisson', 'Rio de Janeiro, Brazil', '1000.0000', '32.5000', 677, 'SA', 'DLX', 'BK', 37),
+(682, 686, '2000-02-29 00:00:00', '2000-03-03 00:00:00', 'cancellation/medical policy # 92165', ' ', '230.0000', '4.6000', 682, 'SA', 'NA', 'NC', 45),
+(689, 570, '2000-03-14 00:00:00', '2000-04-05 00:00:00', 'Calgary, Toronto,Montreal, Ottawa t', 'Canada', '3550.0000', '133.1250', 776, 'NA', 'NA', 'BK', 46),
+(709, 471, '2000-03-08 00:00:00', '2000-03-12 00:00:00', 'Calgary/Houston/Calgary', 'Houston', '720.0000', '36.0000', 709, 'NA', 'BSN', 'BK', 44),
+(714, 555, '2000-03-07 00:00:00', '2000-03-11 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '725.0000', '36.2500', 714, 'NA', 'BSN', 'BK', 44),
+(722, 548, '2000-02-25 00:00:00', '2000-03-01 00:00:00', 'Calgary/London/Calgary', 'London, England', '800.0000', '40.0000', 722, 'EU', 'BSN', 'BK', 44),
+(739, 1020, '2000-03-15 00:00:00', '2000-04-05 00:00:00', 'Calgary, Toronto,Montreal, Ottawa t', 'Canada', '3550.0000', '133.1250', 776, 'NA', 'NA', 'BK', 46),
+(740, 589, '2000-03-13 00:00:00', '2000-03-18 00:00:00', 'Calgary/Houston/Calgary', 'Houston', '720.0000', '36.0000', 740, 'NA', 'BSN', 'BK', 44),
+(777, 672, '2000-03-16 00:00:00', '2000-04-06 00:00:00', 'cancellation policy # 11191817', 'USA, Mexic', '180.0000', '3.6000', 777, 'NA', 'NA', 'NC', 69),
+(805, 833, '2000-03-16 00:00:00', '2000-04-06 00:00:00', 'CALGARY-LOS ANGELES-MexicoCity-CALG', 'USA, Mexic', '5175.0000', '194.0625', 805, 'NA', 'NA', 'BK', 67),
+(826, 675, '2000-03-23 00:00:00', '2000-04-17 00:00:00', 'Calgary, Toronto,montreal, Ottawa t', 'Canada', '4780.0000', '179.2500', 826, 'NA', 'NA', 'BK', 57),
+(827, 716, '2000-03-27 00:00:00', '2000-03-27 00:00:00', 'Ride Niagara', 'Canada', '150.0000', '0.0000', 827, 'NA', 'NA', 'BK', 58),
+(838, 259, '2000-04-10 00:00:00', '2000-04-15 00:00:00', 'Calgary/Sydney/Calgary', 'Sydney, Australia', '2100.0000', '105.0000', 838, 'ANZ', 'BSN', 'BK', 44),
+(852, 271, '2000-04-14 00:00:00', '2000-04-19 00:00:00', 'Calgary/Sydney/Calgary', 'Sydney, Australia', '2100.0000', '105.0000', 852, 'ANZ', 'BSN', 'BK', 44),
+(857, 781, '2000-04-14 00:00:00', '2000-04-19 00:00:00', 'full-size car', 'Sydney, Australia', '800.0000', '24.8000', 857, 'ANZ', 'NA', 'NC', 61),
+(866, 851, '2000-04-14 00:00:00', '2000-04-19 00:00:00', 'World Access', 'Sydney, Australia', '1900.0000', '61.7500', 866, 'ANZ', 'DLX', 'BK', 60),
+(876, 1116, '2000-04-14 00:00:00', '2000-04-19 00:00:00', 'cancellation/medical policy # 95678', ' ', '230.0000', '4.6000', 876, 'ANZ', 'NA', 'NC', 47),
+(880, 857, '2000-04-10 00:00:00', '2000-04-15 00:00:00', 'World Access', 'Sydney, Australia', '1900.0000', '61.7500', 880, 'ANZ', 'DLX', 'BK', 60),
+(886, 1117, '2000-04-10 00:00:00', '2000-04-15 00:00:00', 'midsize car', 'Sydney, Australia', '900.0000', '27.9000', 884, 'ANZ', 'NA', 'NC', 61),
+(902, 751, '2000-04-25 00:00:00', '2000-05-16 00:00:00', 'Calgary-Auckland flight', 'NZ', '3000.0000', '150.0000', 902, 'ANZ', 'BSN', 'BK', 19),
+(910, 150, '2000-05-16 00:00:00', '2000-05-25 00:00:00', 'Calgary/London/Calgary', 'London, England', '900.0000', '45.0000', 910, 'EU', 'BSN', 'BK', 44),
+(940, 1131, '2000-05-05 00:00:00', '2000-06-02 00:00:00', 'Calgary/Toronto/Montreal tour', 'Canada', '2600.0000', '97.5000', 939, 'NA', 'FST', 'BK', 67),
+(943, 821, '2000-05-06 00:00:00', '2000-06-03 00:00:00', 'Tahiti - South Seas', ' ', '8562.0000', '256.8600', 943, 'SP', 'INT', 'NC', 70),
+(955, 141, '2000-05-13 00:00:00', '2000-05-22 00:00:00', 'Calgary/Paris/Calgary', 'Paris, France', '950.0000', '47.5000', 973, 'EU', 'BSN', 'BK', 44),
+(960, 186, '2000-05-14 00:00:00', '2000-05-23 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '650.0000', '32.5000', 960, 'NA', 'BSN', 'BK', 44),
+(967, 392, '2000-05-13 00:00:00', '2000-05-22 00:00:00', 'World Access', 'Paris, France', '1200.0000', '39.0000', 973, 'EU', 'DLX', 'BK', 60),
+(972, 812, '2000-05-13 00:00:00', '2000-05-22 00:00:00', 'midsize car', 'Paris, France', '850.0000', '26.3500', 973, 'EU', 'NA', 'NC', 61),
+(973, 812, '2000-05-13 00:00:00', '2000-05-22 00:00:00', 'cancellation policy # 4987140', ' ', '300.0000', '6.0000', 973, 'EU', 'NA', 'NC', 47),
+(988, 301, '2000-05-19 00:00:00', '2000-06-19 00:00:00', 'cancellation/medical policy #923665', 'Peru, argentina, Bollivi', '345.0000', '6.9000', 988, 'SA', 'NA', 'NC', 50),
+(990, 757, '2000-05-19 00:00:00', '2000-06-19 00:00:00', 'Peru, Argentina, Bolivia tour', ' ', '3980.0000', '149.2500', 989, 'SA', 'NA', 'BK', 28),
+(1002, 846, '2000-05-22 00:00:00', '2000-05-29 00:00:00', 'Alaska', ' ', '2531.0000', '75.9300', 1001, 'NA', 'INT', 'NC', 68),
+(1024, 346, '2000-06-01 00:00:00', '2000-06-16 00:00:00', 'Asia-Africa-Mediteranean', ' ', '12630.0000', '378.9000', 1075, 'MED', 'ECN', 'NC', 70),
+(1034, 716, '2000-06-03 00:00:00', '2000-06-28 00:00:00', 'Calgary-Vancouver flight', 'canada', '139.0000', '6.9500', 1034, 'NA', 'FST', 'BK', 19),
+(1067, 720, '2000-06-06 00:00:00', '2000-07-01 00:00:00', 'Calgary-toronto-montreal flight', 'Canada', '1000.0000', '50.0000', 1067, 'NA', 'FST', 'BK', 64),
+(1073, 761, '2000-06-06 00:00:00', '2000-07-01 00:00:00', 'Toronto-Montreal-ottawa tour', 'Canada', '3080.0000', '115.5000', 1073, 'NA', 'NA', 'BK', 48),
+(1089, 827, '2000-05-30 00:00:00', '2000-06-07 00:00:00', 'Alaska plus air', ' ', '3652.0000', '109.5600', 1089, 'NA', 'INT', 'NC', 75),
+(1105, 831, '2000-05-30 00:00:00', '2000-06-14 00:00:00', 'Ryndam - Time Travel', ' ', '5506.0000', '165.1800', 1105, 'SA', 'OCNV', 'NC', 70),
+(1141, 816, '2000-05-20 00:00:00', '2000-05-20 00:00:00', 'Royal Ontario Museum', 'Canada', '25.0000', '0.0000', 1141, 'NA', 'NA', 'NC', 79),
+(1165, 355, '2000-07-08 00:00:00', '2000-07-16 00:00:00', 'Calgary/London/Calgary', 'London, England', '850.0000', '42.5000', 1165, 'EU', 'BSN', 'BK', 44),
+(1178, 846, '2000-07-08 00:00:00', '2000-07-13 00:00:00', 'Calgary/London/Calgary', 'London, England', '850.0000', '42.5000', 1178, 'EU', 'BSN', 'BK', 44),
+(1188, 631, '2000-07-29 00:00:00', '2000-08-16 00:00:00', 'Explorer cruise plus air', ' ', '7593.0000', '227.7900', 1187, 'SA', 'OCNV', 'NC', 75),
+(1192, 250, '2000-08-12 00:00:00', '2000-08-16 00:00:00', 'Calgary/Cape Town/Calgary', 'Cape Town, South Africa', '2500.0000', '125.0000', 1192, 'AFR', 'BSN', 'BK', 44),
+(1194, 375, '2000-08-12 00:00:00', '2000-08-15 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '870.0000', '43.5000', 1194, 'NA', 'BSN', 'BK', 44),
+(1202, 154, '2000-08-27 00:00:00', '2000-09-01 00:00:00', 'Calgary/Hong Kong/Calgary', 'Hong Kong, China', '1700.0000', '85.0000', 1202, 'ASIA', 'BSN', 'BK', 44),
+(1206, 605, '2000-08-25 00:00:00', '2000-08-30 00:00:00', 'Calgary/Toronto/Calgary', 'Toronto', '750.0000', '37.5000', 1206, 'NA', 'BSN', 'BK', 44),
+(1207, 188, '2000-08-27 00:00:00', '2000-09-01 00:00:00', ' ', 'Hong Kong, China', '2000.0000', '65.0000', 1207, 'ASIA', 'BSN', 'NC', 41),
+(1228, 527, '2000-08-24 00:00:00', '2000-08-29 00:00:00', 'Calgary/London/Calgary', 'London, England', '900.0000', '45.0000', 1228, 'EU', 'BSN', 'BK', 44),
+(1230, 864, '2000-08-24 00:00:00', '2000-08-29 00:00:00', 'Calgary/Athens/Calgary', 'Athens, Greece', '1100.0000', '55.0000', 1230, 'MED', 'BSN', 'BK', 44),
+(1240, 435, '2000-09-26 00:00:00', '2000-10-01 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '950.0000', '47.5000', 1240, 'NA', 'BSN', 'BK', 44),
+(1248, 421, '2000-09-25 00:00:00', '2000-09-30 00:00:00', 'Calgary/Montreal/Calgary', 'Montreal', '950.0000', '47.5000', 1248, 'NA', 'BSN', 'BK', 44),
+(1251, 177, '2000-09-23 00:00:00', '2000-09-28 00:00:00', 'Calgary/London/Calgary', 'London, England', '900.0000', '45.0000', 1251, 'EU', 'BSN', 'BK', 44),
+(1254, 420, '2000-09-23 00:00:00', '2000-09-28 00:00:00', ' ', 'London, England', '1500.0000', '48.7500', 1254, 'EU', 'DLX', 'BK', 82),
+(1270, 239, '2000-12-01 00:00:00', '2000-12-10 00:00:00', 'Calgary/Cape Town/Calgary', 'Cape Town, South Africa', '2700.0000', '135.0000', 1270, 'AFR', 'BSN', 'BK', 44),
+(1293, 596, '2000-12-01 00:00:00', '2000-12-10 00:00:00', ' ', 'Cape Town, South Africa', '2500.0000', '81.2500', 1293, 'AFR', 'DLX', 'BK', 42),
+(1301, 534, '2001-01-05 00:00:00', '2001-01-09 00:00:00', 'Calgary/Cape Town/Calgary', 'Cape Town, South Africa', '2700.0000', '135.0000', 1301, 'AFR', 'BSN', 'BK', 44),
+(1302, 535, '2001-01-05 00:00:00', '2001-01-09 00:00:00', 'Calgary/Winnipeg/Calgary', 'Winnipeg', '450.0000', '22.5000', 1302, 'NA', 'BSN', 'BK', 44),
+(1303, 902, '2001-01-05 00:00:00', '2001-01-09 00:00:00', ' ', 'Cape Town, South Africa', '2500.0000', '81.2500', 1303, 'AFR', 'DLX', 'BK', 42);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `BookingId` int(11) NOT NULL,
+  `BookingDate` datetime DEFAULT NULL,
+  `BookingNo` varchar(50) DEFAULT NULL,
+  `TravelerCount` double DEFAULT NULL,
+  `CustomerId` int(11) DEFAULT NULL,
+  `TripTypeId` varchar(1) DEFAULT NULL,
+  `PackageId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`BookingId`, `BookingDate`, `BookingNo`, `TravelerCount`, `CustomerId`, `TripTypeId`, `PackageId`) VALUES
+(11, '2001-01-31 00:00:00', 'DFS3', 1, 143, 'B', NULL),
+(15, '2001-03-05 00:00:00', 'WDR898', 1, 135, 'L', NULL),
+(17, '2001-03-06 00:00:00', 'FES3', 1, 143, 'B', NULL),
+(34, '2001-03-24 00:00:00', 'S935', 2, 138, 'G', NULL),
+(46, '2001-03-30 00:00:00', 'SKJ329', 2, 133, 'L', NULL),
+(49, '2001-03-31 00:00:00', 'S943', 2, 114, 'G', NULL),
+(52, '2001-04-01 00:00:00', 'S934', 2, 133, 'B', NULL),
+(55, '2001-04-03 00:00:00', 'SDFJ3982', 2, 133, 'G', NULL),
+(57, '2001-08-08 00:00:00', 'FJKD344', 2, 130, 'L', NULL),
+(62, '2001-11-25 00:00:00', 'SCR39', 2, 130, 'G', NULL),
+(65, '2001-12-17 00:00:00', 'HK777', 1, 143, 'L', NULL),
+(73, '2002-01-27 00:00:00', 'SW34', 1, 143, 'L', NULL),
+(79, '2002-02-12 00:00:00', 'MKI333', 2, 120, 'G', NULL),
+(80, '2002-02-13 00:00:00', 'MKI334', 2, 122, 'L', NULL),
+(84, '2002-02-15 00:00:00', 'KK890', 2, 120, 'B', NULL),
+(89, '2002-03-03 00:00:00', 'DF344', 1, 109, 'L', NULL),
+(98, '2002-03-22 00:00:00', 'JI8787', 1, 143, 'B', NULL),
+(108, '2002-04-04 00:00:00', 'MKI338', 2, 138, 'L', NULL),
+(124, '2002-04-29 00:00:00', 'SJKDK89', 2, 114, 'G', NULL),
+(138, '2002-05-28 00:00:00', 'HJK78', 1, 109, 'L', NULL),
+(141, '2002-06-01 00:00:00', 'KL888', 1, 143, 'B', NULL),
+(148, '2002-06-28 00:00:00', 'LJ888', 2, 133, 'B', NULL),
+(152, '2002-08-15 00:00:00', 'WS343', 2, 130, 'G', NULL),
+(156, '2002-09-23 00:00:00', 'JKKO9', 1, 143, 'B', NULL),
+(161, '2002-09-27 00:00:00', 'SG4SD', 1, 105, 'B', NULL),
+(162, '2002-09-28 00:00:00', 'GFRER4', 1, 109, 'B', NULL),
+(172, '2002-10-03 00:00:00', 'FGFD64', 1, 104, 'L', NULL),
+(187, '1999-01-01 00:00:00', 'ZAQ344', 1, 109, 'B', NULL),
+(199, '1999-01-15 00:00:00', 'JSD39', 1, 143, 'L', NULL),
+(204, '1999-01-18 00:00:00', 'XVV67', 1, 141, 'L', NULL),
+(220, '1999-01-29 00:00:00', 'BCV5', 1, 127, 'L', NULL),
+(226, '1999-02-19 00:00:00', 'DS3DF', 1, 143, 'B', NULL),
+(228, '1999-02-20 00:00:00', 'KF83', 1, 119, 'B', NULL),
+(263, '1999-03-17 00:00:00', 'CBB34', 2, 120, 'B', NULL),
+(264, '1999-03-18 00:00:00', 'SDF890', 1, 135, 'L', NULL),
+(266, '1999-03-18 00:00:00', 'AZX24', 2, 135, 'B', NULL),
+(273, '1999-03-21 00:00:00', 'DGG33', 2, 122, 'B', NULL),
+(287, '1999-04-15 00:00:00', '7898797', 1, 141, 'L', NULL),
+(305, '1999-04-21 00:00:00', 'XC2', 1, 127, 'B', NULL),
+(312, '1999-04-28 00:00:00', 'SDSD33', 1, 130, 'L', NULL),
+(313, '1999-04-29 00:00:00', 'SD46', 1, 120, 'B', NULL),
+(322, '1999-05-27 00:00:00', 'FJSDKL833', 1, 143, 'B', NULL),
+(325, '1999-06-02 00:00:00', 'HJJK77', 1, 121, 'B', NULL),
+(369, '1999-08-18 00:00:00', 'KJ392', 1, 104, 'L', NULL),
+(375, '1999-08-21 00:00:00', 'SDJF382', 1, 104, 'L', NULL),
+(381, '1999-08-23 00:00:00', 'JDKJF8343', 1, 104, 'L', NULL),
+(382, '1999-08-23 00:00:00', 'FDJ93', 1, 119, 'B', NULL),
+(384, '1999-08-24 00:00:00', 'JHJH7', 1, 119, 'L', NULL),
+(409, '1999-09-07 00:00:00', 'FD53767', 2, 139, 'B', NULL),
+(410, '1999-09-07 00:00:00', 'JHK7', 2, 140, 'B', NULL),
+(425, '1999-09-12 00:00:00', 'FG879', 4, 140, 'G', NULL),
+(442, '1999-09-21 00:00:00', 'S53423', 1, 104, 'L', NULL),
+(443, '1999-09-21 00:00:00', 'T345', 1, 119, 'L', NULL),
+(449, '1999-09-23 00:00:00', 'RD4EW5', 1, 140, 'B', NULL),
+(482, '1999-10-03 00:00:00', 'SKFJ32', 1, 127, 'L', NULL),
+(484, '1999-10-04 00:00:00', 'GDEWR3', 1, 106, 'L', NULL),
+(488, '1999-10-05 00:00:00', 'JDFS39', 1, 106, 'B', NULL),
+(489, '1999-10-05 00:00:00', 'SDR54', 1, 127, 'L', NULL),
+(510, '1999-10-19 00:00:00', 'HKK7', 1, 140, 'L', NULL),
+(511, '1999-10-20 00:00:00', 'FJK3892', 1, 141, 'L', NULL),
+(512, '1999-10-20 00:00:00', 'SG444', 1, 141, 'L', NULL),
+(517, '1999-10-21 00:00:00', 'FSDW2', 1, 140, 'L', NULL),
+(529, '1999-10-28 00:00:00', 'FKJD32', 1, 119, 'L', NULL),
+(546, '1999-11-27 00:00:00', 'NKU7', 1, 140, 'B', NULL),
+(553, '1999-11-29 00:00:00', 'KKU7', 1, 109, 'B', NULL),
+(594, '1999-12-06 00:00:00', 'HNN77', 1, 119, 'L', NULL),
+(596, '1999-12-12 00:00:00', 'FDKJ898', 1, 106, 'L', NULL),
+(598, '1999-12-13 00:00:00', 'FDSK3', 1, 121, 'L', NULL),
+(600, '1999-12-14 00:00:00', 'ILJ878', 2, 106, 'B', NULL),
+(604, '1999-12-15 00:00:00', 'KFKESJK5', 1, 104, 'B', NULL),
+(605, '1999-12-15 00:00:00', 'SDJ89342', 1, 140, 'B', NULL),
+(609, '1999-12-16 00:00:00', 'KJLK89', 1, 104, 'L', NULL),
+(613, '1999-12-17 00:00:00', 'FD2323', 1, 104, 'L', NULL),
+(614, '1999-12-17 00:00:00', 'FGG66', 2, 104, 'L', NULL),
+(618, '1999-12-18 00:00:00', 'CMFJ39', 1, 119, 'L', NULL),
+(622, '1999-12-19 00:00:00', 'JJJ77', 1, 106, 'L', NULL),
+(631, '1999-12-22 00:00:00', 'MM78I879', 1, 130, 'L', NULL),
+(665, '2000-01-16 00:00:00', 'FDSK83', 1, 140, 'B', NULL),
+(676, '2000-01-18 00:00:00', 'SJK5', 1, 104, 'L', NULL),
+(677, '2000-01-18 00:00:00', 'KJKJ88', 1, 140, 'B', NULL),
+(682, '2000-01-19 00:00:00', 'GF887', 3, 140, 'G', NULL),
+(709, '2000-01-25 00:00:00', 'MNHY15', 1, 104, 'L', NULL),
+(714, '2000-01-26 00:00:00', 'KKJ91', 1, 140, 'L', NULL),
+(722, '2000-01-27 00:00:00', 'FDJS32', 1, 119, 'L', NULL),
+(740, '2000-01-29 00:00:00', 'MNHY19', 1, 119, 'B', NULL),
+(776, '2000-02-02 00:00:00', '345435F', 2, 109, 'L', NULL),
+(777, '2000-02-02 00:00:00', 'AS54676', 2, 143, 'B', NULL),
+(798, '2000-02-04 00:00:00', 'A7667900', 1, 143, 'L', NULL),
+(805, '2000-02-05 00:00:00', '456546DFD', 1, 143, 'L', NULL),
+(826, '2000-02-20 00:00:00', '62323', 4, 128, 'G', NULL),
+(827, '2000-02-20 00:00:00', 'D869990', 2, 128, 'G', NULL),
+(838, '2000-02-25 00:00:00', 'GFF84', 1, 141, 'B', NULL),
+(852, '2000-02-29 00:00:00', 'GFF79', 1, 127, 'B', NULL),
+(857, '2000-03-01 00:00:00', 'SFDFSD54', 2, 127, 'B', NULL),
+(866, '2000-03-02 00:00:00', 'SFDFSD53', 1, 127, 'L', NULL),
+(876, '2000-03-03 00:00:00', 'SFDFSD55', 1, 127, 'B', NULL),
+(880, '2000-03-04 00:00:00', 'GFF85', 1, 141, 'B', NULL),
+(884, '2000-03-05 00:00:00', 'GFF86', 2, 141, 'B', NULL),
+(899, '2000-03-15 00:00:00', 'QERQ1322', 2, 121, 'B', NULL),
+(902, '2000-03-17 00:00:00', 'D569767', 2, 121, 'B', NULL),
+(910, '2000-03-19 00:00:00', 'GFF102', 1, 114, 'B', NULL),
+(939, '2000-03-25 00:00:00', '86431RT', 2, 120, 'B', NULL),
+(943, '2000-03-26 00:00:00', '34265Q67L', 2, 140, 'L', NULL),
+(960, '2000-03-30 00:00:00', 'GFF105', 1, 122, 'B', NULL),
+(973, '2000-04-01 00:00:00', 'GFF104', 2, 133, 'B', NULL),
+(988, '2000-04-04 00:00:00', '76584847', 1, 139, 'L', NULL),
+(989, '2000-04-04 00:00:00', '4656757Q', 1, 139, 'B', NULL),
+(1001, '2000-04-07 00:00:00', '53165616', 2, 133, 'B', NULL),
+(1034, '2000-04-19 00:00:00', 'F789900', 2, 105, 'G', NULL),
+(1047, '2000-04-20 00:00:00', '234244S', 2, 105, 'B', NULL),
+(1067, '2000-04-22 00:00:00', '4325434RE', 2, 117, 'B', NULL),
+(1073, '2000-04-23 00:00:00', '68798890', 2, 117, 'L', NULL),
+(1075, '2000-04-23 00:00:00', '78755U', 2, 123, 'L', NULL),
+(1089, '2000-04-24 00:00:00', 'T6657D', 2, 142, 'B', NULL),
+(1105, '2000-04-26 00:00:00', '53165765R', 1, 119, 'B', NULL),
+(1141, '2000-05-04 00:00:00', '35653B', 1, 120, 'L', NULL),
+(1165, '2000-05-25 00:00:00', 'LJJ113', 1, 127, 'L', NULL),
+(1178, '2000-05-30 00:00:00', 'LJJ108', 1, 118, 'B', NULL),
+(1187, '2000-06-14 00:00:00', 'R4777FG', 1, 143, 'L', NULL),
+(1192, '2000-06-28 00:00:00', 'LJJ115', 1, 109, 'B', NULL),
+(1194, '2000-06-29 00:00:00', 'LJJ114', 1, 141, 'B', NULL),
+(1202, '2000-07-14 00:00:00', 'LJJ126', 1, 135, 'B', NULL),
+(1206, '2000-07-15 00:00:00', 'LJJ131', 1, 121, 'B', NULL),
+(1207, '2000-07-15 00:00:00', 'FJS3492', 2, 135, 'L', NULL),
+(1228, '2000-08-01 00:00:00', 'LJJ120', 1, 106, 'B', NULL),
+(1230, '2000-08-03 00:00:00', 'LJJ121', 1, 107, 'B', NULL),
+(1240, '2000-08-14 00:00:00', 'FSDFJ357', 1, 127, 'B', NULL),
+(1248, '2000-08-17 00:00:00', 'FSDFJ358', 1, 141, 'L', NULL),
+(1251, '2000-09-09 00:00:00', 'FSDFJ349', 1, 130, 'B', NULL),
+(1254, '2000-09-12 00:00:00', 'KJFKD89', 1, 130, 'L', NULL),
+(1270, '2000-10-17 00:00:00', 'FSD82937', 1, 130, 'B', NULL),
+(1293, '2000-10-22 00:00:00', 'KJLK89234', 1, 130, 'L', NULL),
+(1301, '2000-11-21 00:00:00', 'FSD82940', 1, 127, 'B', NULL),
+(1302, '2000-11-22 00:00:00', 'FSD82941', 1, 141, 'B', NULL),
+(1303, '2000-11-23 00:00:00', 'KJk934', 1, 127, 'B', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classes`
+--
+
+CREATE TABLE `classes` (
+  `ClassId` varchar(5) NOT NULL,
+  `ClassName` varchar(20) NOT NULL,
+  `ClassDesc` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `classes`
+--
+
+INSERT INTO `classes` (`ClassId`, `ClassName`, `ClassDesc`) VALUES
+('BSN', 'Business Class', NULL),
+('DBL', 'Double', NULL),
+('DLX', 'Delux', NULL),
+('ECN', 'Economy', NULL),
+('FST', 'First Class', NULL),
+('INT', 'Interior', NULL),
+('NA', 'Not Applicable', NULL),
+('OCNV', 'Ocean View', NULL),
+('SNG', 'Single', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `creditcards`
+--
+
+CREATE TABLE `creditcards` (
+  `CreditCardId` int(11) NOT NULL,
+  `CCName` varchar(10) NOT NULL,
+  `CCNumber` varchar(50) NOT NULL,
+  `CCExpiry` datetime NOT NULL,
+  `CustomerId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `creditcards`
+--
+
+INSERT INTO `creditcards` (`CreditCardId`, `CCName`, `CCNumber`, `CCExpiry`, `CustomerId`) VALUES
+(2, 'AMEX', '12342324248393', '2003-04-03 00:00:00', 123),
+(26, 'AMEX', '33454212345651', '2003-09-29 00:00:00', 127),
+(28, 'AMEX', '3422343212433430', '2003-07-19 00:00:00', 107),
+(30, 'AMEX', '34458998784345', '2002-08-22 00:00:00', 140),
+(31, 'AMEX', '345433789979389', '1999-11-05 00:00:00', 130),
+(41, 'AMEX', '3522354387984530', '2002-06-09 00:00:00', 106),
+(63, 'AMEX', '632456487984533', '2003-01-02 00:00:00', 142),
+(69, 'AMEX', '78789007977999', '2002-08-22 00:00:00', 104),
+(91, 'AMEX', '904883289756439', '2002-01-19 00:00:00', 133),
+(99, 'Diners', '12093458976902', '2002-11-02 00:00:00', 143),
+(123, 'Diners', '24348343482482', '2003-11-25 00:00:00', 109),
+(141, 'Diners', '3749234924723790', '2003-05-01 00:00:00', 128),
+(163, 'Diners', '6788922940392940', '2002-10-12 00:00:00', 139),
+(167, 'Diners', '699834387984533', '2003-01-04 00:00:00', 118),
+(169, 'Diners', '7482794729742320', '2002-04-12 00:00:00', 117),
+(185, 'Diners', '8901128935238970', '1999-10-20 00:00:00', 141),
+(201, 'MC', '3424345432894320', '2002-01-22 00:00:00', 120),
+(230, 'VISA', '12122387984533', '2003-12-13 00:00:00', 121),
+(239, 'VISA', '2311240543980120', '2002-11-03 00:00:00', 114),
+(243, 'VISA', '23958389028923', '2002-08-22 00:00:00', 119),
+(252, 'VISA', '3456683343353430', '2002-10-29 00:00:00', 135),
+(272, 'VISA', '6543254233444530', '2002-01-22 00:00:00', 122),
+(279, 'VISA', '78789007977999', '2002-08-22 00:00:00', 105);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers`
+--
+
+CREATE TABLE `customers` (
+  `CustomerId` int(11) NOT NULL,
+  `CustFirstName` varchar(25) NOT NULL,
+  `CustLastName` varchar(25) NOT NULL,
+  `CustAddress` varchar(75) NOT NULL,
+  `CustCity` varchar(50) NOT NULL,
+  `CustProv` varchar(2) NOT NULL,
+  `CustPostal` varchar(7) NOT NULL,
+  `CustCountry` varchar(25) DEFAULT NULL,
+  `CustHomePhone` varchar(20) DEFAULT NULL,
+  `CustBusPhone` varchar(20) NOT NULL,
+  `CustEmail` varchar(50) NOT NULL,
+  `AgentId` int(11) DEFAULT NULL,
+  `CustUserName` varchar(20) NOT NULL,
+  `CustPassword` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`CustomerId`, `CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`, `CustUserName`, `CustPassword`) VALUES
+(104, 'Laetia', 'Enison', '144-61 87th Ave, NE', 'Calgary', 'AB', 'T2J 6B6', 'Canada', '4032791223', '4032557865', '                                                  ', 4, 'user104', '15b1aac8de09b5902c29a657dbeb2d'),
+(105, 'Angel', 'Moskowitz', '320 John St., NE', 'Calgary', 'AB', 'T2J 7E3', 'Canada', '4032794228', '4036409874', 'amoskowitz@home.com                               ', 3, 'user105', '8dca389c3b25d79a9f2252ab5e48a6'),
+(106, 'Judith', 'Olvsade', '29 Elmwood Ave.,', 'Calgary', 'AB', 'T2Z 3M9', 'Canada', '4032795652', '4036861598', 'jolvsade@aol.com                                  ', 1, 'user106', '287f5d7618e8a91c939f8941901f23'),
+(107, 'Catherine', 'Mierzwa', '22-70 41st St.,NW', 'Calgary', 'AB', 'T2Z 2Z9', 'Canada', '4032796878', '4036404563', 'cmierzwa@msn.com                                  ', 5, 'user107', '1c081c05d1ef0a094031f5dad99821'),
+(108, 'Judy', 'Sethi', '63 Stratton Hall, SW', 'Calgary', 'AB', 'T1Y 6N4', 'Canada', '4032795111', '4036204789', 'judysehti@home.com                                ', 7, 'user108', '4f80b4ee866cf723eddfac1db1acac'),
+(109, 'Larry', 'Walter', '38 Bay 26th ST. #2A, NE', 'Calgary', 'AB', 'T2J 6B6', 'Canada', '4032793254', '4032845588', 'lwalter@aol.com                                   ', 4, 'user109', '98e8d76bfd13a182300ade652cd730'),
+(114, 'Winsome', 'Laporte', '268 E.3rd St, SW', 'Calgary', 'AB', 'T1Y 6N4', 'Canada', '4032691125', '4032844565', '                                                  ', 8, 'user114', 'a161173f92018c8f41a00b810d8700'),
+(117, 'Nancy', 'Kuehn', '44-255 9th St., SW', 'Calgary', 'AB', 'T1Y 6N5', 'Canada', '4032693965', '4032843211', '                                                  ', 6, 'user117', '107ef451edac7240419c4408f1af3d'),
+(118, 'Hiedi', 'Lopez', '168 Rowayton Ave, NW', 'Calgary', 'AB', 'T3A 4ZG', 'Canada', '4032699856', '4035901587', 'hlopez@aol.com                                    ', 5, 'user118', 'b8082b10e5d12a19806464ac3dd0eb'),
+(119, 'Mardig', 'Abdou', '160-04 32nd Ave., SW', 'Calgary', 'AB', 'T2P 2G7', 'Canada', '4032691429', '4032251952', '                                                  ', 9, 'user119', 'e1b1c6d7d553317f863955521ef2e0'),
+(120, 'Ralph', 'Alexander', '2054 73rd St, SW', 'Calgary', 'AB', 'T2P 2G7', 'Canada', '4032691634', '4032256547', '                                                  ', 1, 'user120', '6160d7b839813c22bbd050f82abc28'),
+(121, 'Sean', 'Pineda', '3 Salem Rd., NW', 'Calgary', 'AB', 'T2K 3E3', 'Canada', '4032691954', '4036864444', 'spineda@hotmail.com                               ', 3, 'user121', '1b6df9e3a754ea7d8631626063b30e'),
+(122, 'Julita', 'Lippen', '51-76 VanKleeck St., NW', 'Calgary', 'AB', 'T2K 6C5', 'Canada', '4032551956', '4035901478', 'jlippen@cadvision.co                              ', 4, 'user122', '07c42737453ddacd3ccbc06bc3f92c'),
+(123, 'Pierre', 'Radicola', '322 Atkins Ave., SE', 'Calgary', 'AB', 'T3G 2C6', 'Canada', '4032551677', '4036867536', 'pradicola@home.com                                ', 8, 'user123', '32250170a0dca92d53ec9624f336ca'),
+(127, 'Gary', 'Aung', '135-32 Louis Blvd, NE', 'Calgary', 'AB', 'T2V 2K5', 'Canada', '4032807858', '4037501587', '                                                  ', 9, 'user127', '6f82a9defad0529c88ed5c32141fcb'),
+(128, 'Jeff', 'Runyan', '109-15 Queens Blvd., NE', 'Calgary', 'AB', 'T2V 2K6', 'Canada', '4032809635', '4036201122', 'jrunyan@aol.com                                   ', 5, 'user128', '8f5dc05934a9831b9e1e5814269613'),
+(130, 'Lula', 'Oates', '11A Emory St., NE', 'Calgary', 'AB', 'T3E 3Z4', 'Canada', '4032439653', '4036861587', 'loates@aol.com                                    ', 9, 'user130', 'e010944a9d2b383d9a9ee6ba45e145'),
+(133, 'James', 'Reed', '109-621 96th St, NE', 'Calgary', 'AB', 'T3E 4A1', 'Canada', '4032432358', '4037201155', 'jreed@aol.com                                     ', 2, 'user133', '1e6f8affa1638cfa74925165c8c2c2'),
+(135, 'Michelle', 'Masser', '379 Ovington Ave, NE', 'Calgary', 'AB', 'T2J 2S9', 'Canada', '4032441586', '4035908522', 'mmasser@aol.com                                   ', 6, 'user135', 'db1e09e54cadd7ebd25f2948eed604'),
+(138, 'John', 'Smith', '45 Plaza St. West #2D, NE', 'Calgary', 'AB', 'T3E 5C7', 'Canada', '4032449653', '4032837896', 'johnSmith@hotmail.co                              ', 7, 'user138', '7ac216e5613b0e3b5975e967bd1db0'),
+(139, 'Angelo', 'Garshman', '82 Western Ave., NE', 'Calgary', 'AB', 'T3E 5C8', 'Canada', '4032259966', '4032696541', '                                                  ', 3, 'user139', '4d78ec1c6187b65df9599b01040214'),
+(140, 'Derrick', 'Baltazar', '9111 Church Ave. #3N, NE', 'Calgary', 'AB', 'T3E 5C9', 'Canada', '4032255231', '4037502547', '                                                  ', 6, 'user140', 'bef90ef80748be56a91c964d611381'),
+(141, 'Robert', 'Boyd', '96-04 57th Ave #12A, NE', 'Calgary', 'AB', 'T3E 5C5', 'Canada', '4032255647', '4037509512', '                                                  ', 3, 'user141', 'bf604a61c2eb8d42ee59acda7897d2'),
+(142, 'Monica', 'Waldman', '257 Depot Rd., NE', 'Calgary', 'AB', 'T2J 6P3', 'Canada', '4032255629', '4032844566', 'mwaldman@aol.com                                  ', 2, 'user142', 'dfd70114eebb929062267f78f892ae'),
+(143, 'Gerard', 'Biers', '205 19th St., NE', 'Calgary', 'AB', 'T2J 6B6', 'Canada', '4032251952', '4037506578', '                                                  ', 8, 'user143', '3ed981d9db63312c8c620e3bd536f2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers_rewards`
+--
+
+CREATE TABLE `customers_rewards` (
+  `CustomerId` int(11) NOT NULL,
+  `RewardId` int(11) NOT NULL,
+  `RwdNumber` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `customers_rewards`
+--
+
+INSERT INTO `customers_rewards` (`CustomerId`, `RewardId`, `RwdNumber`) VALUES
+(104, 1, '123456 4322'),
+(104, 2, '5435 678 CF'),
+(105, 2, '1435 678 CA'),
+(106, 1, '123456 4322'),
+(106, 4, '4643 23 5435'),
+(107, 2, '5735 638 CF'),
+(107, 5, '2354 4583 63A'),
+(108, 1, '129456 4322'),
+(109, 4, '4343 23 5435'),
+(109, 5, '2784 4553 63F'),
+(114, 2, '5875 678 CG'),
+(117, 1, '123456 4322'),
+(118, 3, 'FG2343 785'),
+(123, 2, '5435 678 CF'),
+(127, 1, '113526 4322'),
+(138, 1, '124256 4322'),
+(140, 4, '4343 23 5435'),
+(142, 1, '123456 4322'),
+(142, 3, 'FG2343 785'),
+(142, 5, '2254 4553 63Z');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+CREATE TABLE `employees` (
+  `EmpFirstName` varchar(20) NOT NULL,
+  `EmpMiddleInitial` varchar(5) DEFAULT NULL,
+  `EmpLastName` varchar(20) NOT NULL,
+  `EmpBusPhone` varchar(20) NOT NULL,
+  `EmpEmail` varchar(50) NOT NULL,
+  `EmpPosition` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`EmpFirstName`, `EmpMiddleInitial`, `EmpLastName`, `EmpBusPhone`, `EmpEmail`, `EmpPosition`) VALUES
+('Janet', NULL, 'Delton', '(403) 210-7801', 'janet.delton@travelexperts.com', 'Senior Agent'),
+('Judy', NULL, 'Lisle', '(403) 210-7802', 'judy.lisle@travelexperts.com', 'Intermediate Agent'),
+('Dennis', 'C.', 'Reynolds', '(403) 210-7843', 'dennis.reynolds@travelexperts.com', 'Junior Agent'),
+('John', NULL, 'Coville', '(403) 210-7823', 'john.coville@travelexperts.com', 'Intermediate Agent'),
+('Janice', 'W.', 'Dahl', '(403) 210-7865', 'janice.dahl@travelexperts.com', 'Manager'),
+('Bruce', 'J.', 'Dixon', '(403) 210-7867', 'bruce.dixon@travelexperts.com', 'Intermediate Agent'),
+('Beverly', 'S.', 'Jones', '(403) 210-7812', 'beverly.jones@travelexperts.com', 'Intermediate Agent'),
+('Jane', NULL, 'Merrill', '(403) 210-7868', 'jane.merrill@travelexperts.com', 'Senior Agent'),
+('Brian', 'S.', 'Peterson', '(403) 210-7833', 'brian.peterson@travelexperts.com', 'Junior Agent');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fees`
+--
+
+CREATE TABLE `fees` (
+  `FeeId` varchar(10) NOT NULL,
+  `FeeName` varchar(50) NOT NULL,
+  `FeeAmt` decimal(19,4) NOT NULL,
+  `FeeDesc` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `fees`
+--
+
+INSERT INTO `fees` (`FeeId`, `FeeName`, `FeeAmt`, `FeeDesc`) VALUES
+('BK', 'Booking Charge', '25.0000', NULL),
+('CH', 'Change', '15.0000', NULL),
+('GR', 'Group Booking', '100.0000', NULL),
+('NC', 'No Charge', '0.0000', NULL),
+('NSF', 'Insufficient Funds', '25.0000', NULL),
+('RF', 'Refund', '25.0000', NULL),
+('RS', 'Research', '50.0000', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packages`
+--
+
+CREATE TABLE `packages` (
+  `PackageId` int(11) NOT NULL,
+  `PkgName` varchar(50) NOT NULL,
+  `PkgStartDate` datetime DEFAULT NULL,
+  `PkgEndDate` datetime DEFAULT NULL,
+  `PkgDesc` varchar(50) DEFAULT NULL,
+  `PkgBasePrice` decimal(19,4) NOT NULL,
+  `PkgAgencyCommission` decimal(19,4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `packages`
+--
+
+INSERT INTO `packages` (`PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgAgencyCommission`) VALUES
+(1, 'Caribbean New Year', '2005-12-25 00:00:00', '2006-01-04 00:00:00', 'Cruise the Caribbean & Celebrate the New Year.', '4800.0000', '400.0000'),
+(2, 'Polynesian Paradise', '2005-12-12 00:00:00', '2005-12-20 00:00:00', '8 Day All Inclusive Hawaiian Vacation', '3000.0000', '310.0000'),
+(3, 'Asian Expedition', '2006-05-14 00:00:00', '2006-05-28 00:00:00', 'Airfaire, Hotel and Eco Tour.', '2800.0000', '300.0000'),
+(4, 'European Vacation', '2005-11-01 00:00:00', '2005-11-14 00:00:00', 'Euro Tour with Rail Pass and Travel Insurance', '3000.0000', '280.0000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packages_products_suppliers`
+--
+
+CREATE TABLE `packages_products_suppliers` (
+  `PackageId` int(11) NOT NULL,
+  `ProductSupplierId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `packages_products_suppliers`
+--
+
+INSERT INTO `packages_products_suppliers` (`PackageId`, `ProductSupplierId`) VALUES
+(1, 65),
+(1, 93),
+(2, 32),
+(2, 33),
+(2, 90),
+(3, 28),
+(3, 82),
+(3, 87),
+(4, 9),
+(4, 65),
+(4, 84);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `ProductId` int(11) NOT NULL,
+  `ProdName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`ProductId`, `ProdName`) VALUES
+(1, 'Air'),
+(2, 'Attractions'),
+(3, 'Car rental'),
+(4, 'Cruise'),
+(5, 'Hotel'),
+(6, 'Motor Coach'),
+(7, 'Railroad'),
+(8, 'Tours'),
+(9, 'Travel Insurance'),
+(10, 'Yacht/Boat Charters');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_suppliers`
+--
+
+CREATE TABLE `products_suppliers` (
+  `ProductSupplierId` int(11) NOT NULL,
+  `ProductId` int(11) DEFAULT NULL,
+  `SupplierId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `products_suppliers`
+--
+
+INSERT INTO `products_suppliers` (`ProductSupplierId`, `ProductId`, `SupplierId`) VALUES
+(1, 1, 5492),
+(2, 1, 6505),
+(3, 8, 796),
+(4, 1, 4196),
+(6, 8, 1040),
+(7, 1, 3576),
+(8, 3, 845),
+(9, 7, 828),
+(10, 8, 5777),
+(11, 8, 5827),
+(12, 5, 3273),
+(13, 1, 80),
+(14, 8, 9396),
+(15, 8, 3589),
+(16, 1, 69),
+(19, 1, 3376),
+(20, 3, 323),
+(23, 1, 3549),
+(24, 5, 1918),
+(25, 3, 11156),
+(26, 8, 8837),
+(28, 8, 8089),
+(29, 1, 1028),
+(30, 1, 2466),
+(31, 5, 1406),
+(32, 3, 1416),
+(33, 5, 13596),
+(34, 1, 9323),
+(35, 5, 11237),
+(36, 8, 9785),
+(37, 5, 11163),
+(39, 9, 11172),
+(40, 8, 9285),
+(41, 5, 3622),
+(42, 5, 9323),
+(43, 1, 1766),
+(44, 1, 3212),
+(45, 9, 11174),
+(46, 8, 3600),
+(47, 9, 11160),
+(48, 8, 11549),
+(49, 4, 2827),
+(50, 9, 12657),
+(51, 8, 7377),
+(52, 5, 6550),
+(53, 4, 1634),
+(54, 8, 2140),
+(55, 3, 317),
+(56, 1, 1205),
+(57, 8, 3633),
+(58, 2, 6873),
+(59, 1, 7377),
+(60, 5, 7244),
+(61, 3, 2938),
+(63, 2, 5081),
+(64, 1, 3119),
+(65, 9, 2998),
+(66, 8, 3576),
+(67, 8, 2592),
+(68, 4, 100),
+(69, 9, 2987),
+(70, 4, 1005),
+(71, 4, 908),
+(72, 1, 5796),
+(73, 10, 2386),
+(74, 1, 3650),
+(75, 4, 1425),
+(76, 8, 6346),
+(78, 1, 1685),
+(79, 2, 2588),
+(80, 6, 1620),
+(81, 4, 1542),
+(82, 5, 9766),
+(83, 5, 5228),
+(84, 6, 9396),
+(87, 1, 1859),
+(90, 1, 1713),
+(93, 4, 3650);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `regions`
+--
+
+CREATE TABLE `regions` (
+  `RegionId` varchar(5) NOT NULL,
+  `RegionName` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `regions`
+--
+
+INSERT INTO `regions` (`RegionId`, `RegionName`) VALUES
+('AFR', 'Africa                   '),
+('ANZ', 'Australia & New Zealand  '),
+('ASIA', 'Asia                     '),
+('EU', 'Europe & United Kingdom  '),
+('MEAST', 'Middle East              '),
+('MED', 'Mediterranean            '),
+('NA', 'North America            '),
+('OTHR', 'Other                    '),
+('SA', 'South America            '),
+('SP', 'South Pacific            ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rewards`
+--
+
+CREATE TABLE `rewards` (
+  `RewardId` int(11) NOT NULL,
+  `RwdName` varchar(50) DEFAULT NULL,
+  `RwdDesc` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `rewards`
+--
+
+INSERT INTO `rewards` (`RewardId`, `RwdName`, `RwdDesc`) VALUES
+(1, 'Air Miles', NULL),
+(2, 'AeroPlan', NULL),
+(3, 'AeroPlan Gold', NULL),
+(4, 'Coast Rewards', NULL),
+(5, 'Mariott Rewards', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suppliercontacts`
+--
+
+CREATE TABLE `suppliercontacts` (
+  `SupplierContactId` int(11) NOT NULL,
+  `SupConFirstName` varchar(50) DEFAULT NULL,
+  `SupConLastName` varchar(50) DEFAULT NULL,
+  `SupConCompany` text,
+  `SupConAddress` text,
+  `SupConCity` text,
+  `SupConProv` text,
+  `SupConPostal` text,
+  `SupConCountry` text,
+  `SupConBusPhone` varchar(50) DEFAULT NULL,
+  `SupConFax` varchar(50) DEFAULT NULL,
+  `SupConEmail` text,
+  `SupConURL` text,
+  `AffiliationId` varchar(10) DEFAULT NULL,
+  `SupplierId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `suppliercontacts`
+--
+
+INSERT INTO `suppliercontacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`) VALUES
+(16, NULL, NULL, 'PACIFIC WINGS: Oahu-Molokai-Maui-Hawaii', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.newconcepts.ca', NULL, 69),
+(17, NULL, NULL, 'WINAIR / WINDWARD ISLANDS AIRWAYS INTERNATIONAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.newconcepts.ca', NULL, 69),
+(18, 'A.', 'Haziza', 'NEW CONCEPTS - CANADA', '1595 Calverton Court', 'Mississauga', 'ON', 'L5G 2W4', ' ', '9052748508', '9052714603', 'alhaziza@newconcepts.ca', 'http://www.newconcepts.ca', 'ACTAPGY', 69),
+(19, 'A.', 'Haziza', 'DIVI RESORTS', '1595 Calverton Court', 'Mississauga', 'ON', 'L5G 2W4', ' ', '9052748508', '9052714603', 'alhaziza@newconcepts.ca', 'http://www.newconcepts.ca', NULL, 69),
+(20, 'A.', 'Haziza', 'TIMBERWOODS VACATION VILLAS', '7964 Timberwood Circle', 'Sarasota', 'FL', '34238', 'USA', '9419234966', '9419243109', 'reserve@timberwoods.com', 'www.timberwoods.com', NULL, 69),
+(26, 'Nick', 'Kissanis', 'AMALIA HOTELS (GREECE)', '214 Bedford Rd', 'Toronto', 'ON', 'M5R 2K9', ' ', '4169674333', '4169676147', ' ', ' ', 'ACTAPGY', 80),
+(27, 'Nick', 'Kissanis', 'CHAT/TRAVELINE', '214 Bedford Rd', 'Toronto', 'ON', 'M5R 2K9', ' ', '4169674333', '4169676147', ' ', ' ', 'ACTAPGY', 80),
+(28, 'Nick', 'Kissanis', 'CHAT TOURS', '214 Bedford Rd', 'Toronto', 'ON', 'M5R 2K9', ' ', '4169674333', '4169676147', ' ', ' ', 'ACTAPGY', 80),
+(47, 'Dr. Carlos', 'Pechtel de A', 'GLOBAL QUEST', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', NULL, 100),
+(48, 'Dr. Carlos', 'Pechtel de A', 'MARINE EXPEDITIONS', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', NULL, 100),
+(49, 'Dr. Carlos', 'Pechtel de A', 'AMAZON RIVER CRUISES', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', NULL, 100),
+(51, NULL, NULL, 'EUROPE RIVER CRUISES/CROISI EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 100),
+(52, NULL, NULL, 'QUARK EXPEDITIONS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 100),
+(53, 'Dr. Carlos', 'Pechtel de A', 'AVILA TOURS INC.', '10316-124 St', 'Edmonton', 'AB', 'T5N 1R2', ' ', '7804823427', '7804826900', 'sales@avilatours.ca', ' ', 'ACTAPGY', 100),
+(56, NULL, NULL, 'TUMBACO GALAPAGOS YACHT CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 100),
+(65, NULL, NULL, 'CUBA CRUISE CORPORATION', '13 Hazelton Ave', 'Toronto', 'ON', 'M5R 2E1', ' ', '4169642569', '4169645644', 'cuba@blythtravel.com', 'http://www.cubacruising.com', 'PGY', 317),
+(66, 'Sam', 'Blyth', 'BLYTH & COMPANY TRAVEL LTD.', '13 Hazelton Ave', 'Toronto', 'ON', 'M5R 2E1', ' ', '4169642569', '4169643416', 'blythco@blythtravel.com', 'http://www.blythtravel.com', 'PGY', 317),
+(67, NULL, NULL, 'THE ROYAL SCOTSMAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(68, NULL, NULL, 'THE EASTERN & ORIENTAL EXPRESS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(70, NULL, NULL, 'THE BRITISH PULLMAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(71, NULL, NULL, 'THE VENICE SIMPLON ORIENT EXPRESS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(73, NULL, NULL, 'MOUNTAIN TRAVEL *SOBEK', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(74, NULL, NULL, 'BACKROADS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(75, NULL, NULL, 'EXOTIC SUN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.blythtravel.com', NULL, 317),
+(113, 'M.', 'Pangallo', 'COMPAGNIA ITALIANA TURISMO INC', '666 Sherbrooke W', 'Montreal', 'PQ', 'H3A 1E7', ' ', '5148454310', '5148459137', 'citmontreal@cittours.com', ' ', 'ACTAPGY', 323),
+(114, NULL, NULL, 'ITALY/EURAILPASS/EUROPASS/GERMAN PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 323),
+(121, 'Mary', 'Papamichael', 'CYPRUS AIRWAYS LTD', '34-09 Broadway', 'Astoria', 'NY', '11106', 'USA', '7182676882', '7182676885', 'kinisisusa@aol.com', ' ', NULL, 796),
+(123, 'Mary', 'Papamichael', 'KINISIS TRAVEL & TOURS', '34-09 Broadway', 'Astoria', 'NY', '11106', 'USA', '7182676880', '7182676885', 'kinisisusa@aol.com', ' ', NULL, 796),
+(127, NULL, NULL, 'BRITISH HERITAGE PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(128, 'Charlotte', ' Mikolaiczyk', 'DER TRAVEL SERVICE LTD', '904 The East Mall', 'Toronto (Etobicoke)', 'ON', 'M9B 6K2', ' ', '4166951209', '4166951210', 'der@dercanada.com', 'http://www.dercanada.com', 'ACTAPGY', 828),
+(129, NULL, NULL, 'EUROLINE BUS PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(131, 'Charlotte', ' Mikolaiczyk', 'DERRAIL - EUROPEAN RAIL SERVICES', '904 The East Mall', 'Toronto (Etobicoke)', 'ON', 'M9B 6K2', ' ', '4166951209', '4166951210', 'der@dercanada.com', 'http://www.dercanada.com', NULL, 828),
+(132, NULL, NULL, 'BENELUX PASS (BELGIUM LUXEMBOURG THE NETHERLANDS)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(133, NULL, NULL, 'BRITRAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(134, NULL, NULL, 'GREEK RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(135, NULL, NULL, 'EURAIL/EURO PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(136, NULL, NULL, 'BALKAN RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(137, NULL, NULL, 'GERMAN RAIL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(138, NULL, NULL, 'EUROPEAN EAST PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(139, NULL, NULL, 'SCANRAIL NORWAY SWEDEN RAILPASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(140, NULL, NULL, 'PARIS METRO PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(141, NULL, NULL, 'IBERIC FLEXIPASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(142, NULL, NULL, 'SPAIN RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(143, NULL, NULL, 'HOLLAND RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(144, NULL, NULL, 'ITALIAN RAIL PASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(145, NULL, NULL, 'AUSTRIAN RAILPASS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(146, NULL, NULL, 'LONDON VISITOR CARD', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(147, NULL, NULL, 'EUROSTAR SERVICES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.dercanada.com', NULL, 828),
+(150, 'Joanne', 'Lundy', 'DISCOVER THE WORLD MARKETING', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845),
+(151, NULL, NULL, 'BRITISH MIDLAND', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845),
+(152, 'Joanne', 'Lundy', 'AEROMEXICO', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845),
+(153, 'Joanne', 'Lundy', 'AOM FRENCH AIRLINES', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9058910093', '9058918026', 'toronto@discovertheworld.ca', ' ', 'PGY', 845),
+(154, NULL, NULL, 'AMERICA WEST AIRLINES', '4000 E Sky Harbor Blvd', 'Phoenix', 'AZ', '85034', ' ', '8002929378', NULL, 'toronto@discovertheworld.ca', 'http://www.americawest.com', NULL, 845),
+(156, 'Joanne', 'Lundy', 'HYATT NORTH AMERICA/CARIBBEAN', '1599 Hurontario St', 'Mississauga', 'ON', 'L5G 4S1', ' ', '9052331234', '9058918026', 'toronto@discovertheworld.ca', 'www.hyatt.com', 'PGY', 845),
+(161, 'Angie', 'Lo', 'ELITE ORIENT TOURS INC.', '170 University Ave', 'Toronto', 'ON', 'M5H 3B3', ' ', '4169773026', '4169773104', ' ', ' ', 'ACTAPGY', 908),
+(165, 'Angie', 'Lo', 'JAPAN RAIL PASS', '170 University Ave', 'Toronto', 'ON', 'M5H 3B3', ' ', '4169773026', '4169773104', ' ', ' ', NULL, 908),
+(167, 'Aideen', 'Hennessy', 'ENCORE CRUISES', '160 Bloor St E', 'Toronto', 'ON', 'M4W 1B9', ' ', '4169602516', '4169670303', ' ', ' ', 'ACTAPGY', 1005),
+(168, NULL, NULL, 'CUNARD LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(169, NULL, NULL, 'WINDSTAR CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(170, NULL, NULL, 'CELEBRITY CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(171, NULL, NULL, 'SEABOURN CRUISE LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(172, NULL, NULL, 'ORIENT LINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(173, NULL, NULL, 'SILVERSEA CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(174, NULL, NULL, 'STAR CLIPPERS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(175, NULL, NULL, 'ROYAL CARIBBEAN INTERNATIONAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(176, NULL, NULL, 'ROYAL OLYMPIC CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(177, NULL, NULL, 'HOLLAND AMERICA LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(178, NULL, NULL, 'RADISSON SEVEN SEAS CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1005),
+(181, 'Maria', 'Conte', 'EUROCRUISES INC.', '33 Little W 12th St', 'New York', 'NY', '10014', 'USA', '2126912099', '2123664747', 'info@eurocruises.com', 'http://www.eurocruises.com', 'PGY', 1406),
+(182, NULL, NULL, 'DELPHIN CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.eurocruises.com', NULL, 1406),
+(184, NULL, NULL, 'KRISTINA CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.eurocruises.com', NULL, 1406),
+(185, NULL, NULL, 'FRED. OLSEN CRUISE LINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.eurocruises.com', NULL, 1406),
+(186, 'Marcel', 'Paoli', 'EUROP-AUTO-VACANCES/HOLIDAYS', '5174 Cote des Neiges', 'Montreal', 'PQ', 'H3T 1X8', ' ', '5147353083', '5143428802', 'europauto@netrover.com', 'http://www.europauto.qc.ca', 'ACTANEWP', 1028),
+(187, NULL, NULL, 'EUROPCAR', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.europauto.qc.ca', NULL, 1028),
+(188, 'M.', 'Schon', 'EXECUTIVE SUITES', 'Emerald Business Centre', 'Mississauga', 'ON', 'L5R 3K6', ' ', '9055029550', '9055020355', 'execsuit@idirect.com', 'http://www.execsuit.com', 'PGY', 1040),
+(189, NULL, NULL, 'PARK SUITES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1040),
+(210, 'Rochelle', 'Goldman', 'GOLDMAN MARKETING STRATEGY INC', '80 St Clair Ave E', 'Toronto', 'ON', 'M4T 1N6', ' ', '4169235705', '4169235628', 'gms@on.aibn.com', ' ', 'PGY', 1205),
+(211, 'Rochelle', 'Goldman', 'HEBRIDEAN ISLAND CRUISES: THE HEBRIDEAN PRINCESS', '80 St Clair Ave E', 'Toronto', 'ON', 'M4T 1N6', ' ', '4169235705', '4169235628', 'gms@on.aibn.com', ' ', 'PGY', 1205),
+(214, 'Bruce', 'Hodge', 'GOWAY TRAVEL LTD.', '3284 Yonge St', 'Toronto', 'ON', 'M4N 3M7', ' ', '4163221034', '4163221109', 'res@goway.com', 'http://www.goway.com', 'ACTAPGY', 1685),
+(215, NULL, NULL, 'GREAT BARRIER REEF CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685),
+(216, NULL, NULL, 'FIJI (BLUE LAGOON) CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685),
+(217, NULL, NULL, 'YANTZE RIVER CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685),
+(219, 'Bruce', 'Hodge', 'AUSTRALIAN RAIL', '3284 Yonge St', 'Toronto', 'ON', 'M4N 3M7', ' ', '4163221034', '4163221109', 'res@goway.com', 'http://www.goway.com', NULL, 1685),
+(221, NULL, NULL, 'AAT KINGS AUSTRALIAN TOURS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goway.com', NULL, 1685),
+(245, 'Marc', 'Vezina', 'TOURS MAISON - THE HOLIDAY NETWORK', '2155 Guy St', 'Montreal', 'PQ', 'H3H 2R9', ' ', '5149357103', '5149854492', ' ', 'http://www.holidaynetwork.ca', 'ACTAPGY', 1416),
+(249, NULL, NULL, 'WOODS CAR RENTAL - BRITAIN', ' ', ' ', ' ', ' ', ' ', '8002688354', '4163671749', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416),
+(250, NULL, NULL, 'ALAMO RENT A CAR', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(251, NULL, NULL, 'DOLLAR HAWAII', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(252, NULL, NULL, 'AVIS RENT A CAR', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(257, NULL, NULL, 'KD RIVER CRUISES OF EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(258, NULL, NULL, 'DISNEY CRUISE LINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(259, NULL, NULL, 'CRYSTAL CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(260, NULL, NULL, 'PRINCESS CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(261, NULL, NULL, 'SILVERSEA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(262, NULL, NULL, 'NORWEGIAN CRUISE LINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(263, NULL, NULL, 'COSTA CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(264, NULL, NULL, 'SUN CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.holidaynetwork.ca', NULL, 1416),
+(266, 'Astrinos', ' Kozoronis', 'CARRIERS TRAVEL INTERNATIONAL INC. - THE HOLIDAY NETWORK', '75 The Donway W', 'Toronto', 'ON', 'M3C 2E9', ' ', '4164299000', '4164297159', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416),
+(267, 'Leanda', 'Townsend', 'HOLIDAY HOUSE', '26 Wellington St E 5th Fl', 'Toronto', 'ON', 'M5E 1S2', ' ', '4163645100', '4163671836', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416),
+(268, 'Leanda', 'Townsend', 'SIVER FERN - THE HOLIDAY NETWORK', '26 Wellington St E 5th Fl', 'Toronto', 'ON', 'M5E 1S2', ' ', '4163645100', '4163671836', ' ', 'http://www.holidaynetwork.ca', 'PGY', 1416),
+(272, 'Erik', 'Elvejord', 'HOLLAND AMERICA LINE WESTOURS INC', '300 Elliott Ave W', 'Seattle', 'WA', '98119', 'USA', '8004260327', '2062863229', ' ', ' ', 'ACTAPGY', 1425),
+(274, NULL, NULL, 'WESTOURS INC.', '300 Elliott Ave W', 'Seattle', 'WA', '98119', 'USA', '8004260327', '2064260329', ' ', ' ', 'ACTAPGY', 1425),
+(282, NULL, NULL, 'EVAN EVANS TOURS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1542),
+(283, 'Helen', 'Panagides', 'INSIGHT VACATIONS CANADA LTD.', '2300 Yonge St', 'Toronto', 'ON', 'M4P 1E4', ' ', '4164822116', '4164824307', ' ', ' ', 'ACTAPGY', 1542),
+(288, 'Jacques', 'Darcy', 'INTAIR TRANSIT', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142869747', '5148437678', ' ', ' ', 'ACTANEWP', 1620),
+(289, 'Jacques', 'Darcy', 'INTAIR VACATIONS', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142862800', '5142861655', ' ', ' ', NULL, 1620),
+(290, 'Jacques', 'Darcy', 'BOOMERANG TOURS', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142866035', '5142861655', ' ', ' ', NULL, 1620),
+(291, 'Jacques', 'Darcy', 'INTAIR VACATIONS / INTAIR USA / INTAIR CRUISES', '1221 rue St-Hubert', 'Montreal', 'PQ', 'H2L 3Y8', ' ', '5142862800', '5142861655', ' ', ' ', NULL, 1620),
+(294, NULL, NULL, 'TALL SHIP CRUISES (MAINE THE CARIBBEAN SOUTH PACIFIC)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(295, NULL, NULL, 'IVARAN CRUISE LINE (FREIGHTER CRUISES)-SOUTH AMERICA/CARIBBEAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(296, NULL, NULL, 'ZEUS TALL SHIP CRUISES-GREECE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(297, NULL, NULL, 'TEMPTRESS CRUISES-COSTA RICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(298, NULL, NULL, 'ARANUI CRUISES (FREIGHTER CRUISES) - TAHITI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(299, NULL, NULL, 'CROWN BLUE LINE/FRANCE CANAL & RIVER POWER BOATS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(300, NULL, NULL, 'AMAZING GRACE (FREIGHTER CRUISES)-CARIBBEAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(301, 'Michael', 'Tomlinson', 'WINDJAMMER BAREFOOT CRUISES', '200 10441-124th St', 'Edmonton', 'AB', 'T5N 1R7', ' ', '7804825022', '7804825328', 'islands@cruising.nu', 'http://www.cruising.nu', 'ACTAPGY', 1634),
+(302, 'Michael', 'Tomlinson', 'ISLANDS IN THE SUN CRUISES', '200 10441-124th St', 'Edmonton', 'AB', 'T5N 1R7', ' ', '7804825022', '7804825328', 'islands@cruising.nu', 'http://www.cruising.nu', 'ACTAPGY', 1634),
+(303, NULL, NULL, 'NEILSON CYCLING HOLIDAYS-GREECE/TURKEY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(304, NULL, NULL, 'ISLANDS IN THE SUN CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(305, NULL, NULL, 'SUNSAIL SAIL & STAY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(306, NULL, NULL, 'MOORINGS THE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(307, NULL, NULL, 'VIRGIN ISLANDS CHARTER YACHT LEAGUE CREWED YACHT HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(308, NULL, NULL, 'CLUB MARINER SAIL & STAY HOLIDAYS-ST. LUCIA/GRENADA/BVI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(309, NULL, NULL, 'NEILSON FLOTILLA SAILING-GREECE/TURKEY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(310, NULL, NULL, 'TRAWLERS IN PARADISE - CARIBBEAN USVI''S', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(311, NULL, NULL, 'VIKING TOURS AND TALL SHIP CRUISES OF GREECE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(312, NULL, NULL, 'WINDJAMMER BAREFOOT CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(313, NULL, NULL, 'DIVE BELIZE-AGGRESSOR DIVE FLEET', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(314, NULL, NULL, 'SUNSAIL YACHT CHARTERS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(315, NULL, NULL, 'SOUTH FLORIDA SAILING SCHOOL & YACHT CHARTERS - FLORIDA KEYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(316, NULL, NULL, 'BAREBOAT YACHT CHARTERS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(317, NULL, NULL, 'NEILSON CYCLING HOLIDAYS-DOMINICAN REPUBLIC/GRENADA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(318, NULL, NULL, 'SUNSAIL CLUB ANTIGUA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(319, NULL, NULL, 'HORIZON POWER/SAIL BVI''S', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(320, NULL, NULL, 'AGGRESSOR DIVE HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(321, NULL, NULL, 'HOSEASONS - UK CANALBOATS (U-DRIVE) FRANCE/EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(322, NULL, NULL, 'QUEENSLAND YACHT CHARTERS - AUSTRALIAN BARRIER REEF', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(323, NULL, NULL, 'COPPER SKY-NW PACIFIC', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.cruising.nu', NULL, 1634),
+(330, 'Kenny', 'Lee', 'JETPACIFIC HOLIDAYS INC.', '120-8877 Odlin Cres', 'Richmond', 'BC', 'V6X 3Z7', ' ', '6042148932', '6042148933', 'jetpac@infoserve.net', ' ', 'ACTAPGY', 1713),
+(331, NULL, NULL, 'BANGKOK AIRWAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1713),
+(333, NULL, NULL, 'BALI HAI CRUISES - BALI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1713),
+(334, NULL, NULL, 'STAR CRUISES - SINGAPORE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1713),
+(342, 'Chris', 'Rivers', 'KLM ROYAL DUTCH AIRLINES', '777 Bay St', 'Toronto', 'ON', 'M5G 2C8', ' ', '4162045151', '4162049708', ' ', ' ', 'ACTAPGY', 1766),
+(343, NULL, NULL, 'NORTHWEST AIRLINES & KLM ROYAL DUTCH AIRLINES (NW/KL)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1766),
+(357, 'Emile', 'Habib', 'LOTUS HOLIDAYS', '792 Kennedy Rd', 'Toronto (Scarborough)', 'ON', 'M1K 2C8', ' ', '4167517025', '4167510608', ' ', ' ', 'PGY', 1859),
+(359, NULL, NULL, 'NILE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 1859),
+(369, 'Corinne', 'Martin', 'MARKET SQUARE TOURS', '273 Donald St', 'Winnipeg', 'MB', 'R3C 1M9', ' ', '2049564279', '2049490188', 'sales@gctc-mst.com', 'http://www.greatcanadiantravel.com', 'ACTAPGY', 1918),
+(370, 'Corinne', 'Martin', 'THE GREAT CANADIAN TRAVEL COMPANY LTD', '273 Donald St', 'Winnipeg', 'MB', 'R3C 1M9', ' ', '2049490199', '2049490188', 'sales@gctc-mst.com', 'http://www.greatcanadiantravel.com', NULL, 1918),
+(371, 'Antonio', 'Alonso', 'MARKETING AHEAD', '433 Fifth Ave.', 'New York', 'NY', '10016', 'USA', '2126869213', '2126860271', ' ', ' ', 'PGY', 3273),
+(372, NULL, NULL, 'PARADORES OF SPAIN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 3273),
+(373, NULL, NULL, 'POUSADAS OF PORTUGAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 3273),
+(375, 'S.R.', 'Vale', 'MARTINAIR SERVICES', '111 Richmond St W', 'Toronto', 'ON', 'M5H 2G4', ' ', '4163643672', '4163643886', ' ', ' ', 'ACTAPGY', 3376),
+(376, 'S.R.', 'Vale', 'MARTINAIR HOLLAND', '111 Richmond St W', 'Toronto', 'ON', 'M5H 2G4', ' ', '4163643672', '4163643886', ' ', ' ', 'PGY', 3376),
+(396, 'Pat', 'Nagel', 'NAGEL TOURS LTD', 'Edmonton Inn', 'Edmonton', 'AB', 'T5G 0X5', ' ', '7804527345', '7804786666', ' ', 'http://www.nageltours.com', 'PGY', 2140),
+(397, 'Pat', 'Nagel', 'OKANAGAN VALLEY WINE TRAIN', 'Edmonton Inn', 'Edmonton', 'AB', 'T5G 0X5', ' ', '7804888725', '7804827666', ' ', 'http://www.okanaganwinetrain.com', 'PGY', 2140),
+(419, NULL, NULL, 'HOTEL NARROW BOATS/UK', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(420, NULL, NULL, 'CROWN BLUE LINE FRANCE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(421, NULL, NULL, 'LOCABOAT - SELF-SKIPPERED PENICHETTES - EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(422, NULL, NULL, 'EUROPE RIVER CRUISES/CROISI EUROPE (ALSACE CROISIERES)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(423, NULL, NULL, 'CONTINENTAL WATERWAYS - HOTEL-BARGE CRUISES FRANCE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(424, NULL, NULL, 'BARGE CRUISES EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(425, NULL, NULL, 'CANAL & RIVER CRUISES EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(426, 'Janet', 'Pavlik', 'PAVLIK TRAVEL GROUP', '2221 Panorama Dr', 'N Vancouver', 'BC', 'V7G 1V4', ' ', '6049297911', '6049240634', 'pavlik@infomatch.com', 'http://www.infomatch.com/~pavlik', 'PGY', 2386),
+(428, NULL, NULL, 'ANGLO WELSH SELF SKIPPERED BOATS(BRITAIN)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(429, NULL, NULL, 'IRELAND - SELF SKIPPERED CANAL BOATS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(430, NULL, NULL, 'HOLLAND - CANAL BOATING', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(431, NULL, NULL, 'CROWN BLUE LINE (FRANCE)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.infomatch.com/~pavlik', NULL, 2386),
+(434, 'Patricia', 'Fargeon', 'PLANET FRANCE INC.', '7351 Victoria Park Ave', 'Markham', 'ON', 'L3R 3A5', ' ', '9054796121', '9054795411', 'planet.pat@sympatico.ca', ' ', 'PGY', 2466),
+(435, 'Patricia', 'Fargeon', 'PLANET EUROPE GROUP', '7351 Victoria Park Ave', 'Markham', 'ON', 'L3R 3A5', ' ', '9054797069', '9054795411', 'planet.pat@sympatico.ca', ' ', 'PGY', 2466),
+(466, 'Gary C.', 'Sadler', 'UNIQUE VACATIONS (CANADA) INC.', '4211 Yonge St', 'Toronto (North York)', 'ON', 'M2P 2A9', ' ', '4162230028', '4162233306', ' ', ' ', 'ACTA', 2588),
+(467, NULL, NULL, 'SANDALS AND BEACHES RESORTS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', 'ACTA', 2588),
+(476, 'Ash', 'Mukherjee', 'ESPRIT/SERVICENTRE HOLIDAYS', '5945 Airport Rd', 'Mississauga', 'ON', 'L4V 1R9', ' ', '9056733333', '9056733327', 'tscash@aol.com', 'http://www.espritvacations.com', 'PGY', 2592),
+(477, NULL, NULL, 'CLUBAVANTAGE GROUP TRAVE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.espritvacations.com', NULL, 2592),
+(496, 'Julio', 'Erhart', 'HOTEL NETS', '1235 Bay St', 'Toronto', 'ON', 'M5R 3K4', ' ', '4169214012', '4169698916', 'southwin@ican.net', ' ', NULL, 2827),
+(497, 'Julio', 'Erhart', 'SOUTH WIND TOURS LTD.', '1235 Bay St', 'Toronto', 'ON', 'M5R 3K4', ' ', '4169214012', '4169698916', 'southwin@ican.net', ' ', NULL, 2827),
+(500, 'Mela', 'Pascoe', 'SUN & LEISURE TRAVEL CORP', '401 The West Mall', 'Toronto (Etobicoke)', 'ON', 'M9C 5J5', ' ', '4166265199', '4166200009', ' ', ' ', 'PGY', 2938),
+(501, NULL, NULL, 'CANADIAN TOURS INTERNATIONAL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 2938),
+(517, NULL, NULL, 'YANGTZE RIVER CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987),
+(518, NULL, NULL, 'EASTERN & ORIENTAL EXPRESS/ROAD TO MANDALAY CRUISE BURMA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987),
+(519, NULL, NULL, 'STAR CRUISE LINES-SINGAPORE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987),
+(520, NULL, NULL, 'STAR CLIPPER-ASIA-CARIBBEAN-MEDITERRANEAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987),
+(521, 'Miki', 'Friendly', 'TOURCAN VACATIONS INC', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvacations@tourcanvacations.com', 'http://www.tourcanvacations.com', 'ACTAPGY', 2987),
+(522, 'Miki', 'Friendly', 'ROVOS RAIL - SOUTH AFRICA', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvacations@tourcanvacations.com', 'http://www.tourcanvacations.com', NULL, 2987),
+(523, NULL, NULL, 'ROYAL SCOTSMAN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987),
+(524, NULL, NULL, 'VENICE SIMPLON - ORIENT - EXPRESS - LONDON/VENICE OR V.V. EASTERN & ORI', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.tourcanvacations.com', NULL, 2987),
+(525, 'Miki', 'Friendly', 'VENICE SIMPLON -- ORIENT EXPRESS - EUROPE EASTERN & ORIENTAL ORIENT EXP', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvac', ' ', NULL, 2987),
+(526, 'Miki', 'Friendly', 'PALACE ON WHEELS - INDIA', '255 Duncan Mill Rd', 'Toronto', 'ON', 'M3B 3H9', ' ', '4163910334', '4163910986', 'tourcanvacations@tourcanvacations.com', 'http://www.tourcanvacations.com', NULL, 2987),
+(532, 'Elisabeth', 'Dupuis', 'ALIOTOURS', '1410 Stanley St', 'Montreal', 'PQ', 'H3A 1P8', ' ', '5142871066', '5148435680', ' ', ' ', 'ACTA', 2998),
+(533, 'Elisabeth', 'Dupuis', 'ALIO TOURS DIV. TOURS NEW YORK', '1410 Stanley St', 'Montreal', 'PQ', 'H3A 1P8', ' ', '5142871066', '5148435680', ' ', ' ', 'ACTA', 2998),
+(538, 'Joaquin', 'Murillo', 'TRANS WORLD AIRLINES INC. (TWA)', '1751 Richardson St', 'Montreal', 'PQ', 'H3K 1G6', ' ', '5148448242', '5148440921', 'aviaction@median-aviation.com', 'http://www.median-aviation.com', 'PGY', 3119),
+(540, 'Joaquin', 'Murillo', 'AVIACTION', 'Airway Centre 1 5955 Airport', 'Mississauga', 'ON', 'L4V 1R9', ' ', '9056778242', '9056779394', 'aviaction@median-aviation.com', 'http://www.median-aviation.com', 'PGY', 3119),
+(550, 'Terri', 'Ronneseth', 'TREK AIR', '8412 - 109 St', 'Edmonton', 'AB', 'T6G 1E2', ' ', '7804399118', '7804335494', 'airfares@trekholidays.com', 'http://www.trekholidays.com', 'ACTAPGY', 3212),
+(551, 'Terri', 'Ronneseth', 'TREK HOLIDAYS', '8412 - 109 St', 'Edmonton', 'AB', 'T6G 1E2', ' ', '7804399118', '7804335494', 'adventures@trekholidays.com', 'http://www.trekholidays.com', 'ACTAPGY', 3212),
+(552, NULL, NULL, 'KARIBU SAFARIS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(553, NULL, NULL, 'PEREGRINE ADVENTURES/GECKO ADVENTURES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(554, NULL, NULL, 'EXPLORE WORLDWIDE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(555, NULL, NULL, 'DRAGOMAN HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(556, NULL, NULL, 'KIRRA TOURS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(557, NULL, NULL, 'IMAGINATIVE TRAVELLER', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(558, NULL, NULL, 'ENCOUNTER OVERLAND', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.trekholidays.com', NULL, 3212),
+(568, 'Vicky', 'Alberto', 'VIP INTERNATIONAL', '727-7th Ave SW', 'Calgary', 'AB', 'T2P 0Z5', ' ', '4032693566', '4032612046', 'info@vipintcorp.com', ' ', 'PGY', 3633),
+(569, 'Kelly', 'Blake', 'ALL SUITES INTERNATIONAL', '727-7th Ave SW', 'Calgary', 'AB', 'T2P 0Z5', ' ', '4032664776', '4032665228', 'info@vipintcorp.com', ' ', 'PGY', 3633),
+(586, 'Jeronimo', 'Rius', 'BONANZA HOLIDAYS', '1224 Stanley St', 'Montreal', 'PQ', 'H3B 2S7', ' ', '5143939501', '5143939504', 'bonanza@globalserve.net', ' ', 'ACTAPGY', 3549),
+(598, NULL, NULL, 'AUSTRIA HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(599, NULL, NULL, 'CEDOK CZECH TOURIST/TRAVEL AGENCY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(600, NULL, NULL, 'VIENNA INTERNATIONAL HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(601, NULL, NULL, 'DANUBIUS SPA HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(602, NULL, NULL, 'HUNGARIAN HOTELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(604, NULL, NULL, 'GRAYLINE FRANCE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(605, NULL, NULL, 'GRAYLINE AUSTRIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(606, NULL, NULL, 'GRAYLINE ITALY', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(607, NULL, NULL, 'GRAYLINE SPAIN', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(609, 'Madeline', 'Ferenzy', 'BLUE DANUBE HOLIDAYS', '80 Richmond St W', 'Toronto', 'ON', 'M5H 2A4', ' ', '4163625000', '4163628024', 'bluedanube@bluedanubeholidays.com', 'http://www.bluedanubeholidays.com', 'PGY', 3576),
+(610, NULL, NULL, 'MAHART-HYDROFOIL', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.bluedanubeholidays.com', NULL, 3576),
+(620, 'Susan', 'Savoie', 'GOLDEN ESCAPES', '75 The Donway W', 'Toronto', 'ON', 'M3C 2E9', ' ', '4164477683', '4164474824', 'admin@goldenescapes.com', 'http://www.goldenescapes.com', 'PGY', 3600),
+(621, NULL, NULL, 'BACK ROADS TOURING COMPANY of Great Britain', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.goldenescapes.com', NULL, 3600),
+(622, 'Sandra', 'Mirkovic', 'G.A.P ADVENTURES INC', 'The Great Adventure People', 'Toronto', 'ON', 'M5H 3H1', ' ', '4162600999', '4162601888', 'adventure@gap.ca', 'http://www.gap.ca', 'ACTAPGY', 3589),
+(623, NULL, NULL, 'TREK AMERICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589),
+(624, NULL, NULL, 'EXODUS WORLDWIDE ADVENTURE HOLIDAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589),
+(625, NULL, NULL, 'TREK AUSTRALIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589),
+(626, NULL, NULL, 'INTREPID SOUTH EAST ASIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589),
+(627, NULL, NULL, 'GUERBA EXPEDITIONS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589),
+(628, NULL, NULL, 'AMADABLAM ADVENTURES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.gap.ca', NULL, 3589),
+(639, 'Paul', 'Chu', 'CHINA TRAVEL SERVICE (CANADA) INC', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', 'ACTAPGY', 3622),
+(641, 'Paul', 'Chu', 'CHINA TRAVEL AIR SERVICE HONG KONG LTD.', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622),
+(642, 'Paul', 'Chu', 'SHENZHEN AIRLINE CHINA', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622),
+(644, 'Paul', 'Chu', 'YANGTZE RIVER SPLENDID CHINA CRUISE LTD.', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622),
+(646, 'Paul', 'Chu', 'CHINA TRAVEL HOTEL MANAGEMENT SERVICES HONG KONG LTD.', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622),
+(648, 'Paul', 'Chu', 'CHINA NATIONAL RAILWAY', '556 W Broadway', 'Vancouver', 'BC', 'V5Z 1E9', ' ', '6048728787', '6048732823', ' ', ' ', NULL, 3622),
+(662, NULL, NULL, 'CUNARD LINES', '6100 Blue Lagoon Drive', 'Miami', 'FL', '33126', ' ', '8007286273', NULL, ' ', 'http://www.cunard.com', 'ACTAPGY', 3650),
+(681, 'Nigel', 'Wood', 'TRAVEL STUDIO', 'Suite 890', 'Vancouver', 'BC', 'V6C 1N5', ' ', '8005656670', '8006652998', 'tsyvr@baxter.net', 'http://www.travelstudio.com', NULL, 4196),
+(683, NULL, NULL, 'ROVOS RAIL - SOUTH AFRICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelstudio.com', NULL, 4196),
+(684, NULL, NULL, 'BLUE TRAIN - SOUTH AFRICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelstudio.com', NULL, 4196),
+(706, 'Randy', 'Anger', 'ANHEUSER-BUSCH ADVENTURE PARKS', '358 Broadway Ave', 'Toronto', 'ON', 'M4P 1X2', ' ', '4164839410', '4164835982', ' ', ' ', 'PGY', 5081),
+(707, NULL, NULL, 'BUSCH GARDENS TAMPA BAY, FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(708, NULL, NULL, 'ADVENTURE ISLAND TAMPA BAY, FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(709, NULL, NULL, 'SESAME PLACE, LANGHORNE PENNSYLVANIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(710, NULL, NULL, 'SEAWORLD ADVENTURE PARK, ORLANDO FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(711, NULL, NULL, 'SEAWORLD ADVENTURE PARK, CLEVELAND OHIO', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(712, NULL, NULL, 'SEAWORLD ADVENTURE PARK, SAN DIEGO CALIFORNIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(713, NULL, NULL, 'BUSCH GARDENS, WILLIAMSBURG VIRGINIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(714, NULL, NULL, 'WATER COUNTRY USA, WILLIAMSBURG VIRGINIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(715, NULL, NULL, 'SEAWORLD ADVENTURE PARK, SAN ANTONIO TEXAS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(716, NULL, NULL, 'DISCOVERY COVE, ORLANDO FLORIDA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5081),
+(726, 'Maybelle', 'Ravin', 'THE RMR GROUP INC', 'Taurus House', 'Toronto', 'ON', 'M4R 2E3', ' ', '4164858724', '4164858256', 'assoc@thermrgroup.ca', 'http://www.thermrgroup.ca', 'PGY', 5228),
+(727, 'Maybelle', 'Ravin', 'KLM uk/buzz', 'Taurus House', 'Toronto', 'ON', 'M4R 2E3', ' ', '4164858724', '4164858256', 'assoc@thermrgroup.ca', 'http://www.thermrgroup.ca', 'PGY', 5228),
+(728, 'Jackie', 'Lutz', 'THE RMR GROUP INC', 'Taurus House', 'Toronto', 'ON', 'M4R 2E3', ' ', '4164844864', '4164858256', 'assoc@thermrgroup.ca', 'http://www.thermrgroup.ca', 'PGY', 5228),
+(733, 'Lourdes', 'Freire', 'SKYWAYS INTERNATIONAL', '486 College St', 'Toronto', 'ON', 'M6G 1A4', ' ', '4169238949', '4169601339', 'skyways@netcom.ca', 'http://www.addictravel.com', 'PGY', 5492),
+(734, 'Lourdes', 'Freire', 'AEROCONTINENTE (CODE N6) PERUVIAN AIRLINES', '486 College St', 'Toronto', 'ON', 'M6G 1A4', ' ', '4169238949', '4169601339', 'skyways@netcom.ca', 'http://www.addictravel.com', 'PGY', 5492),
+(739, 'Hope', 'Burridge', 'TRAVEL BY RAIL', '34 Flintridge Rd', 'Toronto (Scarborough)', 'ON', 'M1P 1G3', ' ', '4167010756', '4167010751', 'travelbyrail@hotmail.com', 'http://www.travelbyrail.com', 'PGY', 5777),
+(740, NULL, NULL, 'BAUDHHA PARIKRAMA EXPRESS - INDIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777),
+(741, NULL, NULL, 'PALACE ON WHEELS - INDIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777),
+(742, NULL, NULL, 'ROYAL ORIENT - INDIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777),
+(743, NULL, NULL, 'RAZDAN HOLIDAYS (INDIA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.travelbyrail.com', NULL, 5777),
+(744, 'Paulo', 'Karbach', 'REPWORLD INC', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', 'ACTAPGY', 5796),
+(745, 'Paulo', 'Karbach', 'LTU INTERNATIONAL AIRWAYS', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(746, 'Paulo', 'Karbach', 'LLOYD AEREO BOLIVIANO', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(747, 'Paulo', 'Karbach', 'ACES (Aerolineas Centrales De Colombia S.A.)', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(748, 'Paulo', 'Karbach', 'HARBOUR AIR SEAPLANES', '4760 Inglis Dr', 'Richmond', 'BC', 'V7B 1W4', ' ', '6042783478', '6042789897', ' ', ' ', NULL, 5796),
+(749, 'Paulo', 'Karbach', 'HELIUSA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(750, 'Paulo', 'Karbach', 'ECUATORIANA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(751, 'Paulo', 'Karbach', 'SRI LANKAN AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(752, 'Paulo', 'Karbach', 'AERO CALIFORNIA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(753, 'Paulo', 'Karbach', 'LAUDA AIR', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(754, 'Paulo', 'Karbach', 'SURINAM AIRWAYS', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(755, 'Paulo', 'Karbach', 'ETHIOPIAN AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(756, 'Paulo', 'Karbach', 'ICELANDAIR', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(757, 'Paulo', 'Karbach', 'MERIDIANA', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(758, 'Paulo', 'Karbach', 'ASIANA AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(759, 'Paulo', 'Karbach', 'TURKISH AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(760, 'Paulo', 'Karbach', 'TAM BRAZILIAN AIRLINES', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(761, 'Paulo', 'Karbach', 'GHANA AIRWAYS', '409-1200 W Pender St', 'Vancouver', 'BC', 'V6E 2S9', ' ', '6046837824', '6046837819', ' ', ' ', NULL, 5796),
+(764, 'Tina', 'Myers', 'RESORT MARKETING INC', '19495 Biscayne Blvd', 'Aventura', 'FL', '33180-2', 'USA', '8004320221', '3059320023', 'radcblebch@aol.com', 'http://www.radisson.com/nassaubs', 'ACTAPGY', 5827),
+(765, 'Tina', 'Myers', 'RESORT MARKETING', '19495 Biscayne Blvd', 'Aventura', 'FL', '33180-2', 'USA', '8004320221', '3059320023', 'radcblebch@aol.com', 'http://www.radisson.com/nassaubs', 'ACTAPGY', 5827),
+(766, NULL, NULL, 'RADISSON CABLE BEACH RESORT', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 5827),
+(767, 'Catherine', 'Evans', 'TOURS OF EXPLORATION', 'PO Box 48225', 'Vancouver', 'BC', 'V7X 1N8', ' ', '6048867300', '6048867304', 'info@toursexplore.com', 'http://www.toursexplore.com', 'PGY', 5857),
+(768, NULL, NULL, 'DIRECTIONS IN TRVL SPECIALTY TRS INC', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.toursexplore.com', NULL, 5857),
+(769, 'Gary', 'Murtagh', 'PASSAGES EXPEDITIONS', '597 Markham St', 'Toronto', 'ON', 'M6G 2L7', ' ', '4165885000', '4165889839', 'eldertreks@eldertreks.com', 'http://www.eldertreks.com', 'PGY', 6346),
+(770, 'Gary', 'Murtagh', 'ELDERTREKS', '597 Markham St', 'Toronto', 'ON', 'M6G 2L7', ' ', '4165885000', '4165889839', 'eldertreks@eldertreks.com', 'http://www.eldertreks.com', 'PGY', 6346),
+(776, 'Nilufer', 'Mama', 'GULF AIR', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505),
+(777, 'Nilufer', 'Mama', 'AEROMAR', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505),
+(778, 'Nilufer', 'Mama', 'AERO ASIA', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505),
+(779, 'Nilufer', 'Mama', 'JET AIRWAYS', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', NULL, 6505),
+(780, 'Nilufer', 'Mama', 'TRADE WINDS ASSOCIATES CANADA INC', '77 Bloor St W', 'Toronto', 'ON', 'M5S 1M2', ' ', '4169664853', '4169668924', 'info@twai-canada.com', 'http://www.twai-canada.com', 'ACTAPGY', 6505),
+(781, 'D.', 'Soota', 'LTI TOURS', '719 Yonge St', 'Toronto', 'ON', 'M4Y 2B5', ' ', '4169629661', '4169625910', 'info@ltitours.com', 'http://www.ltitours.com', 'PGY', 6550),
+(783, NULL, NULL, 'EASTERN & ORIENTAL EXPRESS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.ltitours.com', NULL, 6550),
+(784, NULL, NULL, 'PALACE ON WHEELS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.ltitours.com', NULL, 6550),
+(786, 'Ashraf', 'Khan', 'BIMAN BANGLADESH AIRLINES', '206 Bloor St W', 'Toronto', 'ON', 'M5S IT8', ' ', '4169200110', '4169209598', ' ', ' ', 'PGY', 6873),
+(788, 'Ashraf', 'Khan', 'AIR EXPRESS TRAVEL INC', '206 Bloor St W', 'Toronto', 'ON', 'M5S IT8', ' ', '4169200110', '4169209598', ' ', ' ', 'PGY', 6873),
+(822, 'Rosie', 'Melkonian', 'WORLD ACCESS MARKETING', '33 Blue Ridge Rd', 'Toronto (North York)', 'ON', 'M2K 1R8', ' ', '4162235506', '4162220319', 'reservations@outrigger.com', ' ', 'PGY', 7244),
+(823, 'Rosie', 'Melkonian', 'OUTRIGGER HOTELS & RESORTS', '33 Blue Ridge Rd', 'Toronto (North York)', 'ON', 'M2K 1R8', ' ', '4162235506', '4162220319', 'reservations@outrigger.com', ' ', 'PGY', 7244),
+(825, NULL, NULL, 'BALKAN AIRLINES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 7377),
+(826, 'Subash', 'Chauhan', 'MAJESTIC TOURS', '545 N Rivermede Rd', 'Concord', 'ON', 'L4K 4H1', ' ', '9056604704', '9056603055', ' ', ' ', 'PGY', 7377),
+(834, 'Robert', 'Townshend', 'MUSTIQUE AIRWAYS', '2011 Lawrence Ave W', 'Toronto', 'ON', 'M9N 3V3', ' ', '4162407700', '4162407701', 'travel@totaladvantage.com', ' ', 'PGY', 11160),
+(835, 'Robert', 'Townshend', 'TOTAL ADVANTAGE TRAVEL & TOURS INC', '2011 Lawrence Ave W', 'Toronto', 'ON', 'M9N 3V3', ' ', '4162407700', '4162407701', 'travel@totaladvantage.com', ' ', 'PGY', 11160),
+(839, 'Mary', 'Warner', 'EXCLUSIVE TOURS', '145 King St W', 'Toronto', 'ON', 'M5H 1J8', ' ', '4163688558', '4169559869', 'et@merit.ca', ' ', 'PGY', 8089),
+(840, NULL, NULL, 'DANUBE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(841, NULL, NULL, 'CONTINENTAL WATERWAYS - HOTEL BARGE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(842, NULL, NULL, 'VIKING RIVER CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(843, NULL, NULL, 'BARGE CANAL & RIVER CRUISES EUROPE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(845, NULL, NULL, 'EUROPEAN WATERWAYS/LUXURY EUROPEAN BARGE CRUISES', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(846, NULL, NULL, 'PETER DEILMANN EUROPAMERICA CRUISES:', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(849, NULL, NULL, 'UNIWORLD EUROPE RIVER CRUISES & WATERWAYS OF RUSSIA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 8089),
+(862, 'Ross', 'de Gregorio', 'MANDITOURS - ITALY', '9625 Yonge St', 'Richmond Hill', 'ON', 'L4C 5T2', ' ', '9055088190', '9057372978', 'mandi@italia-magica.com', ' ', 'PGY', 9785),
+(867, 'Stephen', 'Yo', 'KINTETSU INTERNATIONAL EXPRESS', '1550 Enterprises Rd', 'Mississauga', 'ON', 'L4W 4P4', ' ', '9056708710', '9056702238', 'outbound@kiecan.com', 'http://www.kiecan.com/outbound', 'PGY', 9766),
+(868, 'Stephen', 'Yo', 'JAPAN RAIL PASS', '1550 Enterprises Rd', 'Mississauga', 'ON', 'L4W 4P4', ' ', '9056708710', '9056702238', 'outbound@kiecan.com', 'http://www.kiecan.com/outbound', 'PGY', 9766),
+(872, 'Timo', 'Jokinen', 'SCANDITOURS', '191 Eglinton Ave E', 'Toronto', 'ON', 'M4P 1K1', ' ', '4164823006', '4164829447', 'toronto@scanditours.com', 'http://www.scanditours.com', 'PGY', 8837),
+(873, NULL, NULL, 'STENA LINE (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837),
+(874, NULL, NULL, 'GOTA CANAL (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837),
+(875, NULL, NULL, 'DFDS SEAWAYS', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837),
+(876, NULL, NULL, 'VIKING LINE (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837),
+(877, NULL, NULL, 'ESTLINE', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837),
+(878, NULL, NULL, 'FRED OLSEN LINE (GSA CANADA)', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', 'http://www.scanditours.com', NULL, 8837),
+(886, 'Vonna', 'McDonald', 'BONAVENTURE TOURS', '205-221 W Esplanade', 'N Vancouver', 'BC', 'V7M 3J3', ' ', '6049907390', '6049907394', 'info@bonaventuretours.com', 'http://www.bonaventuretours.com', 'PGY', 9323),
+(887, 'Vonna', 'McDonald', 'BONAVENTURE TOURS - UK & IRELAND - CANAL BOAT CHARTERS', '205-221 W Esplanade', 'N Vancouver', 'BC', 'V7M 3J3', ' ', '6049907390', '6049907394', 'info@bonaventuretours.com', 'http://www.bonaventuretours.com', 'PGY', 9323),
+(888, 'Jim', 'Cohen', 'HOTELINK', '1027 Yonge St', 'Toronto', 'ON', 'M4W 2K9', ' ', '4169232003', '4169442245', 'info@skylinkholidays.com', ' ', 'PGY', 9396),
+(895, 'Mari', 'Abe', 'JTB INTERNATIONAL (CANADA) LTD', '77 King St W', 'Toronto', 'ON', 'M5K 1E7', ' ', '4163675824', '4163674859', 'sales@jtbcnd.com', ' ', 'PGY', 9285),
+(897, 'Mari', 'Abe', 'JAPAN RAIL PASS', '77 King St W', 'Toronto', 'ON', 'M5K 1E7', ' ', '4163675824', '4163674859', 'sales@jtbcnd.com', ' ', 'PGY', 9285),
+(899, 'Mari', 'Abe', 'SUNRISE TOURS', '77 King St W', 'Toronto', 'ON', 'M5K 1E7', ' ', '4163675824', '4163674859', 'sales@jtbcnd.com', ' ', 'PGY', 9285),
+(908, 'Eric', 'Douay', 'D-TOUR MARKETING', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163),
+(909, 'Eric', 'Douay', 'RIVAGES CROISIERES THE CARIBBEAN INTIMATE YACHT CRUISES', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketin', NULL, 11163),
+(910, 'Eric', 'Douay', 'CONCORDE HOTELS (WORLDWIDE)', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163),
+(911, 'Eric', 'Douay', 'PRIMEREVE ''ALL-SUITE'' HOTEL (Martinique)', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163),
+(912, 'Eric', 'Douay', 'CHATEAUX & HOTELS DE FRANCE', '625 W Rene Levesque Blvd', 'Montreal', 'PQ', 'H3B 1R2', ' ', '5143939585', '5143939029', 'dtour.marketing@planetepc.qc.ca', 'http://www.dtourmarketing.com', 'PGY', 11163),
+(913, 'Michael', 'Merrithew', 'MERIT TRAVEL GROUP INC', '145 King St W', 'Toronto', 'ON', 'M5H 1J8', ' ', '4163688558', '4169559869', 'golf@merit.ca', ' ', 'PGY', 11172),
+(914, 'Michael', 'Merrithew', 'GOLF HOLIDAYS', '145 King St W', 'Toronto', 'ON', 'M5H 1J8', ' ', '4163688558', '4169559869', 'golf@merit.ca', ' ', 'PGY', 11172),
+(938, 'Hugo', 'Maggi', 'GRUPO TACA', '1235 Bay St', 'Toronto', 'ON', 'M5R 3K4', ' ', '4169682222', '4169680363', ' ', 'http://www.grupotaca.com', 'PGY', 11174),
+(939, NULL, NULL, 'LACSA AIRLINES OF COSTA RICA', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 11174),
+(942, 'Loreen', 'Walter', 'DKM COACH LINES LTD', '1908 Spruce Hill Rd', 'Pickering', 'ON', 'L1V 1S7', ' ', '4164104680', '4168313384', 'dkmcl@home.com', 'http://www.dkmtravel.com', 'PGY', 11237),
+(943, NULL, NULL, 'CASINO DIRECT', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 11237),
+(957, NULL, NULL, 'ALITOURS CAR RENTAL BY HERTZ', ' ', ' ', ' ', ' ', ' ', NULL, NULL, ' ', ' ', NULL, 11156);
+INSERT INTO `suppliercontacts` (`SupplierContactId`, `SupConFirstName`, `SupConLastName`, `SupConCompany`, `SupConAddress`, `SupConCity`, `SupConProv`, `SupConPostal`, `SupConCountry`, `SupConBusPhone`, `SupConFax`, `SupConEmail`, `SupConURL`, `AffiliationId`, `SupplierId`) VALUES
+(958, 'Tony', 'Veca', 'ALITOURS INTERNATIONAL INC.', '792 St. Clair Ave W', 'Toronto', 'ON', 'M6C 1B6', ' ', '4166537751', '4166539010', 'alitours@baxter.net', 'http://www.alitours.com', 'PGY', 11156),
+(1113, 'Cindy', ' Harris', 'TRANS SIBERIAN RAILWAY', '1847 W 4th Ave', 'Vancouver', 'BC', 'V6J 1M4', ' ', '6046061830', '6047378854', 'adventure@freshtracks.com', 'http://www.goactivevacations.com', 'PGY', 11549),
+(1114, 'Cindy', ' Harris', 'GO ACTIVE VACATIONS', '1847 W 4th Ave', 'Vancouver', 'BC', 'V6J 1M4', ' ', '6046061830', '6047378854', 'team@goactivevacations.com', 'http://www.goactivevacations.com', 'PGY', 11549),
+(1115, 'Cindy', ' Harris', 'FRESH TRACKS CANADA', '1847 W 4th Ave', 'Vancouver', 'BC', 'V6J 1M4', ' ', '6047378743', '6047185110', 'adventure@freshtracks.com', 'http://www.goactivevacations.com', 'PGY', 11549),
+(1126, 'Bashiruddin', 'Ahmed', 'SAAAI TRAVEL INC.', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149311100', '5149311200', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657),
+(1127, 'Bashiruddin', 'Ahmed', 'BIMAN BANGLADESH AIRLINES', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149311100', '5149311200', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657),
+(1128, 'Bashiruddin', 'Ahmed', 'SAAAI TRAVEL', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149314070', '5149339992', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657),
+(1129, 'Bashiruddin', 'Ahmed', 'S.I. TRAVELS', '1410 Guy St', 'Montreal', 'PQ', 'H3H 2L7', ' ', '5149314070', '5149339992', 'saaaitravel@sympatico.ca', ' ', 'PGY', 12657),
+(1158, 'Kristin', 'Karbach', 'A & TIC SUPPORT INC.', '80 John Stiver Cres', 'Markham', 'ON', 'L3R 9B3', ' ', '9059439763', '9059439764', 'elcotour-na@netcom.ca', ' ', 'PGY', 13596),
+(1159, 'Kristin', 'Karbach', 'ELCOTOUR - BRAZIL TOUR SPECIALISTS', '80 John Stiver Cres', 'Markham', 'ON', 'L3R 9B3', ' ', '9059439763', '9059439764', 'elcotour-na@netcom.ca', ' ', 'PGY', 13596);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suppliers`
+--
+
+CREATE TABLE `suppliers` (
+  `SupplierId` int(11) NOT NULL,
+  `SupName` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`SupplierId`, `SupName`) VALUES
+(69, 'NEW CONCEPTS - CANADA'),
+(80, 'CHAT / TRAVELINE'),
+(100, 'AVILA TOURS INC.'),
+(317, 'BLYTH & COMPANY TRAVEL'),
+(323, 'COMPAGNIA ITALIANA TURISM'),
+(796, 'CYPRUS AIRWAYS LTD'),
+(828, 'DER TRAVEL SERVICE LTD'),
+(845, 'DISCOVER THE WORLD MARKET'),
+(908, 'ELITE ORIENT TOURS INC.'),
+(1005, 'ENCORE CRUISES'),
+(1028, 'EUROP-AUTO-VACANCES/HOLIDAYS'),
+(1040, 'EXECUTIVE SUITES'),
+(1205, 'GOLDMAN MARKETING'),
+(1406, 'EUROCRUISES INC.'),
+(1416, 'THE HOLIDAY NETWORK'),
+(1425, 'HOLLAND AMERICA LINE WEST'),
+(1542, 'INSIGHT VACATIONS CANADA'),
+(1620, 'INTAIR VACATIONS'),
+(1634, 'ISLANDS IN THE SUN CRUISE'),
+(1685, 'GOWAY TRAVEL LTD.'),
+(1713, 'JETPACIFIC HOLIDAYS INC'),
+(1766, 'KLM ROYAL DUTCH AIRLINES'),
+(1859, 'LOTUS HOLIDAYS'),
+(1918, 'MARKET SQUARE TOURS'),
+(2140, 'NAGEL TOURS LTD'),
+(2386, 'PAVLIK TRAVEL GROUP'),
+(2466, 'PLANET FRANCE/PLANET EURO'),
+(2588, 'UNIQUE VACATIONS (CANADA)'),
+(2592, 'ESPRIT/SERVICENTRE HOLIDAYS'),
+(2827, 'SOUTH WIND TOURS LTD.'),
+(2938, 'SUN & LEISURE TRAVEL CORP.'),
+(2987, 'TOURCAN VACATIONS INC'),
+(2998, 'ALIOTOURS'),
+(3119, 'MEDIAN AVIATION RESOURCES'),
+(3212, 'TREK HOLIDAYS'),
+(3273, 'MARKETING AHEAD'),
+(3376, 'MARTINAIR SERVICES'),
+(3549, 'BONANZA HOLIDAYS'),
+(3576, 'BLUE DANUBE HOLIDAYS'),
+(3589, 'G.A.P ADVENTURES INC.'),
+(3600, 'GOLDEN ESCAPES'),
+(3622, 'CHINA TRAVEL SERVICE (CAN)'),
+(3633, 'VIP INTERNATIONAL'),
+(3650, 'CUNARD LINES'),
+(4196, 'TRAVEL STUDIO'),
+(5081, 'ANHEUSER-BUSCH ADVENTURE'),
+(5228, 'THE RMR GROUP INC'),
+(5492, 'SKYWAYS INTERNATIONAL'),
+(5777, 'TRAVEL BY RAIL'),
+(5796, 'REPWORLD INC.'),
+(5827, 'RESORT MARKETING INC'),
+(5857, 'TOURS OF EXPLORATION'),
+(6346, 'PASSAGES EXPEDITIONS'),
+(6505, 'TRADE WINDS ASSOCIATES'),
+(6550, 'LTI TOURS'),
+(6873, 'BIMAN BANGLADESH AIRLINES'),
+(7244, 'WORLD ACCESS MARKETING'),
+(7377, 'MAJESTIC TOURS'),
+(8089, 'EXCLUSIVE TOURS'),
+(8837, 'SCANDITOURS'),
+(9285, 'JTB INTERNATIONAL (CANADA)'),
+(9323, 'BONAVE'),
+(9396, 'SKYLINK TICKET CENTRE'),
+(9766, 'KINTETSU INTERNATIONAL'),
+(9785, 'MANDITOURS INTL INC.'),
+(11156, 'ALITOURS INTERNATIONAL INC.'),
+(11160, 'TOTAL ADVANTAGE TRAVEL'),
+(11163, 'D-TOUR MARKETING'),
+(11172, 'MERIT TRAVEL GROUP INC.'),
+(11174, 'GRUPO TACA'),
+(11237, 'DKM COACH LINES LTD'),
+(11549, 'GO ACTIVE VACATIONS'),
+(12657, 'SAAAI TRAVEL INC.'),
+(13596, 'A & TIC SUPPORT INC.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `triptypes`
+--
+
+CREATE TABLE `triptypes` (
+  `TripTypeId` varchar(1) NOT NULL,
+  `TTName` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `triptypes`
+--
+
+INSERT INTO `triptypes` (`TripTypeId`, `TTName`) VALUES
+('B', 'Business                 '),
+('G', 'Group                    '),
+('L', 'Leisure                  ');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `affiliations`
+--
+ALTER TABLE `affiliations`
+  ADD PRIMARY KEY (`AffilitationId`);
+
+--
+-- Indexes for table `agencies`
+--
+ALTER TABLE `agencies`
+  ADD PRIMARY KEY (`AgencyId`);
+
+--
+-- Indexes for table `agents`
+--
+ALTER TABLE `agents`
+  ADD PRIMARY KEY (`AgentId`),
+  ADD UNIQUE KEY `AgtUserId` (`AgtUserId`);
+
+--
+-- Indexes for table `bookingdetails`
+--
+ALTER TABLE `bookingdetails`
+  ADD PRIMARY KEY (`BookingDetailId`),
+  ADD KEY `Agency_Fee_Code` (`FeeId`),
+  ADD KEY `BookingId` (`BookingId`),
+  ADD KEY `BookingsBookingDetails` (`BookingId`),
+  ADD KEY `ClassesBookingDetails` (`ClassId`),
+  ADD KEY `Dest_ID` (`RegionId`),
+  ADD KEY `DestinationsBookingDetails` (`RegionId`),
+  ADD KEY `FeesBookingDetails` (`FeeId`),
+  ADD KEY `Products_SuppliersBookingDetails` (`ProductSupplierId`),
+  ADD KEY `ProductSupplierId` (`ProductSupplierId`);
+
+--
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`BookingId`),
+  ADD KEY `BookingsCustomerId` (`CustomerId`),
+  ADD KEY `CustomersBookings` (`CustomerId`),
+  ADD KEY `PackageId` (`PackageId`),
+  ADD KEY `PackagesBookings` (`PackageId`),
+  ADD KEY `TripTypesBookings` (`TripTypeId`);
+
+--
+-- Indexes for table `classes`
+--
+ALTER TABLE `classes`
+  ADD PRIMARY KEY (`ClassId`);
+
+--
+-- Indexes for table `creditcards`
+--
+ALTER TABLE `creditcards`
+  ADD PRIMARY KEY (`CreditCardId`),
+  ADD KEY `CustomersCreditCards` (`CustomerId`);
+
+--
+-- Indexes for table `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`CustomerId`),
+  ADD UNIQUE KEY `CustUserName` (`CustUserName`),
+  ADD KEY `EmployeesCustomers` (`AgentId`);
+
+--
+-- Indexes for table `customers_rewards`
+--
+ALTER TABLE `customers_rewards`
+  ADD PRIMARY KEY (`CustomerId`,`RewardId`),
+  ADD KEY `CustomersCustomers_Rewards` (`CustomerId`),
+  ADD KEY `RewardsCustomers_Rewards` (`RewardId`);
+
+--
+-- Indexes for table `fees`
+--
+ALTER TABLE `fees`
+  ADD PRIMARY KEY (`FeeId`);
+
+--
+-- Indexes for table `packages`
+--
+ALTER TABLE `packages`
+  ADD PRIMARY KEY (`PackageId`);
+
+--
+-- Indexes for table `packages_products_suppliers`
+--
+ALTER TABLE `packages_products_suppliers`
+  ADD PRIMARY KEY (`PackageId`,`ProductSupplierId`),
+  ADD KEY `PackagesPackages_Products_Suppliers` (`PackageId`),
+  ADD KEY `Products_SuppliersPackages_Products_Suppliers` (`ProductSupplierId`),
+  ADD KEY `ProductSupplierId` (`ProductSupplierId`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`ProductId`),
+  ADD KEY `ProductId` (`ProductId`);
+
+--
+-- Indexes for table `products_suppliers`
+--
+ALTER TABLE `products_suppliers`
+  ADD PRIMARY KEY (`ProductSupplierId`),
+  ADD KEY `Product_Supplier_ID` (`SupplierId`),
+  ADD KEY `ProductId` (`ProductId`),
+  ADD KEY `ProductsProducts_Suppliers1` (`ProductId`),
+  ADD KEY `ProductSupplierId` (`ProductSupplierId`),
+  ADD KEY `SuppliersProducts_Suppliers1` (`SupplierId`);
+
+--
+-- Indexes for table `regions`
+--
+ALTER TABLE `regions`
+  ADD PRIMARY KEY (`RegionId`);
+
+--
+-- Indexes for table `rewards`
+--
+ALTER TABLE `rewards`
+  ADD PRIMARY KEY (`RewardId`);
+
+--
+-- Indexes for table `suppliercontacts`
+--
+ALTER TABLE `suppliercontacts`
+  ADD PRIMARY KEY (`SupplierContactId`),
+  ADD KEY `AffiliationsSupCon` (`AffiliationId`),
+  ADD KEY `SuppliersSupCon` (`SupplierId`);
+
+--
+-- Indexes for table `suppliers`
+--
+ALTER TABLE `suppliers`
+  ADD PRIMARY KEY (`SupplierId`),
+  ADD KEY `SupplierId` (`SupplierId`);
+
+--
+-- Indexes for table `triptypes`
+--
+ALTER TABLE `triptypes`
+  ADD PRIMARY KEY (`TripTypeId`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `agencies`
+--
+ALTER TABLE `agencies`
+  MODIFY `AgencyId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `agents`
+--
+ALTER TABLE `agents`
+  MODIFY `AgentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `bookingdetails`
+--
+ALTER TABLE `bookingdetails`
+  MODIFY `BookingDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1304;
+--
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `BookingId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1304;
+--
+-- AUTO_INCREMENT for table `creditcards`
+--
+ALTER TABLE `creditcards`
+  MODIFY `CreditCardId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=280;
+--
+-- AUTO_INCREMENT for table `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `CustomerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
+--
+-- AUTO_INCREMENT for table `packages`
+--
+ALTER TABLE `packages`
+  MODIFY `PackageId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `ProductId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `products_suppliers`
+--
+ALTER TABLE `products_suppliers`
+  MODIFY `ProductSupplierId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

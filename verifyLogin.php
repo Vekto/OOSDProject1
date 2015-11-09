@@ -4,7 +4,7 @@
 include("Functions.php");
 
 $username = $_REQUEST["username"];
-$password = $_REQUEST["password"];
+$password = md5($_REQUEST["password"]);
 
 $mysqli= agencyConnect();
 
@@ -15,7 +15,7 @@ print_r($result);
 {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        if ($password == $row["CustPassword"])
+        if (($password) == $row["CustPassword"])
         {
           print("Password is match");
         }
