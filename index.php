@@ -21,11 +21,12 @@ $_SESSION["lastpage"] = "index.php";
 
  ?>
 
-	<div class="container">
+	<div class="container"id="main_container" style="padding-top: 60px; width:960px;
+  margin: 0 auto; ">
 
 		<div class="content">
 
-			<img src="images/1.jpg" width="960px" />
+			<img src="images/banner2.jpg" width="960px" />
 
 
 

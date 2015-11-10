@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2015 at 04:43 PM
+-- Generation Time: Nov 09, 2015 at 09:19 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `travelexperts`
 --
+CREATE DATABASE IF NOT EXISTS `travelexperts` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `travelexperts`;
 
 -- --------------------------------------------------------
 
