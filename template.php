@@ -16,8 +16,7 @@
   	include("header.php");
 
  ?> 	
-	<div id="main_container" style="padding-top: 90px; padding-bottom: 20px; width:960px;
-	margin: 0 auto; ">
+	<div id="main_container">
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
 
 
