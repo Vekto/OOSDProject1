@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (isset($_SESSION["loggedin"]))
+{
+  header("Location: index.php");
+}
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -13,8 +21,8 @@
 
 <body>
 <?php
-  	include("header.php");
-	$title = "Register - Travel Experts"
+	include("header.php");
+	$title = "Register - Travel Experts";
 ?>
 
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
@@ -28,15 +36,16 @@
 		<input type="password" name="password" value="" />
 
 		<input type="submit" value="Log in" />
+    <?php //chad//
+      if (isset($_SESSION["message"]))
+      {
+        print("<div style='color:red'>" . $_SESSION["message"] . "</div>");
+        unset($_SESSION["message"]);
+      } ?>
 	</form>
 
 	<!--WRITE YOUR CODE ABOVE THIS LINE-->
-
-
-
 	<?php
-
-
 	  include("footer.php");
     ?>
 

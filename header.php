@@ -7,7 +7,6 @@
 <!--[if lt IE 9]>
   <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
   <![endif]-->
-
 <title>Fixed Header</title>
 </head>
 <body>
@@ -32,7 +31,12 @@
 		</div>
 	</div>
 
-
+	<?php
+	if (isset($_SESSION["loggedin"]))
+	{
+		print("<script>document.getElementById('loginLink').innerHTML = 'Welcome'</script>");
+	}
+	?>
 </body>
 
 </html>

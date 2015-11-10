@@ -2,28 +2,38 @@
 
 //Chad//
 include("Functions.php");
+SESSION_START();
+$username = trim($_REQUEST["username"]);
+$password = md5(trim($_REQUEST["password"]));
+$link= agencyConnect();
 
-$username = $_REQUEST["username"];
-$password = md5($_REQUEST["password"]);
-
-$mysqli= agencyConnect();
-
-$sql = "SELECT `CustPassword`, 'CustUserName' FROM `customers` WHERE `CustUserName` = '$username'";
-$result = $mysqli->query($sql);
-print_r($result);
-  if ($result->num_rows > 0)
+$sql = "SELECT `CustPassword` FROM `customers` WHERE `CustUserName` = ?";
+$stmt = $link->prepare($sql);
+$stmt->bind_param("s",$username);
+$stmt->execute();
+$stmt->bind_result($dbpwd);
+$stmt->fetch();
+print($dbpwd);
+if ($dbpwd == $password)
 {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        if (($password) == $row["CustPassword"])
-        {
-          print("Password is match");
-        }
-        else {
-            print("Invalid username/password");
-        }
+    //Login is okay, set session variables
+    $_SESSION["loggedin"] = "TRUE";
+    print("Worked");
+    if($_SESSION['lastpage'] == 'register.php')
+    {
+      header("Location: index.php");
     }
-  }
+    else
+    {
+    header("Location: " . $_SESSION['lastpage']);
+    }
+}
+else
+{
+  print_r("broke");
+    $_SESSION["message"] = "Invalid username/password";
+    header("Location: login.php" );
+}
 
 
 

@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION["lastpage"] = "index.php";
+?>
 <!DOCTYPE html>
 
 <html>
@@ -15,13 +19,13 @@
 <?php
   	include("header.php");
 
- ?> 	
-	
+ ?>
+
 	<div class="container">
 
 		<div class="content">
 
-			<img src="images/1.jpg" width="960px" />		
+			<img src="images/1.jpg" width="960px" />
 
 
 
@@ -31,7 +35,7 @@
 
 
 			<div id="images"
-				
+
 				<div class="article">
 					<header>London</header>
 					<content>
