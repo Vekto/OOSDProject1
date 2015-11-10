@@ -14,7 +14,7 @@
 		<div class="container">
 			<div class="logo">
 				<!--<h1><a href="#">Travel Experts</a></h1>-->
-				<img border="0" alt="Travel Experts" src="images/logo2.PNG" width="150" height="75">
+				<a href="index.php"><img border="0" alt="Travel Experts" src="images/logo2.PNG" width="150" height="75"></a>
 			</div>
 
 
