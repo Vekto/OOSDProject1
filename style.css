@@ -162,6 +162,7 @@ footer a:hover{
 #loginLink{
 	float: right;
 	font-size: 10pt;
+	visibility: hidden;
 }
 
 #CustRegForm{

@@ -80,7 +80,8 @@ session_start();
 
   <div class="container">
   <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
-
+    <fieldset>
+      <legend>Register</legend>
 		<label for="CustFirstName">First Name: </label>
 		<input type="text" name="CustFirstName" id="First Name" value="" /><br />
 
@@ -124,6 +125,7 @@ session_start();
 		<input type="password" name="password"id="password" value="" /><br />
 
 		<input type="submit" value="Register" />
+  </fieldset>
 	</form>
   </div>
 
