@@ -34,7 +34,7 @@
 	<?php
 	if (isset($_SESSION["loggedin"]))
 	{
-		print("<script>document.getElementById('loginLink').innerHTML = 'Welcome'</script>");
+		print("<script>document.getElementById('loginLink').innerHTML = 'Welcome " . $_SESSION['userfirstname'] . " " . $_SESSION['userlastname'] . "'</script>");
 	}
 	?>
 </body>

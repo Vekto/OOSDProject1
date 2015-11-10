@@ -16,9 +16,18 @@ $stmt->fetch();
 print($dbpwd);
 if ($dbpwd == $password)
 {
+  $link->close();
+  $link = agencyConnect();
     //Login is okay, set session variables
+    $sql = "SELECT CustFirstName, CustLastName FROM customers WHERE CustUserName = '$username'";
+    $result = $link->query($sql);
+    ;
+    $row = $result->fetch_array(MYSQLI_NUM);
+    {
+      $_SESSION["userfirstname"] = $row[0];
+      $_SESSION["userlastname"] = $row[1];
+    }
     $_SESSION["loggedin"] = "TRUE";
-    print("Worked");
     if($_SESSION['lastpage'] == 'register.php')
     {
       header("Location: index.php");
@@ -26,14 +35,14 @@ if ($dbpwd == $password)
     else
     {
     header("Location: " . $_SESSION['lastpage']);
-    }
+  }
 }
 else
 {
-  print_r("broke");
     $_SESSION["message"] = "Invalid username/password";
     header("Location: login.php" );
 }
+$link->close();
 
 
 
