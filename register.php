@@ -26,7 +26,7 @@ session_start();
 
         if (elements[i].value == ""){
           errorMessage += elements[i].id+"<br />";
-          alert(errorMessage);
+
         }
       }
 
@@ -42,17 +42,25 @@ session_start();
       function regExValidator(myForm){
         var emailRE = /^[a-z0-9_\.]+@([\-0-9a-z]+\.)+[a-z]{2,6}$/i;
       	var postalRE = /^[A-Z]\d[A-Z]?\d[A-Z]\d$/;
+        var count = 0
 
         if(!emailRE.test(myForm.CustEmail.value)){
 					alert("Invalid Email Format!");
 					myForm.CustEmail.focus();
-					return false;
+          count+=1;
+
 				}
 				if(!postalRE.test(myForm.CustPostal.value)){
 					alert("invalid postal Code");
 					myForm.CustPostal.focus();
-					return false;
+          count+=1;
+
 				}
+        if (count==0){
+          return true;
+        }else{
+          return false;
+        }
 
       }
 
@@ -71,7 +79,7 @@ session_start();
   </div>
 
   <div class="container">
-  <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return validator(this)">
+  <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
 
 		<label for="CustFirstName">First Name: </label>
 		<input type="text" name="CustFirstName" id="First Name" value="" /><br />
