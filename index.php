@@ -21,8 +21,7 @@ $_SESSION["lastpage"] = "index.php";
 
  ?>
 
-	<div class="container" id="main_container"style="padding-top: 90px; padding-bottom: 20px; width:960px;
-  margin: 0 auto; ">
+	<div id="main_container">
 
 		<div class="content">
 
@@ -35,7 +34,7 @@ $_SESSION["lastpage"] = "index.php";
 
 
 
-			<div id="images"
+			<div id="images">
 
 				<div class="article">
 					<header>London</header>
