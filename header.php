@@ -22,6 +22,7 @@
 				<a id="loginLink" visibility="hidden" href="login.php">Login/Register</a>
 				<ul>
 					<li><a href="index.php">Home</a></li>
+					<li><a href="travelPackages.php">Packages</a></li>
 					<li id="logIn"><a  href="login.php" >Login</a></li>
 					<li id="logOut" style="display:none;"><a  href="logout.php" >Log Out</a></li>
 					<li><a href="contact.php">Contact</a></li>
@@ -31,7 +32,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 
 	<?php
 	if (isset($_SESSION["loggedin"]))

@@ -96,6 +96,37 @@
     $htmlString .= "</select>";
     return ($htmlString);
   }
+  //generates some javascript that will recieve the array of travel package data.
+  function getJsPkgArray(){
+    $pkgArray = getTravelPackages();
+    $i=0;
+    $script = "";
+    $script .= "<script>";
+    $script .= "var pkgArray = new Array();";
+    for($i;$i<count($pkgArray);$i++){
+      $script.="pkgArray[$i] = {};";
+        foreach($pkgArray[$i] as $k=>$v){
+          $script .= "pkgArray[$i].$k = '$v';";
+        }
+      }
+      $script .= "</script>";
+      return $script;
+  }
+  //pulls relevant fields from the packages table and stores it in an array of associative arrays.
+  function getTravelPackages(){
+    $link = agencyConnect();
+    $sql = "SELECT `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgImageUrl` FROM `packages`";
+    $i = 0;
+    $result = $link->query($sql);
+    $pkgArray = array();
+    for($i=0;$i<$result->num_rows;$i++){
+      while($row = mysqli_fetch_assoc($result)) {
+       $pkgArray[] = $row;
+      }
+     }
+     $link->close();
+     return $pkgArray;
+  }
 
   //A function to delete agents.
   function deleteAgent($agentId){
