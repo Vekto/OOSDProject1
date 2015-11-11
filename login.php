@@ -41,9 +41,9 @@ if (isset($_SESSION["loggedin"]))
 
 		<input type="submit" value="Log in" />
 
- </fieldset>
-      New User? <a href="register.php">Register Here</a>
-	</form>
+ 		</fieldset>
+      	New User? <a href="register.php">Register Here</a>
+		</form>
     <?php //chad//
       if (isset($_SESSION["message"]))
       {

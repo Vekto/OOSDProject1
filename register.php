@@ -71,6 +71,7 @@ session_start();
   	include("header.php");
 	  $title = "Register - Travel Experts"
 ?>
+<div id="main_container">
 
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
 
@@ -81,21 +82,21 @@ session_start();
   <div class="container">
   <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
     <fieldset>
-      <legend>Register</legend>
+      <legend>Customer Registration</legend> </br>
 		<label for="CustFirstName">First Name: </label>
-		<input type="text" name="CustFirstName" id="First Name" value="" /><br />
+		<input type="text" name="CustFirstName" id="First Name" value="" /><br /><br />
 
 		<label for="CustLastName">Last Name: </label>
-		<input type="text" name="CustLastName" id="Last Name"value="" /><br />
+		<input type="text" name="CustLastName" id="Last Name"value="" /><br /><br />
 
 		<label for="CustAddress">Address: </label>
-		<input type="text" name="CustAddress" id="Address" value="" /><br />
+		<input type="text" name="CustAddress" id="Address" value="" /><br /><br />
 
 		<label for="CustCity">City: </label>
-		<input type="text" name="CustCity" id="City" value="" /><br />
+		<input type="text" name="CustCity" id="City" value="" /><br /><br />
 
 		<label for="CustProv">Province/State: </label>
-		<input type="text" name="CustProv" id="Province/state" value="" /><br />
+		<input type="text" name="CustProv" id="Province/state" value="" /><br /><br />
 
     <label for="CustCountry">Country: </label>
     <select name="CustCountry">
@@ -104,30 +105,33 @@ session_start();
       <option value="us">United States</option>
       <option value="mx">Mexico</option>
       <option value="uk">United Kingdom</option>
-    </select><br />
+    </select><br /><br />
 
 		<label for="CustPostal">Postal Code: </label>
-		<input type="text" name="CustPostal" id="Postal Code" placeholder="ex. t2t-2m7" value="" /><br />
+		<input type="text" name="CustPostal" id="Postal Code" placeholder="ex. t2t-2m7" value="" /><br /><br />
 
 		<label for="CustHomePhone">Home Phone: </label>
-		<input type="text" name="CustHomePhone" id="Home Phone" value="" /><br />
+		<input type="text" name="CustHomePhone" id="Home Phone" value="" /><br /><br />
 
 		<label for="CustBusPhone">Business Phone: </label>
-		<input type="text" name="CustBusPhone" id="Business Phone" value="" /><br />
+		<input type="text" name="CustBusPhone" id="Business Phone" value="" /><br /><br />
 
     <label for="CustEmail">Email: </label>
-    <input type="text" name="CustEmail" id="Email" value="" /><br />
+    <input type="text" name="CustEmail" id="Email" value="" /><br /><br />
 
 		<label for="username">Username: </label>
-		<input type="text" name="username" id="Username" value="" /><br />
+		<input type="text" name="username" id="Username" value="" /><br /><br />
 
 		<label for="password">Password: </label>
-		<input type="password" name="password"id="password" value="" /><br />
+		<input type="password" name="password"id="password" value="" /><br /><br />
 
 		<input type="submit" value="Register" />
+        <input type="submit" value="Reset" />
+
   </fieldset>
-	</form>
+	</form> 
   </div>
+</div>
 
 
 

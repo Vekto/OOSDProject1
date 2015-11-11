@@ -184,9 +184,6 @@ footer a:hover{
 }
 
 #CustRegForm{
-position:relative;
-top:80px;
-text-align: center;
 }
 
 /*DO NOT UNCOMMENT THE TWO LINES AS IT IS CAUSING THE FOOTER TO OVERLAP ON THE LOGIN PAGE - NEHA*/
