@@ -96,6 +96,22 @@
     $htmlString .= "</select>";
     return ($htmlString);
   }
+  function getSelect($field1, $field2, $table, $name)
+    {
+      $mysqli = agencyConnect();
+      $sql = "SELECT $field1, $field2 FROM $table";
+      $result = $mysqli->query($sql);
+
+      $selectString = "<select name='$name'>";
+      $selectString .= "<option value=''>Select</option>";
+      while ($row = $result->fetch_array(MYSQLI_NUM))
+      {
+        $selectString .= "<option value='$row[0]'>$row[1] </option>";
+      }
+      $selectString .="</Select>";
+      $mysqli->close();
+      return $selectString;
+    }
 
   //generates some javascript that will recieve the array of travel package data.
   function getJsPkgArray(){
