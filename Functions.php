@@ -11,7 +11,7 @@
     if ($link->connect_errno){
       echo "Failed to connect: " . $link->connect_error;
     }else{
-      print("Connect Successful!<br />");
+    //  print("Connect Successful!<br />");
       return $link;
     }
   }
@@ -63,7 +63,7 @@
  function updateTable($argTable, $argArray, $pKey)
  {
    array_pop($argArray);
-     $link = connectDatabase();
+     $link = agencyConnect();
      $sql = "UPDATE $argTable SET ";
      $keyvals = array();
      foreach($argArray as $k =>$v)
@@ -96,6 +96,7 @@
     $htmlString .= "</select>";
     return ($htmlString);
   }
+
   //generates some javascript that will recieve the array of travel package data.
   function getJsPkgArray(){
     $pkgArray = getTravelPackages();
@@ -127,6 +128,24 @@
      $link->close();
      return $pkgArray;
   }
+
+  function getSelect($field1, $field2, $table, $name)
+    {
+      $mysqli = agencyConnect();
+      $sql = "SELECT $field1, $field2 FROM $table";
+      $result = $mysqli->query($sql);
+
+      $selectString = "<select name='$name'>";
+      $selectString .= "<option value=''>Select</option>";
+      while ($row = $result->fetch_array(MYSQLI_NUM))
+      {
+        $selectString .= "<option value='$row[0]'>$row[1] </option>";
+      }
+      $selectString .="</Select>";
+      $mysqli->close();
+      return $selectString;
+    }
+
 
   //A function to delete agents.
   function deleteAgent($agentId){
