@@ -43,13 +43,13 @@
   .pkgDisplay{
     display:inline-block;
     position:relative;
-    top:70px;
+    top:90px;
     padding-bottom: 40px;
     margin-bottom: 40px;
 
   }
     #pkgImageContainer{
-
+      margin-bottom:60px;
 
 
     }
