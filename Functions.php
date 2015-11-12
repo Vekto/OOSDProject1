@@ -11,7 +11,7 @@
     if ($link->connect_errno){
       echo "Failed to connect: " . $link->connect_error;
     }else{
-      print("Connect Successful!<br />");
+    //  print("Connect Successful!<br />");
       return $link;
     }
   }
@@ -63,7 +63,7 @@
  function updateTable($argTable, $argArray, $pKey)
  {
    array_pop($argArray);
-     $link = connectDatabase();
+     $link = agencyConnect();
      $sql = "UPDATE $argTable SET ";
      $keyvals = array();
      foreach($argArray as $k =>$v)
@@ -97,20 +97,38 @@
     return ($htmlString);
   }
 
-  //A function to delete agents.
-  function deleteAgent($agentId){
-    include_once('testingVars.php');
-    $link = agencyConnect();
-    $sql = "DELETE FROM agents WHERE AgentId=$agentId";
-    $result = mysqli_query($link,$sql);
-    mysqli_close($link);
-    if ($result){
-      print($deleteSuccess);
-    }else{
-      print($deleteFail);
-    }
-    return $result;
+  //generates some javascript that will recieve the array of travel package data.
+  function getJsPkgArray(){
+    $pkgArray = getTravelPackages();
+    $i=0;
+    $script = "";
+    $script .= "<script>";
+    $script .= "var pkgArray = new Array();";
+    for($i;$i<count($pkgArray);$i++){
+      $script.="pkgArray[$i] = {};";
+        foreach($pkgArray[$i] as $k=>$v){
+          $script .= "pkgArray[$i].$k = '$v';";
+        }
+      }
+      $script .= "</script>";
+      return $script;
   }
+  //pulls relevant fields from the packages table and stores it in an array of associative arrays.
+  function getTravelPackages(){
+    $link = agencyConnect();
+    $sql = "SELECT `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgImageUrl` FROM `packages`";
+    $i = 0;
+    $result = $link->query($sql);
+    $pkgArray = array();
+    for($i=0;$i<$result->num_rows;$i++){
+      while($row = mysqli_fetch_assoc($result)) {
+       $pkgArray[] = $row;
+      }
+     }
+     $link->close();
+     return $pkgArray;
+  }
+<<<<<<< HEAD
  <?php
 //
 //  Contructs appropriate SQL statements to query the database.
@@ -233,11 +251,18 @@
      $link->close();
      return $pkgArray;
   }
+=======
+
+>>>>>>> origin/master
   function getSelect($field1, $field2, $table, $name)
     {
       $mysqli = agencyConnect();
       $sql = "SELECT $field1, $field2 FROM $table";
       $result = $mysqli->query($sql);
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
       $selectString = "<select name='$name'>";
       $selectString .= "<option value=''>Select</option>";
       while ($row = $result->fetch_array(MYSQLI_NUM))
@@ -248,6 +273,11 @@
       $mysqli->close();
       return $selectString;
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
     //A function to delete agents.
     function deleteAgent($agentId){
       include_once('testingVars.php');
@@ -262,6 +292,7 @@
       }
       return $result;
     }
+<<<<<<< HEAD
 
   // Adds a single row into a specified table (customer).
   function addCustomer($newRow, $newTable="customer"){
@@ -284,4 +315,6 @@
     mysqli_close($link);
     return($i);
   }
+=======
+>>>>>>> origin/master
 ?>

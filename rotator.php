@@ -9,7 +9,7 @@
 <script type="text/javascript">
 var i = 0;
 var path = new Array();
- 
+
 // LIST OF IMAGES
 path[0] = "1.png";
 path[1] = "2.png";
@@ -19,11 +19,11 @@ function swapImage()
 {
    document.slide.src = path[i];
 
-   if(i < path.length - 1) 
+   if(i < path.length - 1)
    {
-   	i++; 
+   	i++;
    }
-   else 
+   else
    {
    	i = 0;
    }
@@ -34,7 +34,7 @@ function swapImage()
 </head>
 
 <body onLoad="swapImage()">
-<div id="container">	
+<div id="pkgContainer">	
 		<img width="800" height="400" name="slide" src="1.png"  />
 </div>
 
