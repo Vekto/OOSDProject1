@@ -80,9 +80,10 @@ session_start();
   </div>
 
   <div class="container">
-  <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
+  <form action="reghandler.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
     <fieldset>
       <legend>Customer Registration</legend> </br>
+	
 		<label for="CustFirstName">First Name: </label>
 		<input type="text" name="CustFirstName" id="First Name" value="" /><br /><br />
 
@@ -97,18 +98,18 @@ session_start();
 
 		<label for="CustProv">Province/State: </label>
 		<input type="text" name="CustProv" id="Province/state" value="" /><br /><br />
-
-    <label for="CustCountry">Country: </label>
-    <select name="CustCountry">
-      <option>Select a Country</option>
-      <option value="ca">Canada</option>
-      <option value="us">United States</option>
-      <option value="mx">Mexico</option>
-      <option value="uk">United Kingdom</option>
-    </select><br /><br />
-
+	
 		<label for="CustPostal">Postal Code: </label>
 		<input type="text" name="CustPostal" id="Postal Code" placeholder="ex. t2t-2m7" value="" /><br /><br />
+
+		<label for="CustCountry">Country: </label>
+		<select name="CustCountry">
+		  <option>Select a Country</option>
+		  <option value="ca">Canada</option>
+		  <option value="us">United States</option>
+		  <option value="mx">Mexico</option>
+		  <option value="uk">United Kingdom</option>
+		</select><br /><br />
 
 		<label for="CustHomePhone">Home Phone: </label>
 		<input type="text" name="CustHomePhone" id="Home Phone" value="" /><br /><br />
@@ -116,20 +117,20 @@ session_start();
 		<label for="CustBusPhone">Business Phone: </label>
 		<input type="text" name="CustBusPhone" id="Business Phone" value="" /><br /><br />
 
-    <label for="CustEmail">Email: </label>
-    <input type="text" name="CustEmail" id="Email" value="" /><br /><br />
+		<label for="CustEmail">Email: </label>
+		<input type="text" name="CustEmail" id="Email" value="" /><br /><br />
 
-		<label for="username">Username: </label>
-		<input type="text" name="username" id="Username" value="" /><br /><br />
+		<label for="CustUsername">Username: </label>
+		<input type="text" name="CustUsername" id="Username" value="" /><br /><br />
 
-		<label for="password">Password: </label>
-		<input type="password" name="password"id="password" value="" /><br /><br />
+		<label for="CustPassword">Password: </label>
+		<input type="password" name="CustPassword" id="Password" value="" /><br /><br />
 
 		<input type="submit" value="Register" />
         <input type="submit" value="Reset" />
 
-  </fieldset>
-	</form> 
+	</fieldset>
+  </form> 
   </div>
 </div>
 
