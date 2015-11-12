@@ -16,7 +16,7 @@ session_start();
   <script>
     // customer registration form validation
     function validator(myForm){
-      var errorMessage = "<p>Oops! The following fields must be filled out:<br />";
+      var errorMessage = "<p id='title'>Oops! The following fields must be filled out:<br /><p id='errorMessage'>";
       var elements = myForm.elements;
 
       for (i=0; i<elements.length; i++){
@@ -30,7 +30,7 @@ session_start();
         }
       }
 
-      if (errorMessage == "<p>Oops! The following fields must be filled out:<br />"){
+      if (errorMessage == "<p id='title'>Oops! The following fields must be filled out:<br /><p id='errorMessage'>"){
         return true;
       }else{
             errorMessage += "</p>";
@@ -65,6 +65,19 @@ session_start();
       }
 
     </script>
+    <style>
+    #errorMessage{
+      position:absolute;
+      left: 475px;
+      top:30px;
+      color: red;
+    }
+
+    #title{
+      position:absolute;
+      left: 400px;
+    }
+    </style>
 </head>
 <body>
 <?php
@@ -76,12 +89,11 @@ session_start();
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
 
 	<!-- Form meant for user input to add entry into customer table in the database. -->
-  <div id="errorDisplay">
-  </div>
+
 
   <div class="container">
   <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
-    <fieldset>
+    <fieldset><div id="errorDisplay"></div>
       <legend>Customer Registration</legend> </br>
 		<label for="CustFirstName">First Name: </label>
 		<input type="text" name="CustFirstName" id="First Name" value="" /><br /><br />
@@ -129,7 +141,7 @@ session_start();
         <input type="submit" value="Reset" />
 
   </fieldset>
-	</form> 
+	</form>
   </div>
 </div>
 
