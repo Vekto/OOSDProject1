@@ -19,13 +19,14 @@ if ($dbpwd == $password)
   $link->close();
   $link = agencyConnect();
     //Login is okay, set session variables
-    $sql = "SELECT CustFirstName, CustLastName FROM customers WHERE CustUserName = '$username'";
+    $sql = "SELECT CustFirstName, CustLastName, CustomerId FROM customers WHERE CustUserName = '$username'";
     $result = $link->query($sql);
     ;
     $row = $result->fetch_array(MYSQLI_NUM);
     {
       $_SESSION["userfirstname"] = $row[0];
       $_SESSION["userlastname"] = $row[1];
+      $_SESSION["userid"] = $row[2];
     }
     $_SESSION["loggedin"] = "TRUE";
     if($_SESSION['lastpage'] == 'register.php')

@@ -145,6 +145,27 @@
       $mysqli->close();
       return $selectString;
     }
+    function cardSelect($key)
+      {
+        $mysqli = agencyConnect();
+        $sql = "SELECT CreditCardId, CCName, CCNumber, CCExpiry FROM creditcards WHERE CustomerId = '$key'";
+        $result = $mysqli->query($sql);
+
+        $selectString = "<select name='Cards'>";
+        $selectString .= "<option value=''>Select</option>";
+        while ($row = $result->fetch_array(MYSQLI_NUM))
+        {
+          $oldstring = $row[2];
+        $newstring = substr($oldstring, -4);
+        $oldExp = $row[3];
+        $newExp = substr($oldExp, 0, 10);
+          $selectString .= "<option value='$row[0]'>$row[1] ****$newstring EXP:$newExp </option>";
+        }
+        $selectString .="</Select>";
+        $mysqli->close();
+        return $selectString;
+      }
+
 
 
     //A function to delete agents.
