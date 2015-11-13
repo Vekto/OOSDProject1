@@ -93,11 +93,9 @@ session_start();
 
   <div class="container">
 
-  <form action="bouncer.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
-    <fieldset><div id="errorDisplay"></div>
 
   <form action="reghandler.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
-    <fieldset>
+    <fieldset><div id="errorDisplay"></div>
 
       <legend>Customer Registration</legend> </br>
 

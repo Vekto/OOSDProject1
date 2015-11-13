@@ -1,6 +1,7 @@
 <?php
 session_start();
-include("Functions.php")
+include("Functions.php");
+$_SESSION['lastpage'] = "Booking.php";
 ?>
 
 <!DOCTYPE html>

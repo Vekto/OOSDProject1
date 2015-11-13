@@ -184,5 +184,35 @@
     mysqli_close($link);
     return($i);
   }
+  function customerAdd($customer)
+  {
+     $a = $customer->getFirstName();
+     $b = $customer->getLastName();
+     $c = $customer->getAddress();
+     $d = $customer->getCity();
+     $e = $customer->getProv();
+     $f = $customer->getPostal();
+     $g = $customer->getCountry();
+     $h = $customer->getHomePhone();
+     $i = $customer->getBusPhone();
+     $j = $customer->getBusPhone();
+     $k = $customer->getUsername();
+     $l = md5($customer->getPassword());
+    $link = agencyConnect();
+    $sql = "INSERT INTO `customers`(`CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`, `CustUserName`, `CustPassword`) VALUES (?,?,?,?,?,?,?,?,?,?,'1',?,?)";
+    $stmt = $link->prepare($sql);
+    $stmt->bind_param("ssssssssssss", $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l);
+    $success = 1;
+    if (!$stmt->execute())
+    {
+      //print("Insert Failed: " . $link->error);
+      $success=0;
+    }
 
+
+
+    $link->close();
+    $_SESSION['message'] = "Successfully Registered!";
+    return $success;
+  }
 ?>
