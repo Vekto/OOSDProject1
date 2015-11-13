@@ -33,7 +33,7 @@ if (isset($_SESSION["loggedin"]))
 	<form action="verifyLogin.php" id="custLogin" method="post">
 		<fieldset>
 			<legend>User Login</legend>
-		<label for="username">Username: </label> 
+		<label for="username">Username: </label>
 		<input type="text" name="username" value="" /></br></br>
 
 		<label for="password">Password: </label>
@@ -50,7 +50,7 @@ if (isset($_SESSION["loggedin"]))
         print("<div style='color:red'>" . $_SESSION["message"] . "</div>");
         unset($_SESSION["message"]);
       } ?>
-     
+
 
 </div>
 

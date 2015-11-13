@@ -90,11 +90,11 @@ footer a:hover{
 
 #main_container{
 
-	padding-top: 90px; 
-	padding-bottom: 20px; 
+	padding-top: 90px;
+	padding-bottom: 20px;
 	width:960px;
 	height: auto;
-	margin: 0 auto; 
+	margin: 0 auto;
 
 
 }
@@ -177,10 +177,9 @@ footer a:hover{
 
 
 }
-#loginLink{
+#welcomeLink{
 	float: right;
 	font-size: 10pt;
-	visibility: hidden;
 }
 
 #CustRegForm{

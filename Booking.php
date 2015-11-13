@@ -89,6 +89,7 @@ $_SESSION['lastpage'] = "Booking.php";
       Return:<input type ="date" name ="return">date</input><br />
       Class:<?= getSelect('ClassId', 'ClassName', 'classes', "Class") ?><br />
       Destination: <?= getSelect('RegionId', 'RegionName', 'regions', "Regions") ?><br />
+
       Card: <?= cardSelect($_SESSION['userid']) ?><br />
       Number of Travelers:<input type="number" /><br />
       <input type="Submit" value="Book It!"/>
