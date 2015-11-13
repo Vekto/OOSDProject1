@@ -38,24 +38,6 @@
     return($i);
   }
 
-// updates an agents information
- // function updateAgent($agent){
- //    $result;
- //    $link = agencyConnect();
- //    $keyvals = array();
- //    $sql = "UPDATE agents SET ";
- //    foreach ($agent as $k => $v){
- //      $keyvals[] = "$k='$v'";
- //      }
- //    $setString = implode(", ", $keyvals);
- //    $sql .= $setString;
- //    $sql .= "WHERE AgentId=".$agent['AgentId'].";";
- //    print($sql);
- //    $result = mysqli_query($link,$sql);
- //    print($result);
- //    mysqli_close($link);
- //    return $result;
- //  }
 /*--Updates a table--------------------------------*/
 /*--Pass the function which table you are updating,*/
 /*--Followed by which Array you are wanting to use-*/
@@ -134,7 +116,6 @@
       $mysqli = agencyConnect();
       $sql = "SELECT $field1, $field2 FROM $table";
       $result = $mysqli->query($sql);
-
       $selectString = "<select name='$name'>";
       $selectString .= "<option value=''>Select</option>";
       while ($row = $result->fetch_array(MYSQLI_NUM))
@@ -145,7 +126,8 @@
       $mysqli->close();
       return $selectString;
     }
-    function cardSelect($key)
+
+  function cardSelect($key)
       {
         $mysqli = agencyConnect();
         $sql = "SELECT CreditCardId, CCName, CCNumber, CCExpiry FROM creditcards WHERE CustomerId = '$key'";
@@ -166,10 +148,8 @@
         return $selectString;
       }
 
-
-
     //A function to delete agents.
-    function deleteAgent($agentId){
+  function deleteAgent($agentId){
       include_once('testingVars.php');
       $link = agencyConnect();
       $sql = "DELETE FROM agents WHERE AgentId=$agentId";
@@ -182,4 +162,27 @@
       }
       return $result;
     }
+
+  // Adds a single row into a specified table (customer).
+  function addCustomer($newRow, $newTable="customer"){
+    include_once('testingVars.php');
+    $link = agencyConnect();
+    $sql;
+    $result;
+    $keys = array();
+    $values = array();
+    while(list($k,$v) = each($newRow)){
+        array_push($keys,$k);
+        array_push($values,$v);
+      }
+      $keys = implode("`, `",$keys);
+      $values = implode("', '",$values);
+      $sql = "INSERT INTO `travelexperts`.`$newTable` (`$keys`) VALUES ('$values');";
+      $result = mysqli_query($link,$sql);
+    ($result) ? $i=1 : $i=0;
+    ($result) ? print($addSuccess)  : print($addFail);
+    mysqli_close($link);
+    return($i);
+  }
+
 ?>
