@@ -198,3 +198,40 @@ footer a:hover{
 	position: relative;
 	top: 60px;
 }
+
+/* PACKAGES - DROPDOWN STYLES*/
+#package_wrapper {
+  width: 960px;
+  height: auto;
+}
+.block_content{
+	width: 800px;
+	height: 100px;
+	float: left;
+	display: block;
+	overflow: hidden;
+	position: relative;
+	margin: 0 4px 0 0;
+	background: cream;
+	border: 1px dotted black;
+}
+#block_common{
+	width: 800px;
+	height: 150px;
+	position: absolute;
+	display: block;
+	background: rgba(0,0,0,0.3);
+	-webkit-transition: top .3s ease-in-out;
+}
+.block_content:hover #block_common {
+	top: -140px;
+}
+.inner_content{
+	padding: 10px;
+	color: blue;
+}
+.inner_content h2{
+	margin: 0 0 5px 0; 
+	color: green; 
+	font-size: 14px;
+}
