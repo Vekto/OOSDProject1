@@ -19,7 +19,7 @@
 
 
 			<div class="nav">
-				<a id="loginLink" visibility="hidden" href="login.php">Login/Register</a>
+				<a id="welcomeLink" href="useraccountinfo.php">My Account</a>
 				<ul>
 					<li><a href="index.php">Home</a></li>
 					<li><a href="travelPackages.php">Packages</a></li>
@@ -37,8 +37,7 @@
 	<?php
 	if (isset($_SESSION["loggedin"]))
 	{
-		print("<script>document.getElementById('loginLink').innerHTML = 'Welcome " . $_SESSION['userfirstname'] . " " . $_SESSION['userlastname'] . "'</script>");
-		print("<script>document.getElementById('loginLink').style.visibility = 'visible' </script>");
+		print("<script>document.getElementById('welcomeLink').innerHTML = 'Welcome " . $_SESSION['userfirstname'] . " " . $_SESSION['userlastname'] . "'</script>");
 		print("<script>document.getElementById('logOut').style.display = 'initial' </script>");
 		print("<script>document.getElementById('logIn').style.display = 'none' </script>");
 

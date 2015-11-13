@@ -18,7 +18,7 @@
 		private $AgentId;
 		private $CustUsername;
 		private $CustPassword;
-		
+
 		public function __construct($custid, $fname, $lname, $addr, $city, $prov, $postal, $ctry, $hphone, $bphone, $email, $agtid, $uname, $pwd)
 		{
 			$this->CustomerId = $custid;
