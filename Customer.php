@@ -128,13 +128,13 @@
 		{
 			$this->CustEmail = $email;
 		}
-		public function getAgencyId()
+		public function getAgentId()
 		{
-			return $this->AgencyId;
+			return $this->AgentId;
 		}
-		public function setAgencyId($agtid)
+		public function setAgentId($agtid)
 		{
-			$this->AgencyId = $agtid;
+			$this->AgentId = $agtid;
 		}
 		public function getUsername()
 		{
@@ -157,6 +157,31 @@
 			//print("This is a customer.");
 			return "Customer: " . $CustFirstName . ", " . $CustLastName . ", " . $CustAddress . ", " . $CustProv . ", " . $CustCity . ", " . $CustPostal . ", " . $CustCountry . ", " . $CustHomePhone . ", " . $CustBusPhone . ", " . $CustEmail . ", " . $CustUsername . "<br />";
 		}
+		public function customerAdd()
+		{
+			 $a = $this->getFirstName();
+			 $b = $this->getLastName();
+			 $c = $this->getAddress();
+			 $d = $this->getCity();
+			 $e = $this->getProv();
+			 $f = $this->getPostal();
+			 $g = $this->getCountry();
+			 $h = $this->getHomePhone();
+			 $i = $this->getBusPhone();
+			 $j = $this->getBusPhone();
+			 $k = $this->getUsername();
+			 $l = md5($this->getPassword());
+			$link = agencyConnect();
+			$sql = "INSERT INTO `customers`(`CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`, `CustUserName`, `CustPassword`) VALUES (?,?,?,?,?,?,?,?,?,?,'1',?,?)";
+			print_r($sql);
+			$stmt = $link->prepare($sql);
+			$stmt->bind_param("ssssssssssss", $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l);
+			$success = 1;
+			if (!$stmt->execute())
+			{
+			  //print("Insert Failed: " . $link->error);
+			  $success=0;
+			}
+		}
 	}
-
 ?>

@@ -81,7 +81,7 @@ session_start();
 </head>
 <body>
 <?php
-  	include("header.php");
+  	//include("header.php");
 	  $title = "Register - Travel Experts"
 ?>
 <div id="main_container">
@@ -93,7 +93,6 @@ session_start();
 
   <div class="container">
 
-  
 
   <form action="reghandler.php" method="post" id="CustRegForm" onsubmit="return (validator(this) && regExValidator(this));">
     <fieldset><div id="errorDisplay"></div>
