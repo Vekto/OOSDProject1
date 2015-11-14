@@ -180,6 +180,11 @@ footer a:hover{
 #welcomeLink{
 	float: right;
 	font-size: 10pt;
+	padding-right:10px;
+	margin-bottom:-10px;
+	padding-top:5px;
+	margin-right:3px;
+
 }
 
 #CustRegForm{
@@ -230,7 +235,7 @@ footer a:hover{
 	color: blue;
 }
 .inner_content h2{
-	margin: 0 0 5px 0; 
-	color: green; 
+	margin: 0 0 5px 0;
+	color: green;
 	font-size: 14px;
 }
