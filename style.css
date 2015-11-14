@@ -239,3 +239,54 @@ footer a:hover{
 	color: green;
 	font-size: 14px;
 }
+
+/*TOGGLE*/
+
+.toggle-box {
+  display: none;
+}
+
+.toggle-box + label {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  line-height: 21px;
+  margin: 5px;
+  background: #F5DEB3;
+  height: 30px;
+  width: 400px;
+}
+
+.toggle-box + label + div {
+  display: none;
+  margin-bottom: 20px;
+}
+
+.toggle-box:checked + label + div {
+  display: block;
+  background: #ffffff;
+}
+
+/*.toggle-box + label:before {
+  background-color: #4F5150;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  color: #FFFFFF;
+  content: "View";
+  display: block;
+  float: left;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px;
+  margin-right: 5px;
+  text-align: center;
+  width: 40px;*/
+}
+
+.toggle-box:checked + label:before {
+  content: "\2212";
+}
+.holiday{
+	text-align: center;
+}
