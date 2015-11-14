@@ -4,7 +4,7 @@ $output = NULL;
 
 if (!isset($_SESSION["loggedin"]))
 {
-	$_SESSION["lastpage"] = "displaydata.php";
+	$_SESSION["lastpage"] = "useraccountinfo.php";
 	header("Location: login.php");
 }
 {

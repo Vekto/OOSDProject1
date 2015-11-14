@@ -2,7 +2,12 @@
 session_start();
 include("Functions.php");
 $_SESSION['lastpage'] = "Booking.php";
+$_SESSION['packageid'] = 2;
 ?>
+
+<?php
+
+ ?>
 
 <!DOCTYPE html>
 
@@ -82,22 +87,26 @@ $_SESSION['lastpage'] = "Booking.php";
   </div>
 
   <div class="container">
-  <form action="" method="post" id="BookingForm" >
+  <form action="confpage.php" target="_blank" method="post" id="BookingForm" >
     <fieldset>
       <legend>Customer Registration</legend> </br>
-      Departure:<input type ="date" name="departure">Date</input><br />
-      Return:<input type ="date" name ="return">date</input><br />
-      Class:<?= getSelect('ClassId', 'ClassName', 'classes', "Class") ?><br />
-      Destination: <?= getSelect('RegionId', 'RegionName', 'regions', "Regions") ?><br />
-
+      Number of Travelers:<input type="number" name="numTrav"/><br />
+      Class:<select name="class">
+              <option value = "0">Select a Class</option>
+              <option value="1">Economy</option>
+              <option value="1.5">Business</option>
+              <option value="2">First Class</option>
+            </select>
       Card: <?= cardSelect($_SESSION['userid']) ?><br />
-      Number of Travelers:<input type="number" /><br />
       <input type="Submit" value="Book It!"/>
   </fieldset>
 	</form>
   </div>
 </div>
+<?php
+  $package = getTravelPackages($_SESSION['packageid']);
 
+ ?>
 
 
 
