@@ -96,10 +96,13 @@
       return $script;
   }
   //pulls relevant fields from the packages table and stores it in an array of associative arrays.
-  function getTravelPackages(){
+  function getTravelPackages($pgkid=NULL){
     $link = agencyConnect();
     $sql = "SELECT `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgImageUrl` FROM `packages`";
     $i = 0;
+	if ($pkgid != NULL){
+		$sql .= "WHERE `PackageId` = $pkgid";
+	}
     $result = $link->query($sql);
     $pkgArray = array();
     for($i=0;$i<$result->num_rows;$i++){
