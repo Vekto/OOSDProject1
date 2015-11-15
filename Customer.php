@@ -173,14 +173,18 @@
 			 $l = md5($this->getPassword());
 			$link = agencyConnect();
 			$sql = "INSERT INTO `customers`(`CustFirstName`, `CustLastName`, `CustAddress`, `CustCity`, `CustProv`, `CustPostal`, `CustCountry`, `CustHomePhone`, `CustBusPhone`, `CustEmail`, `AgentId`, `CustUserName`, `CustPassword`) VALUES (?,?,?,?,?,?,?,?,?,?,'1',?,?)";
-			print_r($sql);
 			$stmt = $link->prepare($sql);
 			$stmt->bind_param("ssssssssssss", $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l);
 			$success = 1;
 			if (!$stmt->execute())
 			{
-			  //print("Insert Failed: " . $link->error);
+			  print("Insert Failed: " . $link->error);
 			  $success=0;
+			}
+			if ($success = 1){
+				return true;
+			}else{
+				return false;
 			}
 		}
 	}

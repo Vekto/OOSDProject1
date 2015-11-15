@@ -21,7 +21,7 @@
 	else
 	{
 		#The user will be redirected to the register page if they haven't been added to the database.
-	//	print("Registration failed. Call Tech Support.");
+		print("Registration failed. Call Tech Support.");
 		header("Location: register.php");
 	}
 ?>
