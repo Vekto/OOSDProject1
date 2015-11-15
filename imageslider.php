@@ -15,7 +15,9 @@
   var imagecount = 1;
   var total = 4;
 
-  function slide()
+  
+
+  function slideNext()
   {
   	var Image = document.getElementById('imag');
   	imagecount = imagecount + 1;
@@ -30,11 +32,31 @@
 		}
 
 		Image.src = "Images/imag" + imagecount + ".jpg";  //this is how images are stored in the Images folder in jpg format 
+
 			
   }
 
-  //call slide() and set time interval between each slide for 5 seconds
-  window.setInterval(function slide()
+ 	function slidePrev()
+  {
+  	var Image = document.getElementById('imag');
+  	imagecount = imagecount - 1;
+
+  	if (imagecount > total) 
+  		{
+  			imagecount = 1;
+  		}
+
+  	if (imagecount < 1) 
+		{
+			imagecount = total;
+		}  										//LOOP THE IMAGE
+
+	
+		Image.src = "Images/imag" + imagecount + ".jpg";  //this is how images are stored in the Images folder in jpg format 
+			
+  }
+
+  setInterval(function slideNext()
   {
   	var Image = document.getElementById('imag');
   	imagecount = imagecount + 1;
@@ -48,10 +70,12 @@
 			imagecount = total;
 		}
 
-		Image.src = "Images/imag" + imagecount + ".jpg";  //this is how images are stored in the Images folder in jpg format
+		Image.src = "Images/imag" + imagecount + ".jpg";  //this is how images are stored in the Images folder in jpg format 
+
 			
   }, 5000);
 
+  
   </script>
 </head>
 
@@ -69,11 +93,11 @@
 		<img src="Images/imag1.jpg" id="imag" />
 
 		<div id= "leftcontainer"> <!--div for left arrow-->
-			<img src="Images/leftarrow.png" class="left" onClick="slide()">
+			<img src="Images/leftarrow.png" class="left" onClick="slidePrev()">
 		</div>
 
 		<div id= "rightcontainer"><!--div for right arrow-->
-			<img src="Images/rightarrow.png" class="right" onClick="slide()">		
+			<img src="Images/rightarrow.png" class="right" onClick="slideNext()">		
 		</div>
 
 
