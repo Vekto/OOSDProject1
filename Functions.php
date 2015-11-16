@@ -129,12 +129,17 @@ include('testingVars.php');
       $mysqli->close();
       return $selectString;
     }
+
     function getCustomerId($username)
     {
+
       $mysqli = agencyConnect();
-      $sql = "SELECT CustomerId from customers where CustUserName = $username"
+      $sql = "SELECT CustomerId from customers where CustUserName = '$username'";
       $result = $mysqli->query($sql);
-      print_r($result);
+      $value = $result->fetch_array(MYSQLI_NUM);
+      $customerid = $value[0];
+      return($customerid);
+      $mysqli->close();
     }
 
   function cardSelect($key)

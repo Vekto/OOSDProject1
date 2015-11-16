@@ -1,6 +1,7 @@
 <?php
 	include("Functions.php");
 	include("Customer.php");
+	session_start();
 
 	//Last input of post (button press) determines action
 	$userAction = array_pop($_REQUEST);
@@ -16,7 +17,7 @@
 
 		case 'edit':
 			$id = array_pop($_REQUEST);
-			header("Location: index.php");
+			header("Location: edit.php");
 			break;
 
 		case 'register':
@@ -25,7 +26,10 @@
 			{
 				#The user will be redirected to the index page if they've been added to the database.
 				//print("Your account has been registered. You will be redirected to the home page.");
-				$_SESSION["loggedin"] = "true";
+			
+				$_SESSION["loggedin"] = "TRUE";
+				$_SESSION["userfirstname"] = $customer->getFirstName();
+				$_SESSION["userlastname"] = $customer->getLastName();
 				header("Location: index.php");
 			}
 			else
@@ -35,6 +39,7 @@
 				header("Location: register.php");
 			}
 			break;
+
 		default:
 			header("Location: index.php");
 			break;
