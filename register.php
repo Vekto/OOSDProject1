@@ -141,7 +141,7 @@ session_start();
 		<label for="CustPassword">Password: </label>
 		<input type="password" name="CustPassword" id="Password" value="" /><br /><br />
 
-		<input type="submit" value="Register" />
+		<input type="submit" name='userAction' value='register' />
         <input type="submit" value="Reset" />
 
 

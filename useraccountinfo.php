@@ -22,6 +22,7 @@ if (!isset($_SESSION["loggedin"]))
 	{
 		while ($rows = $result->fetch_assoc())
 		{
+			$CustId = $rows['CustomerId'];
 			$CustFirstName = $rows['CustFirstName'];
 			$CustLastName = $rows['CustLastName'];
 			$CustAddress = $rows['CustAddress'];
@@ -34,7 +35,9 @@ if (!isset($_SESSION["loggedin"]))
 			$CustEmail = $rows['CustEmail'];
 
 
+
 			$output = "<h1>Your Account Information</h1>
+			<form action='reghandler.php' method='post'>
 			<h3>
 			First Name: $CustFirstName <br/>
 			Last Name: $CustLastName <br/>
@@ -48,7 +51,11 @@ if (!isset($_SESSION["loggedin"]))
 			Home: $CustHomePhone <br/>
 			Business: $CustBusPhone <br/>
 			Email: $CustEmail <br/>
-			</h3>";
+			<input type='hidden' name='CustId' value='$CustId' />
+			<button type='submit' name='userAction' value='edit'>Edit account info</button>
+			<button type='submit' name='userAction' value='delete'>Delete account</button>
+			</h3>
+			</form>";
 
 		}
 
@@ -62,9 +69,6 @@ if (!isset($_SESSION["loggedin"]))
 
 }
 
-?>
 
-
-<?php
 echo $output;
 99?>

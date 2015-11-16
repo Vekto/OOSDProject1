@@ -1,5 +1,5 @@
 <?php
-
+include('testingVars.php');
 
 //
 //  Contructs appropriate SQL statements to query the database.
@@ -152,12 +152,13 @@
       }
 
     //A function to delete agents.
-  function deleteAgent($agentId){
-      include_once('testingVars.php');
+  function deleteCustomer($customerId){
+    global $deleteSuccess, $deleteFail;
       $link = agencyConnect();
-      $sql = "DELETE FROM agents WHERE AgentId=$agentId";
-      $result = mysqli_query($link,$sql);
-      mysqli_close($link);
+      $sql = "DELETE FROM customers WHERE CustomerId=$customerId";
+      print($sql);
+      $result = $link->query($sql);
+      $link->close();
       if ($result){
         print($deleteSuccess);
       }else{
@@ -187,6 +188,7 @@
     mysqli_close($link);
     return($i);
   }
+
   function customerAdd($customer)
   {
      $a = $customer->getFirstName();
