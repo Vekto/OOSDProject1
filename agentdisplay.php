@@ -7,7 +7,6 @@
 		exit();
 	}
 	
-	function printContact();
 	if (getAgentSelect($_REQUEST["AgentId"]))
 	{
 		#Print contact information based on the selected agent.

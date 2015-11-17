@@ -26,7 +26,6 @@
 			
 				<?= getAgentSelect(); ?><br />
 				<input type="submit" value="View Agent Contact"></input><br />
-				<?= printContact(); ?>
 			
 			</form>
 			
