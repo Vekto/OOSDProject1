@@ -44,7 +44,7 @@ include('testingVars.php');
 /*--Followed by the Key for the table--------------*/
  function updateTable($argTable, $argArray, $pKey)
  {
-   array_pop($argArray);
+    $id=array_pop($argArray);
      $link = agencyConnect();
      $sql = "UPDATE $argTable SET ";
      $keyvals = array();
@@ -55,7 +55,7 @@ include('testingVars.php');
      //array_pop($keyvals);
      $setString = implode($keyvals ,", ");
      $sql .=$setString;
-     $sql .= " WHERE $pKey  = $argArray[$pKey]";
+     $sql .= " WHERE $pKey  = $id";
      print($sql);
      print("<BR />");
      $success = $link->query($sql);
