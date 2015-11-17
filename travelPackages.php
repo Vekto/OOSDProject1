@@ -24,9 +24,6 @@
 
   }
 
-
-  document.getElementById("container0").style.display="initial";
-  }
   function packageList()
   {
     contCount = 0;
