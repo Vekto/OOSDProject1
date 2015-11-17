@@ -11,9 +11,9 @@ var i = 0;
 var path = new Array();
 
 // LIST OF IMAGES
-path[0] = "1.png";
-path[1] = "2.png";
-path[2] = "3.png";
+path[0] = "Images/1.jpg";
+path[1] = "Images/2.jpg";
+path[2] = "Images/3.jpg";
 
 function swapImage()
 {
@@ -35,7 +35,12 @@ function swapImage()
 
 <body onLoad="swapImage()">
 <div id="pkgContainer">	
-		<img width="800" height="400" name="slide" src="1.png"  />
+   
+		<img width="800" height="400" name="slide" src="1.jpg"  />
+
+      
+
+      
 </div>
 
 </body>

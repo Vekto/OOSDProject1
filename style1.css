@@ -1,10 +1,17 @@
+
+
+/* --------CSS by Element below---------*/
+
 body{
 
-	background-color: #FFFFF7;
-	background: url(Images/bg.jpg);
+	/*background-color: #FFFFF7;
 	width:100%;
-	margin: auto;
-
+	margin: auto;*/
+	background-color: #FFFFF7;
+	background-image: url('Images/bg.jpg');
+	background-repeat: no-repeat;
+	width:100%;
+	margin: 0 auto;
 }
 
 li{
@@ -26,6 +33,12 @@ p {
 	padding-bottom: 10px;
 	padding-right: 10px;
 }
+
+/*h1{
+	color: white;
+	text-align: center;
+	padding-bottom: 15px;*/
+}
  /*Style for Book Now section*/
 header,footer{
 	text-align: center;
@@ -36,22 +49,63 @@ header,footer{
 	color: white;
 
 }
-h1{
-	color: white;
-	text-align: center;
+
+#display_packages{
+	width: 960px;
+
 }
+
+#p1{
+	width: 440px;
+	height: 100px;
+	background: rgba(0, 0, 0, 0.3);
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 20px;
+	border-radius: 15px;
+	box-shadow: 2px 2px 3px black;
+
+}
+#p2{
+	width: 440px;
+	height: 100px;
+	background: rgba(0, 0, 0, 0.3);
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 20px;
+	border-radius: 15px;
+	box-shadow: 2px 2px 3px black;
+
+}
+
+#p3{
+	width: 440px;
+	height: 100px;
+	background: rgba(0, 0, 0, 0.3);
+	float: right;
+	margin-left: 20px;
+	border-radius: 15px;
+	box-shadow: 2px 2px 3px black;
+}
+#p4{
+	width: 450px;
+	height: 100px;
+	background: rgba(0, 0, 0, 0.3);
+	float: right;
+	margin-left: 20px;
+	border-radius: 15px;
+	box-shadow: 2px 2px 3px black;
+
+
 /* --------Styling Links Below---------*/
 li a:hover{
-	color: #33ccff;
-}
-li a:active {
-    color: #ffb366;
+	color: #F7BE81;
 }
 h1 a:hover{
-	color: #33ccff;
+	color: #F7BE81;
 }
 footer a:hover{
-	color: #33ccff;
+	color: black;
 }
 
 /* --------CSS by Class below---------*/
@@ -64,7 +118,7 @@ footer a:hover{
 
 	width: 100%;
 	height: 75px;
-	background: rgba(0,0,0, 0.5);
+	background: rgba(0, 0, 0, 0.4);
 	position: fixed;
 	top: 0px;
 
@@ -81,7 +135,10 @@ footer a:hover{
 	color: white;
 }
 .content{
-	/*padding-top: 60px;*/
+	/*padding-top: 60px;
+	background: #01DFD7*/
+	background: rgba(0, 0, 0, 0.4);
+
 }
 .article{
 	float: left;
@@ -98,9 +155,6 @@ footer a:hover{
 	width:960px;
 	height: auto;
 	margin: 0 auto;
-	background: rgba(0, 0, 0, 0.4);
-
-
 
 
 }
@@ -109,7 +163,7 @@ footer a:hover{
 
 	width: 100%;
 	float: left;
-	background: rgba(0,0,0, 0.5);
+	background: rgba(0, 0, 0, 0.4);
 	color: white;
 	height: 80px;
 	position: relative;
@@ -251,43 +305,7 @@ footer a:hover{
 	font-size: 14px;
 }*/
 
-/*Package slider on index page*/
-#expand{
-  	display: none;
-  }
-  #expand2{
-  	display: none;
-  }
-  #expand3{
-  	display: none;
-  }
-  #expand4{
-  	display: none;
-  }
-
-  #package1{
-  	padding-top: 30px;
-  	display: block;
-  	background-color: #F5DEB3;
-  	width: 700px; 
-  	height: 110px;
-  	padding: 5px;
-  }
-  #cost1{
-  	background-color: white;
-  	float: right;
-  	display: block;
-  	width: 100;
-  	height: 50px;
-  	border-radius: 10px;
-  	box-shadow: 2px 2px 5px #000000;
-  	font: #000000;
-  }
-  
-
 /*Package Slider*/
-
-
 
 .toggle-box {
   display: none;
@@ -299,50 +317,28 @@ footer a:hover{
   font-weight: bold;
   line-height: 21px;
   margin: 5px;
-  padding: 20px;
-  /*background: #F5DEB3;*/
-  background: rgba(255,255,255,0.6);
-  height: 80px;
-  width: 800px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 5px black;
+  background: #F5DEB3;
+  height: 30px;
+  width: 400px;
 }
 
 .toggle-box + label + div {
   display: none;
-  margin-bottom: 10px;
-  text-align: left;
-  padding: 20px;
-  width: 800px;
+  margin-bottom: 20px;
 }
 
 .toggle-box:checked + label + div {
   display: block;
-  background: rgba(255,255,255,0.6);
+  background: #ffffff;
 }
 
-#pac1{
-	float: right;
-}
-#pac2{
-	float: right;
-}
-#pac3{
-	float: right;
-}
-#pac4{
-	float: right;
-}
-#center_packages{
-margin: 0 auto;
-}
-.toggle-box + label:before {
+/*.toggle-box + label:before {
   background-color: #4F5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
   color: #FFFFFF;
-  content: "+";
+  content: "View";
   display: block;
   float: left;
   font-weight: bold;
@@ -350,7 +346,7 @@ margin: 0 auto;
   line-height: 20px;
   margin-right: 5px;
   text-align: center;
-  width: 20px;
+  width: 40px;*/
 }
 
 .toggle-box:checked + label:before {
