@@ -29,28 +29,29 @@
     pkgCount=0;
     for (contCount = 0;contCount <= (pkgArray.length)/5;contCount++)
     {
-      document.write("<div id =container" + contCount + " class='PackageContainer' style='visibility:hidden'>");
-      for (i = 0; i <= 5; i++)
+      document.write("<div id =container" + contCount + " class='PackageContainer' style='display:none'>");
+      for (i = 0; i < 5; i++)
       {
         if(pkgCount <= pkgArray.length-1)
         {
           //alert(pkgArray.length);
-          document.write("<input class='toggle-box' id=header'"+ pkgCount +"' type='checkbox' >");
+          document.write("<input class='toggle-box' id=header"+ pkgCount +" type='checkbox' >");
           document.write("<label for='header" + pkgCount + "'>" + pkgArray[pkgCount].PkgName + "</label>");
           document.write("<div id=package_holder'" + pkgCount + "'>");
           document.write("<div class='holiday'>");
         	document.write("<br/>");
         	document.write("<img src='" + pkgArray[pkgCount].PkgImageUrl + "' width='900px' >");
         	document.write("</div>");
-        	document.write("<p>" + pkgArray[pkgCount].pkgDesc + "</p>");
+        	document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
           document.write("<a href='Images/booking.php'>All Inclusive CAD '" + pkgArray[pkgCount].PkgBasePrice + "'</a></br>");
           document.write("</div>");
           pkgCount ++;
         }
       }
+      document.write("</div>");
     }
-    document.write("</div>");
-  document.getElementById("container0").style.visibility="visible";
+
+  document.getElementById("container0").style.display="initial";
   }
 
   //rotates through package
