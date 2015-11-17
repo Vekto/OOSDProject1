@@ -15,6 +15,14 @@
      document.getElementById("d").innerHTML = pkgArray[pkg].PkgDesc;
      document.getElementById("e").innerHTML = pkgArray[pkg].PkgBasePrice;
   }
+  function nextCont()
+  {
+    
+  }
+  function prevCont()
+  {
+
+  }
   function packageList()
   {
     contCount = 0;
@@ -72,8 +80,7 @@
     }
   </style>
 
-  </head>
-  <body id="main_container">
+  <div id="main_container">
 
 
   <script>
@@ -84,7 +91,7 @@
   </table>
 
 
-  </body>
+</div>
   <?php
 
     include_once("footer.php");
