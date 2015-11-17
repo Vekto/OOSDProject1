@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-
   <?php
     include_once("header.php");
     include_once("Functions.php");
     //fetch the script
     print(getJsPkgArray());
   ?>
-<br />
-<br />
-<br />
-<br />
   <script>
   var pkg = 0;
   //displays all the package information
@@ -81,7 +73,7 @@
   </style>
 
   </head>
-  <body>
+  <body id="main_container">
 
 
   <script>
