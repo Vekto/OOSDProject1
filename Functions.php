@@ -121,15 +121,9 @@ include('testingVars.php');
       $mysqli->close();
       return $selectString;
     }
-<<<<<<< HEAD
-    function getCustomerId($username)
-    {
-=======
-
     function getCustomerId($username)
     {
 
->>>>>>> origin/master
       $mysqli = agencyConnect();
       $sql = "SELECT CustomerId from customers where CustUserName = '$username'";
       $result = $mysqli->query($sql);
@@ -138,10 +132,6 @@ include('testingVars.php');
       return($customerid);
       $mysqli->close();
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
   function cardSelect($key)
       {
         $mysqli = agencyConnect();
