@@ -17,11 +17,15 @@
   }
   function nextCont()
   {
-    
+
   }
   function prevCont()
   {
 
+  }
+
+
+  document.getElementById("container0").style.display="initial";
   }
   function packageList()
   {
@@ -32,21 +36,23 @@
       document.write("<div id =container" + contCount + " class='PackageContainer' style='display:none'>");
       for (i = 0; i < 5; i++)
       {
+        document.write("<div id='center_packages'>")
         if(pkgCount <= pkgArray.length-1)
         {
           //alert(pkgArray.length);
-          document.write("<input class='toggle-box' id=header"+ pkgCount +" type='checkbox' >");
-          document.write("<label for='header" + pkgCount + "'>" + pkgArray[pkgCount].PkgName + "</label>");
-          document.write("<div id=package_holder'" + pkgCount + "'>");
-          document.write("<div class='holiday'>");
-        	document.write("<br/>");
-        	document.write("<img src='" + pkgArray[pkgCount].PkgImageUrl + "' width='900px' >");
-        	document.write("</div>");
-        	document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
-          document.write("<a href='Images/booking.php'>All Inclusive CAD '" + pkgArray[pkgCount].PkgBasePrice + "'</a></br>");
+          document.write("<input class='toggle-box' class='packageHeader' id='header" + pkgCount + "' type='checkbox'/>");
+          document.write("<label for='header" + pkgCount + "'>");
+          document.write("<div class='pac' id='pac" + pkgCount + "'><img src=" + pkgArray[pkgCount].PkgImageUrl + " width='350px'; height='85px';></div>");
+          document.write("<i style='padding-left:20px;'>" + pkgArray[pkgCount].PkgName + "</i><br/>");
+          document.write("<h1 style='padding-left:40px;'>CAD" + pkgArray[pkgCount].PkgBasePrice + "</h1>");
+          document.write("</label>");
+          document.write("<div class='package_holder' id='package_holder" + pkgCount + "'>");
+          document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
+          document.write("<input type='submit' value='Book Today'/>");
           document.write("</div>");
           pkgCount ++;
         }
+        document.write("</div>");
       }
       document.write("</div>");
     }
