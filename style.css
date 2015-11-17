@@ -269,7 +269,7 @@ footer a:hover{
   	padding-top: 30px;
   	display: block;
   	background-color: #F5DEB3;
-  	width: 700px; 
+  	width: 700px;
   	height: 110px;
   	padding: 5px;
   }
@@ -283,7 +283,7 @@ footer a:hover{
   	box-shadow: 2px 2px 5px #000000;
   	font: #000000;
   }
-  
+
 
 /*Package Slider*/
 
@@ -321,10 +321,10 @@ footer a:hover{
   background: rgba(255,255,255,0.6);
 }
 
-#pac1{
+.pac{
 	float: right;
 }
-#pac2{
+/*#pac2{
 	float: right;
 }
 #pac3{
@@ -332,7 +332,7 @@ footer a:hover{
 }
 #pac4{
 	float: right;
-}
+}*/
 #center_packages{
 margin: 0 auto;
 }
