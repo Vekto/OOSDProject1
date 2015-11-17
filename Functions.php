@@ -63,7 +63,7 @@ include('testingVars.php');
   function getAgentSelect(){
     $link = agencyConnect();
     $htmlString;
-    $sql = "SELECT `AgentId`, `AgtFirstName`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition` FROM `agents`";
+    $sql = "SELECT `AgentId`, `AgtFirstName`, `AgtLastName` FROM `agents`";
     $result = $link->query($sql);
     $htmlString = "<select name='agentSelector'><option>Select an Agent!</option>";
     while ($row = $result->fetch_row()) {
@@ -121,15 +121,8 @@ include('testingVars.php');
       $mysqli->close();
       return $selectString;
     }
-<<<<<<< HEAD
     function getCustomerId($username)
     {
-=======
-
-    function getCustomerId($username)
-    {
-
->>>>>>> origin/master
       $mysqli = agencyConnect();
       $sql = "SELECT CustomerId from customers where CustUserName = '$username'";
       $result = $mysqli->query($sql);
@@ -138,10 +131,7 @@ include('testingVars.php');
       return($customerid);
       $mysqli->close();
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
   function cardSelect($key)
       {
         $mysqli = agencyConnect();
@@ -224,5 +214,23 @@ include('testingVars.php');
     $link->close();
     $_SESSION['message'] = "Successfully Registered!";
     return $success;
+  }
+  function displayContacts()
+  {
+	$link = agencyConnect();
+    $contact;
+    $sql = "SELECT `AgentId`, `AgtFirstName`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition` FROM `agents`";
+    $result = $link->query($sql);
+    $contact = "<div id='agent'>";
+    while ($row = $result->fetch_row()) {
+        $contact .= "$row[1] $row[2] <br />";
+		$contact .= "Business Number: $row[3] <br />";
+		$contact .= "Email: $row[4] <br />";
+		$contact .= "Position: $row[5] <br />";
+		$contact .= "<br /><br />";
+    }
+    $contact .= "</div>";
+	$link->close();
+    return $contact;
   }
 ?>

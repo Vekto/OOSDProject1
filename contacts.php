@@ -19,18 +19,7 @@
 			<?php
 			
 				include("Functions.php");
-			
-			?>
-			
-			<form action="agentdisplay.php">
-			
-				<?= getAgentSelect(); ?><br />
-				<input type="submit" value="View Agent Contact"></input><br />
-			
-			</form>
-			
-			<?php
-			
+				print(displayContacts());
 				include("footer.php");
 			
 			?>
