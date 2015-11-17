@@ -24,13 +24,10 @@ include('header.php');
         if (elements[i].value == "Select a Country"){
           errorMessage += "Country<br />";
         }
-
         if (elements[i].value == ""){
           errorMessage += elements[i].id+"<br />";
-
         }
       }
-
       if (errorMessage == "<p id='title'>Oops! The following fields must be filled out:<br /><p id='errorMessage'>"){
         return true;
       }else{
@@ -63,6 +60,10 @@ include('header.php');
           return false;
         }
 
+      }
+
+      function clearError(){
+        document.getElementById("errorDisplay").innerHTML = "";
       }
 
     </script>
@@ -143,7 +144,7 @@ include('header.php');
 		<input type="password" name="CustPassword" id="Password" value="" /><br /><br />
 
 		<input type="submit" name='userAction' value='register' />
-        <input type="submit" value="Reset" />
+        <input type="reset" value="Reset" onclick="clearError()" />
 
 
   </fieldset>
