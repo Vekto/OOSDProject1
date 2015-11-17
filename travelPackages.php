@@ -8,7 +8,10 @@
     //fetch the script
     print(getJsPkgArray());
   ?>
-
+<br />
+<br />
+<br />
+<br />
   <script>
   var pkg = 0;
   //displays all the package information
@@ -20,23 +23,36 @@
      document.getElementById("d").innerHTML = pkgArray[pkg].PkgDesc;
      document.getElementById("e").innerHTML = pkgArray[pkg].PkgBasePrice;
   }
-
-  //rotates through packages
-  function swapImage()
+  function packageList()
   {
-
-
-     displayPkg(pkg);
-     if(pkg < pkgArray.length - 1)
-     {
-     	pkg++;
-     }
-     else
-     {
-     	pkg = 0;
-     }
-     setTimeout("swapImage()",3000);
+    contCount = 0;
+    pkgCount=0;
+    for (contCount = 0;contCount <= (pkgArray.length/5);contCount++)
+    {
+      document.write("<div id =container" + contCount + " class='PackageContainer' style='visibility:hidden'>");
+      for (pkgCount = 0; pkgCount <=(pkgCount+5); pkgCount++)
+      {
+        if(pkgCount <= pkgArray.length-1)
+        {
+          document.write("<input class='toggle-box' id=header'"+ pkgCount +"' type='checkbox' >");
+          //alert(pkgArray[pkgCount].PkgName);
+          document.write("<label for='header" + pkgCount + "'>" + pkgArray[pkgCount].PkgName + "</label>");
+          document.write("<div id=package_holder'" + pkgCount + "'>");
+          document.write("<div class='holiday'>");
+        	document.write("<br/>");
+        	document.write("<img src='" + pkgArray[pkgCount].PkgImageUrl + "' width='900px' >");
+        	document.write("</div>");
+        	document.write("<p>" + pkgArray[pkgCount].pkgDesc + "</p>");
+          document.write("<a href='Images/booking.php'>All Inclusive CAD '" + pkgArray[pkgCount].PkgBasePrice + "'</a></br>")
+          document.write("</div>");
+        }
+      }
+    }
+    document.write("</div>")
+  document.getElementById("container0").style.visibility="visible";
   }
+
+  //rotates through package
   </script>
   <style>
 
@@ -65,29 +81,9 @@
   </head>
   <body>
 
-  <div class="pkgDisplay" id="pkgImageContainer">
-  		<img width="800" id="images" height="400" name="slide" src=''  />
-  </div>
-
-  <table class="pkgDisplay" border="1" id="pkgTable">
-    <tr>
-      <th id="1">Package Name</th>
-      <th id="2">Package Start Date</th>
-      <th id="3">Package End Date</th>
-      <th id="4">Description</th>
-      <th id="5">Price</th>
-    </tr>
-    <tr>
-      <td id="a"></td>
-      <td id="b"></td>
-      <td id="c"></td>
-      <td id="d"></td>
-      <td id="e"></td>
-    </tr>
-
 
   <script>
-    swapImage();
+    packageList();
   </script>
   <table>
     <th>
