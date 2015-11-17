@@ -1,11 +1,9 @@
 <?php
 include('testingVars.php');
-
 //
 //  Contructs appropriate SQL statements to query the database.
 //
 //===========================================================================
-
   function agencyConnect(){
     $link = new mysqli("localhost","root","","travelexperts");
     if ($link->connect_errno){
@@ -15,7 +13,6 @@ include('testingVars.php');
       return $link;
     }
   }
-
 // Adds a single row into a specified table
   function addAgent($newRow, $newTable="customer"){
     include_once('testingVars.php');
@@ -37,14 +34,13 @@ include('testingVars.php');
     mysqli_close($link);
     return($i);
   }
-
 /*--Updates a table--------------------------------*/
 /*--Pass the function which table you are updating,*/
 /*--Followed by which Array you are wanting to use-*/
 /*--Followed by the Key for the table--------------*/
  function updateTable($argTable, $argArray, $pKey)
  {
-   array_pop($argArray);
+    $id=array_pop($argArray);
      $link = agencyConnect();
      $sql = "UPDATE $argTable SET ";
      $keyvals = array();
@@ -55,13 +51,11 @@ include('testingVars.php');
      //array_pop($keyvals);
      $setString = implode($keyvals ,", ");
      $sql .=$setString;
-     $sql .= " WHERE $pKey  = $argArray[$pKey]";
+     $sql .= " WHERE $pKey  = $id";
      print($sql);
      print("<BR />");
      $success = $link->query($sql);
      print($link->error);
-
-
      $link->close();
      return $success;
  }
@@ -69,7 +63,7 @@ include('testingVars.php');
   function getAgentSelect(){
     $link = agencyConnect();
     $htmlString;
-    $sql = "SELECT `AgentId`, `AgtFirstName`, `AgtLastName` FROM `agents`";
+    $sql = "SELECT `AgentId`, `AgtFirstName`, `AgtLastName`, `AgtBusPhone`, `AgtEmail`, `AgtPosition` FROM `agents`";
     $result = $link->query($sql);
     $htmlString = "<select name='agentSelector'><option>Select an Agent!</option>";
     while ($row = $result->fetch_row()) {
@@ -78,7 +72,6 @@ include('testingVars.php');
     $htmlString .= "</select>";
     return ($htmlString);
   }
-
   //generates some javascript that will recieve the array of travel package data.
   function getJsPkgArray(){
     $pkgArray = getTravelPackages();
@@ -113,7 +106,6 @@ include('testingVars.php');
      $link->close();
      return $pkgArray;
   }
-
   function getSelect($field1, $field2, $table, $name)
     {
       $mysqli = agencyConnect();
@@ -129,13 +121,21 @@ include('testingVars.php');
       $mysqli->close();
       return $selectString;
     }
-
+    function getCustomerId($username)
+    {
+      $mysqli = agencyConnect();
+      $sql = "SELECT CustomerId from customers where CustUserName = '$username'";
+      $result = $mysqli->query($sql);
+      $value = $result->fetch_array(MYSQLI_NUM);
+      $customerid = $value[0];
+      return($customerid);
+      $mysqli->close();
+    }
   function cardSelect($key)
       {
         $mysqli = agencyConnect();
         $sql = "SELECT CreditCardId, CCName, CCNumber, CCExpiry FROM creditcards WHERE CustomerId = '$key'";
         $result = $mysqli->query($sql);
-
         $selectString = "<select name='Cards'>";
         $selectString .= "<option value=''>Select</option>";
         while ($row = $result->fetch_array(MYSQLI_NUM))
@@ -150,7 +150,6 @@ include('testingVars.php');
         $mysqli->close();
         return $selectString;
       }
-
     //A function to delete agents.
   function deleteCustomer($customerId){
     global $deleteSuccess, $deleteFail;
@@ -166,7 +165,6 @@ include('testingVars.php');
       }
       return $result;
     }
-
   // Adds a single row into a specified table (customer).
   function addCustomer($newRow, $newTable="customer"){
     include_once('testingVars.php');
@@ -188,7 +186,6 @@ include('testingVars.php');
     mysqli_close($link);
     return($i);
   }
-
   function customerAdd($customer)
   {
      $a = $customer->getFirstName();
@@ -213,9 +210,6 @@ include('testingVars.php');
       //print("Insert Failed: " . $link->error);
       $success=0;
     }
-
-
-
     $link->close();
     $_SESSION['message'] = "Successfully Registered!";
     return $success;
