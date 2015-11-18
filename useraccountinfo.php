@@ -13,22 +13,23 @@
 
 <body>
 <?php
+session_start();
   	include("header.php");
 
- ?> 	
+ ?>
 	<div id="main_container">
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
 
 
 <?php
-SESSION_START();
 $output = NULL;
 
-if (!isset($_SESSION["loggedin"]))
+if ($_SESSION["loggedin"] == "FALSE")
 {
 	$_SESSION["lastpage"] = "useraccountinfo.php";
 	header("Location: login.php");
 }
+
 {
 	$mysqli = new mysqli("localhost", "root", "", "travelexperts");
 
@@ -93,7 +94,7 @@ if (!isset($_SESSION["loggedin"]))
 
 
 echo $output;
-99?>
+?>
 
 
 
@@ -106,14 +107,14 @@ echo $output;
 	<!--WRITE YOUR CODE ABOVE THIS LINE-->
 	</div>
 
-	
+
 
 	<?php
 
 
 	  include("footer.php");
     ?>
-	
+
 
 
 

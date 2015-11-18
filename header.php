@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-
+<?php
+if(!isset($_SESSION["loggedin"]))
+{
+  $_SESSION["loggedin"] = "FALSE";
+}
+?>
 <html>
 <head>
 
@@ -14,7 +19,7 @@
 <body>
 	<div class="header">
 		<div class="container">
-			<div class="logo">
+			<div class="logo" alt="Travel Experts">
 				<!--<h1><a href="#">Travel Experts</a></h1>-->
 				<a href="index.php"><img border="0" alt="Travel Experts" src="images/logo2.PNG" width="150" height="75"></a>
 			</div>
@@ -27,7 +32,7 @@
 					<li><a href="travelPackages.php">Packages</a></li>
 					<li id="logIn"><a  href="login.php" >Login</a></li>
 					<li id="logOut" style="display:none;"><a  href="logout.php" >Log Out</a></li>
-					<li><a href="contact.php">Contact</a></li>
+					<li><a href="contacts.php">Contact</a></li>
 
 
 				</ul>
@@ -37,7 +42,7 @@
 
 
 	<?php
-	if (isset($_SESSION["loggedin"]))
+	if ($_SESSION["loggedin"] == "TRUE")
 	{
 		print("<script>document.getElementById('welcomeLink').innerHTML = 'Welcome " . $_SESSION['userfirstname'] . " " . $_SESSION['userlastname'] . "'</script>");
 		print("<script>document.getElementById('logOut').style.display = 'initial' </script>");

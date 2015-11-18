@@ -1,9 +1,11 @@
 <?php
 include('testingVars.php');
-//
-//  Contructs appropriate SQL statements to query the database.
-//
-//===========================================================================
+/*==========================================================================*/
+//  all functions that deal with the Travel Experts Database will           //
+//  be placed in this file.                                                 //
+/*==========================================================================*/
+
+  //Connect to the Database
   function agencyConnect(){
     $link = new mysqli("localhost","root","","travelexperts");
     if ($link->connect_errno){
@@ -58,7 +60,8 @@ include('testingVars.php');
      print($link->error);
      $link->close();
      return $success;
- }
+  }
+
   //Produces a select element of agents
   function getAgentSelect(){
     $link = agencyConnect();
@@ -72,6 +75,7 @@ include('testingVars.php');
     $htmlString .= "</select>";
     return ($htmlString);
   }
+
   //generates some javascript that will recieve the array of travel package data.
   function getJsPkgArray(){
     $pkgArray = getTravelPackages();
@@ -91,7 +95,7 @@ include('testingVars.php');
   //pulls relevant fields from the packages table and stores it in an array of associative arrays.
   function getTravelPackages($pkgid=NULL){
     $link = agencyConnect();
-    $sql = "SELECT `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgImageUrl` FROM `packages`";
+    $sql = "SELECT `PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgImageUrl` FROM `packages`";
     $i = 0;
 	if ($pkgid != NULL){
 		$sql .= "WHERE `PackageId` = $pkgid";
@@ -123,15 +127,24 @@ include('testingVars.php');
     }
     function getCustomerId($username)
     {
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
       $mysqli = agencyConnect();
       $sql = "SELECT CustomerId from customers where CustUserName = '$username'";
       $result = $mysqli->query($sql);
       $value = $result->fetch_array(MYSQLI_NUM);
       $customerid = $value[0];
-      return($customerid);
       $mysqli->close();
+<<<<<<< HEAD
     }
 
+=======
+      return($customerid);
+
+    }
+>>>>>>> origin/master
   function cardSelect($key)
       {
         $mysqli = agencyConnect();
@@ -166,7 +179,7 @@ include('testingVars.php');
       }
       return $result;
     }
-  // Adds a single row into a specified table (customer).
+  // Adds a customer by default.
   function addCustomer($newRow, $newTable="customer"){
     include_once('testingVars.php');
     $link = agencyConnect();
@@ -187,6 +200,7 @@ include('testingVars.php');
     mysqli_close($link);
     return($i);
   }
+  //
   function customerAdd($customer)
   {
      $a = $customer->getFirstName();
@@ -208,7 +222,6 @@ include('testingVars.php');
     $success = 1;
     if (!$stmt->execute())
     {
-      //print("Insert Failed: " . $link->error);
       $success=0;
     }
     $link->close();

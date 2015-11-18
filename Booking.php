@@ -2,7 +2,7 @@
 session_start();
 include("Functions.php");
 $_SESSION['lastpage'] = "Booking.php";
-$_SESSION['packageid'] = 2;
+$packageId = $_REQUEST["packageId"];
 ?>
 
 <?php
@@ -103,10 +103,17 @@ $_SESSION['packageid'] = 2;
 	</form>
   </div>
 </div>
+<div id="pkgInfo">
+</div>
 <?php
-  $package = getTravelPackages($_SESSION['packageid']);
-
+/*  $package = getTravelPackages($packageId);
+  $pkgDesc = $package[0]['PkgDesc'];
+  print("<script>var pkgDesc = $pkgDesc;</script>");
+*/
  ?>
+ <script>
+  // alert(pkgDesc);
+ </script>
 
 
 

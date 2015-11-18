@@ -13,13 +13,32 @@
 
 		<div id="main_container">
 		
-			<h1>Contacts</h1>
-			<h6>The contact details for each of our agents below.</h6><br />
+			<h1 style="text-align:center;"></h1><br />
 			
 			<?php
 			
 				include("Functions.php");
+<<<<<<< HEAD
 				print(displayContacts());
+=======
+			
+			?>
+			
+			<form action="agentdisplay.php">
+				<fieldset style="padding-left:40%;">
+						<legend>Agent Contact Details</legend><br/>
+
+				<?= getAgentSelect(); ?> &nbsp;
+				<input type="submit" value="View Details"></input><br /><br/>
+				</fieldset>
+			
+			</form>
+
+		</br></br>
+			
+			<?php
+			
+>>>>>>> origin/master
 				include("footer.php");
 			
 			?>

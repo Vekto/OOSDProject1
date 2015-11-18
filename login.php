@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["loggedin"]))
+if ($_SESSION["loggedin"] == "TRUE")
 {
   header("Location: index.php");
 }
@@ -42,7 +42,7 @@ if (isset($_SESSION["loggedin"]))
 		<input type="submit" value="Log in" />
 
  		</fieldset>
-      	New User? <a href="register.php">Register Here</a>
+      	New User? <a href="register.php"><i style="color:black;">Register Here</i></a>
 		</form>
     <?php //chad//
       if (isset($_SESSION["message"]))

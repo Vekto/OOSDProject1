@@ -5,6 +5,7 @@
     print(getJsPkgArray());
   ?>
   <script>
+  var currentCont = 0;
   var pkg = 0;
   //displays all the package information
   function displayPkg(pkg){
@@ -15,14 +16,63 @@
      document.getElementById("d").innerHTML = pkgArray[pkg].PkgDesc;
      document.getElementById("e").innerHTML = pkgArray[pkg].PkgBasePrice;
   }
-  function nextCont()
-  {
-    
-  }
   function prevCont()
   {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont--;
+    document.getElementById("container" + currentCont).style.display= "initial";
+    if (currentCont == 0)
+    {
+      document.getElementById("prevBtn").style.display="none";
+    }
+    else
+    {
+      document.getElementById("prevBtn").style.display="initial";
+    }
+    if (currentCont <= ((pkgArray.length/5)-1))
+    {
+      document.getElementById("nextBtn").style.display="initial";
+    }
+  }
+  function nextCont()
+  {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont++;
+    document.getElementById("container" + currentCont).style.display= "initial";
+    if (currentCont >= ((pkgArray.length/5)-1))
+    {
+      document.getElementById("nextBtn").style.display="none";
+    }
+    else
+    {
+      document.getElementById("nextBtn").style.display="initial";
+    }
+      document.getElementById("prevBtn").style.display="initial";
+  }
+  function firstCont()
+  {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont = 0;
+    document.getElementById("container" + currentCont).style.display= "initial";
+    document.getElementById("prevBtn").style.display="none";
+    if (pkgArray > 5)
+    {
+      document.getElementById("nextBtn").style.display="initial";
+    }
 
   }
+  function lastCont()
+  {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont = Math.floor(pkgArray.length/5);
+    document.getElementById("container" + currentCont).style.display= "initial";
+    document.getElementById("nextBtn").style.display="none";
+    if (currentCont != 0)
+    {
+      document.getElementById("prevBtn").style.display="initial";
+    }
+  }
+
   function packageList()
   {
     contCount = 0;
@@ -32,21 +82,26 @@
       document.write("<div id =container" + contCount + " class='PackageContainer' style='display:none'>");
       for (i = 0; i < 5; i++)
       {
+        document.write("<div id='center_packages'>")
         if(pkgCount <= pkgArray.length-1)
         {
           //alert(pkgArray.length);
-          document.write("<input class='toggle-box' id=header"+ pkgCount +" type='checkbox' >");
-          document.write("<label for='header" + pkgCount + "'>" + pkgArray[pkgCount].PkgName + "</label>");
-          document.write("<div id=package_holder'" + pkgCount + "'>");
-          document.write("<div class='holiday'>");
-        	document.write("<br/>");
-        	document.write("<img src='" + pkgArray[pkgCount].PkgImageUrl + "' width='900px' >");
-        	document.write("</div>");
-        	document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
-          document.write("<a href='Images/booking.php'>All Inclusive CAD '" + pkgArray[pkgCount].PkgBasePrice + "'</a></br>");
+          document.write("<input class='toggle-box' class='packageHeader' id='header" + pkgCount + "' type='checkbox'/>");
+          document.write("<label for='header" + pkgCount + "'>");
+          document.write("<div class='pac' id='pac" + pkgCount + "'><img src=" + pkgArray[pkgCount].PkgImageUrl + " width='350px'; height='85px';></div>");
+          document.write("<i style='padding-left:20px;'>" + pkgArray[pkgCount].PkgName + "</i><br/>");
+          document.write("<h1 style='padding-left:40px;'>CAD $" + pkgArray[pkgCount].PkgBasePrice + "</h1>");
+          document.write("</label>");
+          document.write("<div class='package_holder' id='package_holder" + pkgCount + "'>");
+          document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
+          document.write("<form action='Booking.php'><input type=hidden value='" + pkgArray[pkgCount].PackageId + "' name='packageId'/>");
+          document.write("<input type='submit' value='Book Today'/>");
+          document.write("</form>");
           document.write("</div>");
+
           pkgCount ++;
         }
+        document.write("</div>");
       }
       document.write("</div>");
     }
@@ -78,17 +133,24 @@
       margin-left: 20px;
 
     }
+    
   </style>
 
   <div id="main_container">
+
+    <h1>All Inclusive Packages</h1>
 
 
   <script>
     packageList();
   </script>
-  <table>
-    <th>
-  </table>
+  <div align="center">
+  </br>
+    <button onclick="firstCont()" id="firstBtn">FIRST</button> &nbsp;
+      <button onclick="prevCont()" id="prevBtn" style='display:none;'>PREV</button>
+  <button onclick="nextCont()" id="nextBtn">NEXT</button>&nbsp;
+  <button onclick="lastCont()" id="lastBtn" >LAST</button>
+</div>
 
 
 </div>

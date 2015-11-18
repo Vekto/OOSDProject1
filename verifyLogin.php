@@ -21,7 +21,6 @@ if ($dbpwd == $password)
     //Login is okay, set session variables
     $sql = "SELECT CustFirstName, CustLastName, CustomerId FROM customers WHERE CustUserName = '$username'";
     $result = $link->query($sql);
-    ;
     $row = $result->fetch_array(MYSQLI_NUM);
     {
       $_SESSION["userfirstname"] = $row[0];
@@ -29,15 +28,9 @@ if ($dbpwd == $password)
       $_SESSION["userid"] = $row[2];
     }
     $_SESSION["loggedin"] = "TRUE";
-    if($_SESSION['lastpage'] == 'register.php')
-    {
-      header("Location: index.php");
-    }
-    else
-    {
-    header("Location: " . $_SESSION['lastpage']);
+    $_SESSION["message"] = "Login Successful, welcome to Travel Experts";
+    header("Location: messages.php");
   }
-}
 else
 {
     $_SESSION["message"] = "Invalid username/password";
