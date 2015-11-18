@@ -133,8 +133,9 @@ include('testingVars.php');
       $result = $mysqli->query($sql);
       $value = $result->fetch_array(MYSQLI_NUM);
       $customerid = $value[0];
-      return($customerid);
       $mysqli->close();
+      return($customerid);
+
     }
   function cardSelect($key)
       {

@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-
+<?php
+if(!isset($_SESSION["loggedin"]))
+{
+  $_SESSION["loggedin"] = "FALSE";
+}
+?>
 <html>
 <head>
 
@@ -37,7 +42,7 @@
 
 
 	<?php
-	if (isset($_SESSION["loggedin"]))
+	if ($_SESSION["loggedin"] == "TRUE")
 	{
 		print("<script>document.getElementById('welcomeLink').innerHTML = 'Welcome " . $_SESSION['userfirstname'] . " " . $_SESSION['userlastname'] . "'</script>");
 		print("<script>document.getElementById('logOut').style.display = 'initial' </script>");
