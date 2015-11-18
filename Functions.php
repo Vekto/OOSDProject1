@@ -262,3 +262,17 @@
     return $contact;
   }
 ?>
+  //Function by CSharpTest.net on Stack Overflow.
+
+  <script>
+  function makeBookingId()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+</script>
