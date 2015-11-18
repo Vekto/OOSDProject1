@@ -133,18 +133,22 @@
       margin-left: 20px;
 
     }
+    
   </style>
 
   <div id="main_container">
+
+    <h1>All Inclusive Packages</h1>
 
 
   <script>
     packageList();
   </script>
   <div align="center">
-    <button onclick="firstCont()" id="firstBtn">FIRST</button>
+  </br>
+    <button onclick="firstCont()" id="firstBtn">FIRST</button> &nbsp;
       <button onclick="prevCont()" id="prevBtn" style='display:none;'>PREV</button>
-  <button onclick="nextCont()" id="nextBtn">NEXT</button>
+  <button onclick="nextCont()" id="nextBtn">NEXT</button>&nbsp;
   <button onclick="lastCont()" id="lastBtn" >LAST</button>
 </div>
 

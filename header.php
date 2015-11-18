@@ -19,7 +19,7 @@ if(!isset($_SESSION["loggedin"]))
 <body>
 	<div class="header">
 		<div class="container">
-			<div class="logo">
+			<div class="logo" alt="Travel Experts">
 				<!--<h1><a href="#">Travel Experts</a></h1>-->
 				<a href="index.php"><img border="0" alt="Travel Experts" src="images/logo2.PNG" width="150" height="75"></a>
 			</div>
