@@ -1,5 +1,4 @@
 <?php
-  include('testingVars.php');
 /*==========================================================================*/
 //  all functions that deal with the Travel Experts Database will           //
 //  be placed in this file.                                                 //
