@@ -3,6 +3,7 @@
   include("Functions.php");
   $_SESSION['lastpage'] = "Booking.php";
   $_SESSION['packageid'] = $_REQUEST["packageId"];
+  $package = getTravelPackages($_SESSION['packageid']);
   if(!isset($_SESSION["userid"]))
   {
     $_SESSION["message"] = "Please login to continue!";
@@ -29,15 +30,14 @@
       var errorMessage = "<p>Oops! The following fields must be filled out:<br />";
       var elements = myForm.elements;
 
-      for (i=0; i<elements.length; i++){
-        if (elements[i].value == "Select a Country"){
-          errorMessage += "Country<br />";
+        if (getElementById("CardSelect") == "NullCard"){
+          errorMessage += "Select a Payment Method<br />";
+        }
+        if (getElementById("TravCount") == ""){
+          errorMessage += "Pick Number of Travelers<br />";
         }
 
-        if (elements[i].value == ""){
-          errorMessage += elements[i].id+"<br />";
 
-        }
       }
 
       if (errorMessage == "<p>Oops! The following fields must be filled out:<br />"){
@@ -79,7 +79,7 @@
 </head>
 
 <body>
-  
+
   <?php
   	include("header.php");
 	  $title = "Register - Travel Experts"
@@ -96,14 +96,14 @@
     <div class="container">
       <?php
       print($package[0]["PkgName"]."<br />");
-      print($package[0]["PkgStartDate"]."<br />");
-      print($package[0]["PkgEndDate"]."<br />");
+      print(substr($package[0]["PkgStartDate"],0,10)."<br />");
+      print(substr($package[0]["PkgEndDate"],0,10)."<br />");
       ?>
-      <form action="confpage.php" target="_blank" method="post" id="BookingForm" >
+      <form action="confpage.php" onsubmit="return validator(this)" target="_blank" method="post" id="BookingForm" >
         <fieldset>
           <legend>Customer Registration</legend> </br>
-          Number of Travelers:<input type="number" name="numTrav"/><br />
-          Class:<select name="class">
+          Number of Travelers:<input id="TravCount" type="number" name="numTrav"/><br />
+          Class:<select id="ClassSelect" name="class">
             <option value = "0">Select a Class</option>
             <option value="1">Economy</option>
             <option value="1.5">Business</option>
