@@ -3,6 +3,11 @@
   include("Functions.php");
   $_SESSION['lastpage'] = "Booking.php";
   $_SESSION['packageid'] = $_REQUEST["packageId"];
+  if(!isset($_SESSION["userid"]))
+  {
+    $_SESSION["message"] = "Please login to continue!";
+    header("Location: messages.php");
+  }
 ?>
 
 
@@ -74,10 +79,12 @@
 </head>
 
 <body>
+  
   <?php
   	include("header.php");
 	  $title = "Register - Travel Experts"
     ?>
+
     <div id="main_container">
 
 	     <!--WRITE YOUR CODE BELOW THIS LINE-->
@@ -109,8 +116,8 @@
      </div>
    </div>
    <!--<div id="pkgInfo">
+     $package = getTravelPackages($_SESSION['packageid']);
    </div>-->
-
 
 
 

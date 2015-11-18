@@ -15,7 +15,7 @@
 <?php
   	include("header.php");
 
- ?> 	
+ ?>
 	<div id="main_container">
 	<!--WRITE YOUR CODE BELOW THIS LINE-->
 
@@ -25,6 +25,7 @@
   session_start();
   $_SESSION["message"] = "Logout Successful!";
   $_SESSION["loggedin"] = "FALSE";
+  $_SESSION["lastpage"] = "logout.php";
   header("Location: messages.php");
  ?>
 
@@ -39,14 +40,14 @@
 	<!--WRITE YOUR CODE ABOVE THIS LINE-->
 	</div>
 
-	
+
 
 	<?php
 
 
 	  include("footer.php");
     ?>
-	
+
 
 
 

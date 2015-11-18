@@ -1,7 +1,27 @@
 <?php
 session_start();
 include("header.php");
-header("refresh:3; url=index.php");
+
+
+
+if ($_SESSION["lastpage"] == "Booking.php")
+{
+  if(isset($_SESSION["bookingLogin"]))
+  {
+    header("refresh:3; url=Booking.php");
+  }
+  header("refresh:3; url=login.php");
+}
+  else
+{
+  header("refresh:3; url=index.php");
+}
+
+
+
+
+
+
  ?>
 
 <body>
