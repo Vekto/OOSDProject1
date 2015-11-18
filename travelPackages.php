@@ -1,6 +1,8 @@
   <?php
-    include_once("header.php");
-    include_once("Functions.php");
+    session_start();
+    include("Functions.php");
+    include("header.php");
+
     //fetch the script
     print(getJsPkgArray());
   ?>
@@ -133,7 +135,7 @@
       margin-left: 20px;
 
     }
-    
+
   </style>
 
   <div id="main_container">

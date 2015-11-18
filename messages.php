@@ -4,13 +4,13 @@ include("header.php");
 
 
 
-if ($_SESSION["lastpage"] == "Booking.php")
+if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
 {
-  if(isset($_SESSION["bookingLogin"]))
-  {
-    header("refresh:3; url=Booking.php");
-  }
   header("refresh:3; url=login.php");
+}
+  else if ($_SESSION["lastpage"] == "Booking.php" && isset($_SESSION["bookingLogin"]))
+{
+  header("refresh:3; url=Booking.php");
 }
   else
 {
