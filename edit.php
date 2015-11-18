@@ -1,5 +1,7 @@
 <?php
   session_start();
+
+  include("header.php");
   $mysqli = new mysqli("localhost", "root", "", "travelexperts");
 
 	/*$user = $mysqli->real_escape_string($_POST['user']);
@@ -8,6 +10,7 @@
 
 	//$result = $mysqli->query("SELECT * FROM customers WHERE CustUserName ='$user' AND CustPassword = '$pass'");
 	$result = $mysqli->query("SELECT * FROM customers WHERE CustomerId = $_SESSION[userid]");
+
 
 
 	if ($result->num_rows > 0)
@@ -28,8 +31,11 @@
 
 
 
-			$output = "<h1>Edit Your Account Information</h1>
-			<form action='reghandler.php' method='post'>
+			$output = "
+      <div id='main_container'>
+      <fieldset>
+      <legend>Edit Your Account Information</legend>
+			<form justify='left' align='center' action='reghandler.php' method='post'>
 			<h3>
 			First Name: $CustFirstName <br/>
       <input name='CustFirstName' value='$CustFirstName' /><br/>
@@ -56,7 +62,9 @@
 			<input type='hidden' name='CustId' value='$CustId' />
 			<button type='submit' name='userAction' value='editted'>Submit Changes</button>
 			</h3>
-			</form>";
+      </fieldset>
+			</form>
+      </div>";
 
 		}
 
@@ -65,8 +73,7 @@
 	else {
 		$output =  "Enter Username & Password";
 	}
-
 print($output);
 
-
+include("footer.php");
  ?>
