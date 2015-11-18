@@ -44,7 +44,7 @@
 /*--Updates a table--------------------------------*/
 /*--Pass the function which table you are updating,*/
 /*--Followed by which Array you are wanting to use-*/
-/*--Followed by the Key for the table--------------*/
+/*--Followed by the Key Name(a string) for the table--------------*/
  function updateTable($argTable, $argArray, $pKey)
  {
     //$id=array_pop($argArray);
