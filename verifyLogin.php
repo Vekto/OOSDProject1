@@ -29,6 +29,10 @@ if ($dbpwd == $password)
     }
     $_SESSION["loggedin"] = "TRUE";
     $_SESSION["message"] = "Login Successful, welcome to Travel Experts";
+    if($_SESSION["lastpage"] == "Booking.php"){
+      $_SESSION["bookingLogin"] = "TRUE";
+      header("Location: messages.php");
+    }
     header("Location: messages.php");
   }
 else

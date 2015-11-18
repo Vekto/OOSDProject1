@@ -2,12 +2,14 @@
 session_start();
 include("Functions.php");
 $_SESSION['lastpage'] = "Booking.php";
-$packageId = $_REQUEST["packageId"];
+if(!isset($_SESSION["userid"])){
+  $_SESSION["message"] = "Please login to continue!";
+  header("Location: messages.php");
+}
+$_SESSION['packageid'] = 2;
 ?>
 
-<?php
 
- ?>
 
 <!DOCTYPE html>
 
@@ -103,17 +105,10 @@ $packageId = $_REQUEST["packageId"];
 	</form>
   </div>
 </div>
-<div id="pkgInfo">
-</div>
 <?php
-/*  $package = getTravelPackages($packageId);
-  $pkgDesc = $package[0]['PkgDesc'];
-  print("<script>var pkgDesc = $pkgDesc;</script>");
-*/
+  $package = getTravelPackages($_SESSION['packageid']);
+
  ?>
- <script>
-  // alert(pkgDesc);
- </script>
 
 
 

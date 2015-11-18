@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include("Functions.php");
 $packageId = $_SESSION['packageid'];
@@ -17,10 +18,5 @@ print("<table> <th>Package Price</th><th>Class</th><th>Number of Travllers</th>
 <tr><td>$basePrice.X</td><td>$classMult X</td><td>    $numTrav    =       </td></tr></table>");
 print("Total<br />");
 print($total);
-
-
-
-
-
 
 ?>

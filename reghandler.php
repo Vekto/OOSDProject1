@@ -21,12 +21,14 @@
 			$id = array_pop($_REQUEST);
 			header("Location: edit.php");
 			break;
+
 		case 'editted':
 			print_r($_REQUEST);
 			$success = updateTable('customers',$_REQUEST,'CustomerId');
 			($success) ? $_SESSION["message"] = "Update Successful!" : $_SESSION["message"] = "Update Failed!";
 			header("Location: messages.php");
 				break;
+				
 		case 'register':
 			$customer = new Customer("null", $_REQUEST["CustFirstName"], $_REQUEST["CustLastName"], $_REQUEST["CustAddress"], $_REQUEST["CustCity"], $_REQUEST["CustProv"], $_REQUEST["CustPostal"], $_REQUEST["CustCountry"],$_REQUEST["CustHomePhone"], $_REQUEST["CustBusPhone"], $_REQUEST["CustEmail"], 0, $_REQUEST["CustUsername"], $_REQUEST["CustPassword"]);
 			if ($customer->customerAdd())
