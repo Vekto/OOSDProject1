@@ -48,9 +48,29 @@
       document.getElementById("nextBtn").style.display="initial";
     }
       document.getElementById("prevBtn").style.display="initial";
+  }
+  function firstCont()
+  {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont = 0;
+    document.getElementById("container" + currentCont).style.display= "initial";
+    document.getElementById("prevBtn").style.display="none";
+    if (pkgArray > 5)
+    {
+      document.getElementById("nextBtn").style.display="initial";
+    }
 
-
-
+  }
+  function lastCont()
+  {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont = Math.floor(pkgArray.length/5);
+    document.getElementById("container" + currentCont).style.display= "initial";
+    document.getElementById("nextBtn").style.display="none";
+    if (currentCont != 0)
+    {
+      document.getElementById("prevBtn").style.display="initial";
+    }
   }
 
   function packageList()
@@ -119,8 +139,10 @@
     packageList();
   </script>
   <div align="center">
-  <button onclick="nextCont()" id="nextBtn">Next</button>
-  <button onclick="prevCont()" id="prevBtn" style='display:none;'>Prev</button>
+    <button onclick="firstCont()" id="firstBtn">FIRST</button>
+      <button onclick="prevCont()" id="prevBtn" style='display:none;'>PREV</button>
+  <button onclick="nextCont()" id="nextBtn">NEXT</button>
+  <button onclick="lastCont()" id="lastBtn" >LAST</button>
 </div>
 
 
