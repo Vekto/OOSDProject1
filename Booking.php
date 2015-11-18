@@ -2,7 +2,10 @@
   session_start();
   include("Functions.php");
   $_SESSION['lastpage'] = "Booking.php";
-  $_SESSION['packageid'] = $_REQUEST["packageId"];
+  if(isset($_REQUEST["packageId"]))
+  {
+    $_SESSION['packageid'] = $_REQUEST["packageId"];
+  }
   $package = getTravelPackages($_SESSION['packageid']);
   if(!isset($_SESSION["userid"]))
   {
