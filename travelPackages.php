@@ -94,8 +94,11 @@
           document.write("</label>");
           document.write("<div class='package_holder' id='package_holder" + pkgCount + "'>");
           document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
+          document.write("<form action='Booking.php'><input type=hidden value='" + pkgArray[pkgCount].PackageId + "' name='packageId'/>");
           document.write("<input type='submit' value='Book Today'/>");
+          document.write("</form>");
           document.write("</div>");
+
           pkgCount ++;
         }
         document.write("</div>");
