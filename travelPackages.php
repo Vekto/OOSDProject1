@@ -5,6 +5,7 @@
     print(getJsPkgArray());
   ?>
   <script>
+  var currentCont = 0;
   var pkg = 0;
   //displays all the package information
   function displayPkg(pkg){
@@ -15,12 +16,40 @@
      document.getElementById("d").innerHTML = pkgArray[pkg].PkgDesc;
      document.getElementById("e").innerHTML = pkgArray[pkg].PkgBasePrice;
   }
-  function nextCont()
-  {
-
-  }
   function prevCont()
   {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont--;
+    document.getElementById("container" + currentCont).style.display= "initial";
+    if (currentCont == 0)
+    {
+      document.getElementById("prevBtn").style.display="none";
+    }
+    else
+    {
+      document.getElementById("prevBtn").style.display="initial";
+    }
+    if (currentCont <= ((pkgArray.length/5)-1))
+    {
+      document.getElementById("nextBtn").style.display="initial";
+    }
+  }
+  function nextCont()
+  {
+    document.getElementById("container" + currentCont).style.display= "none";
+    currentCont++;
+    document.getElementById("container" + currentCont).style.display= "initial";
+    if (currentCont >= ((pkgArray.length/5)-1))
+    {
+      document.getElementById("nextBtn").style.display="none";
+    }
+    else
+    {
+      document.getElementById("nextBtn").style.display="initial";
+    }
+      document.getElementById("prevBtn").style.display="initial";
+
+
 
   }
 
@@ -41,7 +70,7 @@
           document.write("<label for='header" + pkgCount + "'>");
           document.write("<div class='pac' id='pac" + pkgCount + "'><img src=" + pkgArray[pkgCount].PkgImageUrl + " width='350px'; height='85px';></div>");
           document.write("<i style='padding-left:20px;'>" + pkgArray[pkgCount].PkgName + "</i><br/>");
-          document.write("<h1 style='padding-left:40px;'>CAD" + pkgArray[pkgCount].PkgBasePrice + "</h1>");
+          document.write("<h1 style='padding-left:40px;'>CAD $" + pkgArray[pkgCount].PkgBasePrice + "</h1>");
           document.write("</label>");
           document.write("<div class='package_holder' id='package_holder" + pkgCount + "'>");
           document.write("<p>" + pkgArray[pkgCount].PkgDesc + "</p>");
@@ -89,9 +118,10 @@
   <script>
     packageList();
   </script>
-  <table>
-    <th>
-  </table>
+  <div align="center">
+  <button onclick="nextCont()" id="nextBtn">Next</button>
+  <button onclick="prevCont()" id="prevBtn" style='display:none;'>Prev</button>
+</div>
 
 
 </div>

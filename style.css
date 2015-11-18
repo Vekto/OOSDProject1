@@ -139,7 +139,6 @@ footer a:hover{
 	width: 800px;
 	height: 450px;
 		border: red;
-
 	margin: 20px auto;
 	position: relative;
 }
@@ -335,6 +334,7 @@ footer a:hover{
 }*/
 #center_packages{
 margin: 0 auto;
+	padding-left:6%;
 }
 .toggle-box + label:before {
   background-color: #4F5150;
