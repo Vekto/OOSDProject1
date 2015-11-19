@@ -57,7 +57,7 @@
     currentCont = 0;
     document.getElementById("container" + currentCont).style.display= "initial";
     document.getElementById("prevBtn").style.display="none";
-    if (pkgArray > 5)
+    if (pkgArray.length > 5)
     {
       document.getElementById("nextBtn").style.display="initial";
     }
