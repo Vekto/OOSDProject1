@@ -3,20 +3,20 @@ session_start();
 include("header.php");
 
 $lastpage = $_SESSION['lastpage'];
+$delay = 1;
 
 
 if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
 {
-  header("refresh:3; url=login.php");
+  header("refresh:$delay; url=login.php");
 }
   else if ($_SESSION["lastpage"] == "Booking.php" && isset($_SESSION["bookingLogin"]))
 {
-  header("refresh:3; url=Booking.php");
+  header("refresh:$delay; url=Booking.php");
 }
   else
 {
-
-  header("refresh:3; url=$lastpage");
+  header("refresh:$delay; url=$lastpage");
 }
 
 
