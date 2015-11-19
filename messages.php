@@ -14,7 +14,7 @@ if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
 }
   else
 {
-  header("refresh:3; url=index.php");
+  header("refresh:3; url=".$_SESSION["lastpage"]);
 }
 
 

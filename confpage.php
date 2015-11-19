@@ -2,8 +2,9 @@
 
 session_start();
 include("Functions.php");
-$packageId = $_SESSION['packageid'];
+$packageId = $_SESSION['packageId'];
 $package = getTravelPackages($_SESSION['packageid']);
+
 
 $basePrice = $package[0]["PkgBasePrice"];
 $numTrav = $_REQUEST["numTrav"];
@@ -18,5 +19,6 @@ print("<table> <th>Package Price</th><th>Class</th><th>Number of Travllers</th>
 <tr><td>$basePrice.X</td><td>$classMult X</td><td>    $numTrav    =       </td></tr></table>");
 print("Total<br />");
 print($total);
+print("<form action='submitbooking.php'><type type='submit'/>");
 
 ?>

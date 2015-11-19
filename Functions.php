@@ -261,18 +261,18 @@
 	  $link->close();
     return $contact;
   }
-?>
-  //Function by CSharpTest.net on Stack Overflow.
 
-  <script>
+  //Credit Jeremy Ruten, stackoverflow.com
   function makeBookingId()
-{
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  {
+    $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    $string = '';
+      for ($i = 0; $i < $random_string_length; $i++) {
+      $string .= $characters[rand(0, strlen($characters) - 1)];
+    }
+      return $string;
+  }
 
-    for( var i=0; i < 5; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-    return text;
-}
-</script>
+
+?>
