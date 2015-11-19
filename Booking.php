@@ -36,7 +36,7 @@
         if (getElementById("CardSelect") == "NullCard"){
           errorMessage += "Select a Payment Method<br />";
         }
-        if (getElementById("TravCount") == ""){
+        if (getElementById("TravCount") == "" || getElementById("TravCount") == 0){
           errorMessage += "Pick Number of Travelers<br />";
         }
 
@@ -102,7 +102,7 @@
       print(substr($package[0]["PkgStartDate"],0,10)."<br />");
       print(substr($package[0]["PkgEndDate"],0,10)."<br />");
       ?>
-      <form action="confpage.php" onsubmit="return validator(this)" target="_blank" method="post" id="BookingForm" >
+      <form action="confpage.php" onsubmit="return validator(this)" method="post" id="BookingForm" >
         <fieldset>
           <legend>Customer Registration</legend> </br>
           Number of Travelers:<input id="TravCount" type="number" name="numTrav"/><br />

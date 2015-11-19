@@ -81,7 +81,6 @@
     return ($htmlString);
   }
 
-
   //generates some javascript that will recieve the array of travel package data.
   function getJsPkgArray(){
     $pkgArray = getTravelPackages();
@@ -150,6 +149,18 @@
       return($customerid);
     }
 
+    //query to fetch a booking Id
+    function getBookingId($bookingNo)
+      {
+        $mysqli = agencyConnect();
+        $sql = "SELECT BookingId from bookings where BookingNo = '$bookingNo'";
+        $result = $mysqli->query($sql);
+        $value = $result->fetch_array(MYSQLI_NUM);
+        $bookingId = $value[0];
+        $mysqli->close();
+        return($bookingId);
+      }
+
 
     //retrieves credit cards of customer and displays only last 4 values.
   function cardSelect($key)
@@ -190,10 +201,9 @@
     return $result;
   }
 
-
   // Adds a customer by default.
-  function addCustomer($newRow, $newTable="customer"){
-    include_once('testingVars.php');
+  function addRecord($newRow, $newTable="customer")
+  {
     $link = agencyConnect();
     $sql;
     $result;
@@ -208,10 +218,10 @@
     $sql = "INSERT INTO `travelexperts`.`$newTable` (`$keys`) VALUES ('$values');";
     $result = mysqli_query($link,$sql);
     ($result) ? $i=1 : $i=0;
-    ($result) ? print($addSuccess)  : print($addFail);
     mysqli_close($link);
     return($i);
   }
+
   // Uses a customer object to submit a customer to the Database, values stored in variables to avoid restriction in binding values
   function customerAdd($customer)
   {
@@ -266,9 +276,10 @@
   function makeBookingId()
   {
     $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    $random_string_length = 6;
     $string = '';
       for ($i = 0; $i < $random_string_length; $i++) {
-      $string .= $characters[rand(0, strlen($characters) - 1)];
+          $string .= $characters[rand(0, strlen($characters) - 1)];
     }
       return $string;
   }
