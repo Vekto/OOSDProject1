@@ -9,26 +9,38 @@
 	switch ($userAction){
 		case 'delete':
 			$id = array_pop($_REQUEST);
-			deleteCustomer($id);
 			session_destroy();
 			session_start();
+			//if the delete set session variables
+			if(deleteCustomer($id))
+			{
+				$_SESSION["message"] = "Delete Successful!";
+				$_SESSION["lastpage"] = "index.php";
+			} else
+			{
+				 $_SESSION["message"] = "Delete failed";
+				 $_SESSION["message"] = "edit.php";
+			}
 			$_SESSION['loggedin'] = 'FALSE';
 			$_SESSION['message'] = "Account Successfully Deleted!";
 			header("Location: messages.php");
 			break;
 
 		case 'edit':
-			$id = array_pop($_REQUEST);
 			header("Location: edit.php");
 			break;
 
 		case 'editted':
-			print_r($_REQUEST);
 			$success = updateTable('customers',$_REQUEST,'CustomerId');
 			($success) ? $_SESSION["message"] = "Update Successful!" : $_SESSION["message"] = "Update Failed!";
+			($success) ? $_SESSION["lastpage"] = "index.php" : $_SESSION["lastpage"] = "edit.php";
+			($success) ? $_SESSION["userfirstname"] = $_POST['CustFirstName'] :  $_POST['CustFirstName'];
+			($success) ? $_SESSION["userlastname"] = $_POST['CustLastName'] : $_POST['CustLastName'];
+			print("<br /><br /><br /><br />");
+			print($success);
 			header("Location: messages.php");
-				break;
-				
+			break;
+
 		case 'register':
 			$customer = new Customer("null", $_REQUEST["CustFirstName"], $_REQUEST["CustLastName"], $_REQUEST["CustAddress"], $_REQUEST["CustCity"], $_REQUEST["CustProv"], $_REQUEST["CustPostal"], $_REQUEST["CustCountry"],$_REQUEST["CustHomePhone"], $_REQUEST["CustBusPhone"], $_REQUEST["CustEmail"], 0, $_REQUEST["CustUsername"], $_REQUEST["CustPassword"]);
 			if ($customer->customerAdd())
