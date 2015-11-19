@@ -2,6 +2,7 @@
 session_start();
 include("header.php");
 
+$lastpage = $_SESSION['lastpage'];
 
 
 if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
@@ -14,7 +15,8 @@ if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
 }
   else
 {
-  header("refresh:3; url=index.php");
+
+  header("refresh:3; url=$lastpage");
 }
 
 
@@ -33,8 +35,7 @@ if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
 <h1><?=($_SESSION["message"])?></h1>
 
 
-
-
+<br />
 
 <?php
 unset($_SESSION["message"]);

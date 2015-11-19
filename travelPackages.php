@@ -2,7 +2,7 @@
     session_start();
     include("Functions.php");
     include("header.php");
-
+    $_SESSION["lastpage"] = "travelPackages.php";
     //fetch the script
     print(getJsPkgArray());
   ?>

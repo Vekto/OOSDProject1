@@ -1,23 +1,22 @@
 </<?php
 
 //Chad//
-include("Functions.php");
-SESSION_START();
-$username = trim($_REQUEST["username"]);
-$password = md5(trim($_REQUEST["password"]));
-$link= agencyConnect();
+  include("Functions.php");
+  SESSION_START();
+  $username = trim($_REQUEST["username"]);
+  $password = md5(trim($_REQUEST["password"]));
+  $link= agencyConnect();
 
-$sql = "SELECT `CustPassword` FROM `customers` WHERE `CustUserName` = ?";
-$stmt = $link->prepare($sql);
-$stmt->bind_param("s",$username);
-$stmt->execute();
-$stmt->bind_result($dbpwd);
-$stmt->fetch();
-print($dbpwd);
-if ($dbpwd == $password)
-{
-  $link->close();
-  $link = agencyConnect();
+  $sql = "SELECT `CustPassword` FROM `customers` WHERE `CustUserName` = ?";
+  $stmt = $link->prepare($sql);
+  $stmt->bind_param("s",$username);
+  $stmt->execute();
+  $stmt->bind_result($dbpwd);
+  $stmt->fetch();
+  if ($dbpwd == $password)
+  {
+    $link->close();
+    $link = agencyConnect();
     //Login is okay, set session variables
     $sql = "SELECT CustFirstName, CustLastName, CustomerId FROM customers WHERE CustUserName = '$username'";
     $result = $link->query($sql);

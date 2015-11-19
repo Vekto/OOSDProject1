@@ -39,7 +39,8 @@ include('header.php');
 
       function regExValidator(myForm){
         var emailRE = /^[a-z0-9_\.]+@([\-0-9a-z]+\.)+[a-z]{2,6}$/i;
-      	var postalRE = /^[A-Z]\d[A-Z]?\d[A-Z]\d$/;
+      	var postalRE = /^[ABCEGHJ-NPRSTVXY]{1}\d{1}[A-Z]{1}\s?\d{1}[A-Z]{1}\d{1}$/;
+        var phoneRE = /(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})/;
         var count = 0
 
         if(!emailRE.test(myForm.CustEmail.value)){
@@ -54,6 +55,18 @@ include('header.php');
           count+=1;
 
 				}
+        if(!phoneRE.test(myForm.CustHomePhone.value)){
+          alert("invalid Home Phone");
+          myForm.CustHomePhone.focus();
+          count+=1;
+
+        }
+        if(!phoneRE.test(myForm.CustBusPhone.value)){
+          alert("invalid Buisness Phone");
+          myForm.CustBusPhone.focus();
+          count+=1;
+
+        }
         if (count==0){
           return true;
         }else{

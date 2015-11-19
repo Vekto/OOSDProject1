@@ -25,7 +25,7 @@
   session_start();
   $_SESSION["message"] = "Logout Successful!";
   $_SESSION["loggedin"] = "FALSE";
-  $_SESSION["lastpage"] = "logout.php";
+  $_SESSION["lastpage"] = "index.php";
   header("Location: messages.php");
  ?>
 
