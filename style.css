@@ -380,3 +380,14 @@ margin: 0 auto;
 .holiday{
 	text-align: center;
 }
+#button
+{
+padding: 10px;
+background-color: #fff;
+border: 1px solid #666;
+color: #000;
+text-decoration: none;
+border-radius: 10px;
+box-shadow: 1px 1px 4px black;
+font-family: georgia;
+}

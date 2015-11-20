@@ -11,17 +11,7 @@ $userId = $_SESSION["userid"];
 
 <head>
   <style>
-  #button
-  {
-  padding: 10px;
-background-color: #fff;
-border: 1px solid #666;
-color: #000;
-text-decoration: none;
-border-radius: 10px;
-box-shadow: 1px 1px 4px black;
-font-family: georgia;
-}
+
   </style>
 
 <title>Travel Experts</title>
@@ -200,7 +190,7 @@ if (isset($_POST['year']))
 
 
 		<label>Card Number:</label>
-		<input type="text" name="cardNumber" id="CCNumber" required="required"/> </br> </br>
+		<input type="number" name="cardNumber" id="CCNumber" required="required"/> </br> </br>
 
 		<label>Expiry Date:</label>
 

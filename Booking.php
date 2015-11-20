@@ -91,15 +91,15 @@
       <form action="confpage.php" onsubmit="return validator(this)" method="post" id="BookingForm" >
         <fieldset><div id="errorDisplay"></div>
           <legend>Customer Registration</legend> <br />
-          Number of Travelers:<input id="TravCount" type="number" name="numTrav" required="required"/><br />
+          Number of Travelers:<input id="TravCount" type="number" name="numTrav" required="required"/><br /><br />
           Class:<select id="ClassSelect" name="class" required="required">
             <option value="1">Select a Class</option><br />
             <option value="1">Economy</option><br />
             <option value="1.5">Business</option><br />
             <option value="2">First Class</option><br />
-          </select><br />
-          Card: <?= cardSelect($_SESSION['userid']) ?><br />
-          <input type="Submit" value="Book It!"/>
+          </select><br /><br />
+          Payment Card: <?= cardSelect($_SESSION['userid']) ?><br /><br />
+          <input type="Submit" id="button" value="Book It!"/><input type="button" id="button" onclick="location.href='useraccountinfo.php';" value="Add Card" />
         </fieldset>
 	     </form>
      </div>
