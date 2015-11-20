@@ -88,7 +88,7 @@ if ($_SESSION["loggedin"] == "FALSE")
 			<button type='submit' name='userAction' value='delete'>Delete account</button>
 			</h3>
 			</form>";
-			
+
 
 		}
 	}
@@ -108,7 +108,7 @@ echo $output;
 	function execute($userId)
 	{
 		if (isset($_POST['year']))
-		{	
+		{
 			$mysqli = agencyConnect();
 			$datec = "20".($_POST['year'])."-".($_POST['month'])."-"."00 00:00:00";
 			$credit = "INSERT INTO creditcards (CCName, CCNumber, CCExpiry, CustomerId) VALUES ('$_POST[cardType]', '$_POST[cardNumber]', '$datec', '$userId')";
@@ -123,12 +123,12 @@ if (isset($_POST['year']))
 {
 	if (execute($userId))
 	{
-		echo "<h1>Card successfully added</h1></br>"; 
+		echo "<h1>Card successfully added</h1></br>";
 	}
 	else
 	{
 		print("Error: {$mysqli->errno} : {$mysqli->error}");
-	} 
+	}
 
 }
 
@@ -142,14 +142,14 @@ if (isset($_POST['year']))
 		<legend>Secure Payment</legend> </br>
 		<img src="Images/checkout.png" width="150px" height="40px"/></br></br>
 
-		<label>Payment Type:</label> 
+		<label>Payment Type:</label>
 		<select name="cardType">
 
 			<option>Select Payment Type</option>
 			<option value="AMEX">AMEX</option>
 			<option value="MASTERCARD">MASTERCARD</option>
 			<option value="VISA">VISA</option>
-			<option value="DINERS">DINERS</option>
+			<option value="PayPal">PayPal</option>
 		</select><br/><br/>
 
 
@@ -193,7 +193,7 @@ if (isset($_POST['year']))
 
 
 		</br></br>
-		
+
 		<input type="submit" value="Submit" /></br>
 
 
