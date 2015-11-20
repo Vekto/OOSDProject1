@@ -16,7 +16,44 @@ $userId = $_SESSION["userid"];
 <!--[if lt IE 9]>
   <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
   <![endif]-->
+<script>
+function validateType(myForm)
+{
+  var errorMessage = "";
+  var monthRE = /^(0?[1-9]|1[012])$/;
+  var yearRE = /^([1-9][0-9])$/;
+
+
+  if (myForm.elements[1].value == "FALSE")
+  {
+      errorMessage+="Please select a card type. ";
+  }
+
+  if(!yearRE.test(myForm.year.value))
+  {
+    errorMessage+="Please enter a valid year. ";
+  }
+
+  if(!monthRE.test(myForm.month.value))
+  {
+    errorMessage+="Please enter a valid month. ";
+  }
+  
+
+  if(errorMessage == "")
+  {
+    return true;
+  }
+    else
+  {
+    alert(errorMessage);
+    return false;
+  }
+
+}
+</script>
 </head>
+
 
 <body>
 <?php
@@ -136,7 +173,7 @@ if (isset($_POST['year']))
 
 ?>
 	<!--PAYMENT FORM-->
-	<form id="creditform" action="useraccountinfo.php" method="post">
+	<form id="creditform" action="useraccountinfo.php" method="post" onsubmit="return validateType(this);">
 		<fieldset>
 
 		<legend>Secure Payment</legend> </br>
@@ -145,7 +182,7 @@ if (isset($_POST['year']))
 		<label>Payment Type:</label>
 		<select name="cardType">
 
-			<option>Select Payment Type</option>
+			<option value="FALSE">Select Payment Type</option>
 			<option value="AMEX">AMEX</option>
 			<option value="MASTERCARD">MASTERCARD</option>
 			<option value="VISA">VISA</option>
@@ -154,14 +191,14 @@ if (isset($_POST['year']))
 
 
 		<label>Card Number:</label>
-		<input type="text" name="cardNumber" id="CCNumber" /> </br> </br>
+		<input type="text" name="cardNumber" id="CCNumber" required="required"/> </br> </br>
 
 		<label>Expiry Date:</label>
 
 		<label>Year</label>
-		<input type="text" name="year" id="year" /> </br> </br>
+		<input type="text" name="year" id="year" required="required"/> </br> </br>
 		<label>Month</label>
-		<input type="text" name="month" id="month" /> </br> </br>
+		<input type="text" name="month" id="month" required="required"/> </br> </br>
 
 		<!--<select name="year">
 

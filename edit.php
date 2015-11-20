@@ -11,8 +11,6 @@
 	//$result = $mysqli->query("SELECT * FROM customers WHERE CustUserName ='$user' AND CustPassword = '$pass'");
 	$result = $mysqli->query("SELECT * FROM customers WHERE CustomerId = $_SESSION[userid]");
 
-
-
 	if ($result->num_rows > 0)
 	{
 		while ($rows = $result->fetch_assoc())
@@ -60,7 +58,7 @@
 			Email: $CustEmail <br/>
       <input name='CustEmail' value='$CustEmail' /><br/>
 			<input type='hidden' name='CustId' value='$CustId' />
-			<button type='submit' name='userAction' value='editted'>Submit Changes</button>
+			<button type='submit' name='userAction' value='editted' onsubmit='return (validator(this) && regExValidator(this));'>Submit Changes</button>
 			</h3>
       </fieldset>
 			</form>
@@ -74,6 +72,6 @@
 		$output =  "Enter Username & Password";
 	}
 print($output);
-
+$mysqli->close();
 include("footer.php");
  ?>

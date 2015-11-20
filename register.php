@@ -68,9 +68,7 @@ include('header.php');
           count+=1;
 
         }
-<<<<<<< HEAD
-        if (count==0){
-=======
+
         if(myForm.CustProv.value == "0"){
           alert("Select a Province");
           myForm.CustProv.focus();
@@ -88,7 +86,6 @@ include('header.php');
 
         if (count==0)
         {
->>>>>>> origin/master
           return true;
         }
         else

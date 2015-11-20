@@ -31,10 +31,29 @@ if ($_SESSION["lastpage"] == "Booking.php" && !isset($_SESSION["bookingLogin"]))
 <br />
 <br />
 <br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 <h1><?=($_SESSION["message"])?></h1>
 
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 
 <?php

@@ -31,7 +31,7 @@
     // customer registration form validation
     function validator(myForm)
     {
-      var errorMessage = "<p>Oops! The following fields must be filled out:<br />";
+      var errorMessage = "Oops! Please address the following:<br />";
       var elements = myForm.elements;
         if (myForm.elements[3].value == "select")
         {
@@ -43,15 +43,14 @@
           errorMessage += "Pick Number of Travelers<br />";
         }
 
-        if (errorMessage == "<p>Oops! The following fields must be filled out:<br />")
+        if (errorMessage == "Oops! Please address the following:<br />")
         {
-          errorMessage += "</p>";
+
           return true;
         }
         else
         {
-            alert(errorMessage);
-            errorMessage += "</p>";
+
             document.getElementById("errorDisplay").innerHTML = errorMessage;
             return false;
         }
@@ -59,6 +58,13 @@
 
 
     </script>
+    <style>
+      #errorDisplay{
+        position:relative;
+        top:-100px;
+        left:200px;
+      }
+    </style>
 </head>
 
 <body>
@@ -73,8 +79,7 @@
 	     <!--WRITE YOUR CODE BELOW THIS LINE-->
 
 	      <!-- Form meant for user input to add entry into customer table in the database. -->
-        <div id="errorDisplay">
-        </div>
+
 
     <div class="container">
       <?php
@@ -82,16 +87,17 @@
       print(substr($package[0]["PkgStartDate"],0,10)."<br />");
       print(substr($package[0]["PkgEndDate"],0,10)."<br />");
       ?>
+
       <form action="confpage.php" onsubmit="return validator(this)" method="post" id="BookingForm" >
-        <fieldset>
-          <legend>Customer Registration</legend> </br>
+        <fieldset><div id="errorDisplay"></div>
+          <legend>Customer Registration</legend> <br />
           Number of Travelers:<input id="TravCount" type="number" name="numTrav" required="required"/><br />
           Class:<select id="ClassSelect" name="class" required="required">
-            <option value="1">Select a Class</option>
-            <option value="1">Economy</option>
-            <option value="1.5">Business</option>
-            <option value="2">First Class</option>
-          </select>
+            <option value="1">Select a Class</option><br />
+            <option value="1">Economy</option><br />
+            <option value="1.5">Business</option><br />
+            <option value="2">First Class</option><br />
+          </select><br />
           Card: <?= cardSelect($_SESSION['userid']) ?><br />
           <input type="Submit" value="Book It!"/>
         </fieldset>
