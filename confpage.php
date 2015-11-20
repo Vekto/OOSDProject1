@@ -1,10 +1,25 @@
-
+<?php
+session_start()
+?>
 
 
 <!DOCTYPE html>
 
 <html>
-
+<style>
+#bookings
+{
+  align:center;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+</style>
 <head>
 
 <title>Travel Experts</title>
@@ -25,7 +40,6 @@
 
 <?php
 
-session_start();
 include("Functions.php");
 $packageId = $_SESSION['packageid'];
 $package = getTravelPackages($_SESSION['packageid']);
@@ -36,17 +50,18 @@ $classMult = $_REQUEST["class"];
 $total = $basePrice*$numTrav*$classMult;
 
 print("<h1>Confirm your trip!</h1>");
-print($package[0]["PkgName"]."<br />");
-print($package[0]["PkgStartDate"]."<br />");
-print($package[0]["PkgEndDate"]."<br />");
-print("<table> <th>Package Price</th><th>Class</th><th>Number of Travllers</th>
-<tr><td>$basePrice.X</td><td>$classMult X</td><td>    $numTrav    =       </td></tr></table>");
-print("Total<br />");
-print($total);
+print("<table id='bookings'> <th>Package Name</th><th>Start Date</th><th>End Date</th>
+<tr><td>" .$package[0]['PkgName']. "</td><td>" .substr($package[0]['PkgStartDate'],0,7). "</td><td>" . substr($package[0]['PkgEndDate'],0,7) . "</td></tr></table><br />");
+/*$package[0]["PkgName"]."<br />")
+substr($package[0]["PkgStartDate"],0,7)."<br />")
+substr($package[0]["PkgEndDate"],0,7)."<br />");"*/
+print("<table id='bookings'> <th>Package Price</th><th>Class</th><th>Number of Travllers</th><th>Total</th>
+<tr><td>$basePrice.X</td><td>$classMult X</td><td>    $numTrav  </td><td>  =     $$total  </td></tr></table>");
+
 print("<form action='submitbooking.php'>
       <input type='hidden' name='numTrav' value='$numTrav'/>
       <input type='hidden' name='ClassMult' value='$classMult'/>
-      <input type='submit'/>");
+      <input id='button' type='submit'/>");
 
 ?>
 
