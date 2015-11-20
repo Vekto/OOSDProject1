@@ -39,6 +39,10 @@ h1{
 	color: black;
 	text-align: center;
 }
+
+h3{
+	text-align: center;
+}
 /* --------Styling Links Below---------*/
 li a:hover{
 	color: #33ccff;

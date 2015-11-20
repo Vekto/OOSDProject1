@@ -38,7 +38,7 @@ function validateType(myForm)
   {
     errorMessage+="Please enter a valid month. ";
   }
-  
+
 
   if(errorMessage == "")
   {
@@ -77,11 +77,6 @@ if ($_SESSION["loggedin"] == "FALSE")
 	//connect to mysql
 	$mysqli = new mysqli("localhost", "root", "", "travelexperts");
 
-	/*$user = $mysqli->real_escape_string($_POST['user']);
-	$pass = $mysqli->real_escape_string($_POST['pass']); */
-
-
-	//$result = $mysqli->query("SELECT * FROM customers WHERE CustUserName ='$user' AND CustPassword = '$pass'");
 
 	//select quesry to fetch data
 	$result = $mysqli->query("SELECT * FROM customers WHERE CustomerId = $_SESSION[userid]");
@@ -105,26 +100,26 @@ if ($_SESSION["loggedin"] == "FALSE")
 
 
 
-			$output = "<table><th><h1>Your Account Information</h1></th>
+			$output = "<h1>Your Account Information</h1>
 			<form action='reghandler.php' method='post'>
 			<h3>
-			First Name: $CustFirstName <br/>
-			Last Name: $CustLastName <br/>
-			Address: $CustAddress <br/>
-			City: $CustCity <br/>
-			Province: $CustProv <br/>
-			Postal Code: $CustPostal <br/>
-			Country: $CustCountry <br/>
+			<table><tr>First Name:</tr> $CustFirstName <br/>
+			<tr>Last Name: $CustLastName </tr><br/>
+			<tr>Address: $CustAddress</tr> <br/>
+			<tr>City: $CustCity</tr> <br/>
+			<tr>Province: $CustProv</tr> <br/>
+			<tr>Postal Code: $CustPostal</tr> <br/>
+			<tr>Country: $CustCountry </tr><br/>
 			</br>
-			PHONE </br>
-			Home: $CustHomePhone <br/>
-			Business: $CustBusPhone <br/>
-			Email: $CustEmail <br/></table>
+			<tr>PHONE</tr> </br>
+			<tr>Home:</tr> $CustHomePhone <br/>
+			<tr>Business:</tr> $CustBusPhone <br/>
+			<tr>Email:</tr> $CustEmail <br/></table>
 			<input type='hidden' name='CustId' value='$CustId' /> </br>
 			<button type='submit' name='userAction' value='edit'>Edit account info</button>
 			<button type='submit' name='userAction' value='delete'>Delete account</button>
 			</h3>
-			</form>";
+			</form></table>";
 
 
 		}
@@ -186,7 +181,7 @@ if (isset($_POST['year']))
 			<option value="AMEX">AMEX</option>
 			<option value="MASTERCARD">MASTERCARD</option>
 			<option value="VISA">VISA</option>
-			<option value="PayPal">PayPal</option>
+			<option value="DINERS">DINERS</option>
 		</select><br/><br/>
 
 
@@ -198,6 +193,7 @@ if (isset($_POST['year']))
 		<label>Year</label>
 		<input type="text" name="year" id="year" required="required"/> </br> </br>
 		<label>Month</label>
+
 		<input type="text" name="month" id="month" required="required"/> </br> </br>
 
 		<!--<select name="year">
@@ -228,9 +224,6 @@ if (isset($_POST['year']))
 
 
 
-
-		</br></br>
-
 		<input type="submit" value="Submit" /></br>
 
 
@@ -247,10 +240,6 @@ if (isset($_POST['year']))
 
 	  include("footer.php");
     ?>
-
-
-
-
 
 </body>
 </html>
