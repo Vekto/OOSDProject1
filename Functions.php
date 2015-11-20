@@ -117,6 +117,23 @@
     $link->close();
     return $pkgArray;
   }
+  function getBookingDetails($bookingid=NULL){
+    $link = agencyConnect();
+    $sql = "SELECT `ItineraryNo`, `TripStart`, `TripEnd` FROM `bookingdetails`";
+    $i = 0;
+    if ($bookingid != NULL){
+      $sql .= "WHERE `BookingId` = $bookingid";
+    }
+    $result = $link->query($sql);
+    $pkgArray = array();
+    for($i=0;$i<$result->num_rows;$i++){
+      while($row = mysqli_fetch_assoc($result)) {
+      $pkgArray[] = $row;
+     }
+    }
+    $link->close();
+    return $pkgArray;
+  }
 
 
   //retrieves any 2 field table that's used for select functions
@@ -160,6 +177,15 @@
         $mysqli->close();
         return($bookingId);
       }
+      function getPackageDetails($packageid)
+        {
+          $mysqli = agencyConnect();
+          $sql = "SELECT `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc` FROM `packages` WHERE `PackageId` = $packageid";
+          $result = $mysqli->query($sql);
+          $value = $result->fetch_array(MYSQLI_NUM);
+          $mysqli->close();
+          return($value);
+        }
 
 
     //retrieves credit cards of customer and displays only last 4 values.
@@ -264,6 +290,29 @@
     $contact .= "</div>";
 	  $link->close();
     return $contact;
+  }
+  function displayBookings($customerId)
+  {
+    $link = agencyConnect();
+    $contact;
+    $sql = "SELECT `BookingId`, `BookingNo`, `TravelerCount`, `PackageId` FROM `bookings` WHERE `CustomerId` = $customerId";
+    $bookingResult = $link->query($sql);
+    $contact = "<div id='bookings' align='center'>";
+    $contact .= "<table id='BookingTable'><th>Booking Number</th><th>Travelers</th><th>Package</th><th>Start Date</th><th>End Date</th><br />";
+    while ($row = $bookingResult->fetch_row())
+    {
+    $bookingid = "$row[0]";
+    $packageid = "$row[3]";
+    $booking = getBookingDetails($bookingid);
+    $pkgArray = getPackageDetails($packageid);
+
+    //$contact .= "<tr><td>$row[2]</td><td>$row[2]</td><td>hi</td><td>hi</td><td>hi</td></tr>";
+    $contact .= "<tr><td> $row[1] </td>  <td> $row[2] </td>  <td> '$pkgArray[0]' </td>  <td> " . substr("$pkgArray[1]",0,10) . " </td>  <td> " . substr("$pkgArray[2]",0,10) . " </td></tr>";
+    }
+    $contact .= "</table></div>";
+    $link->close();
+    return $contact;
+
   }
 
   //generates a 6 digit booking ID. Credit Jeremy Ruten, stackoverflow.com

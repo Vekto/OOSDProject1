@@ -10,6 +10,19 @@ $userId = $_SESSION["userid"];
 <html>
 
 <head>
+  <style>
+  #button
+  {
+  padding: 10px;
+background-color: #fff;
+border: 1px solid #666;
+color: #000;
+text-decoration: none;
+border-radius: 10px;
+box-shadow: 1px 1px 4px black;
+font-family: georgia;
+}
+  </style>
 
 <title>Travel Experts</title>
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -130,6 +143,7 @@ if ($_SESSION["loggedin"] == "FALSE")
 }
 echo $output;
 ?>
+<input type="button" id="button" onclick="location.href='displayBooking.php';" value="View Bookings" />
 <?php
 //insert into db
 
