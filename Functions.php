@@ -169,7 +169,7 @@
     $sql = "SELECT CreditCardId, CCName, CCNumber, CCExpiry FROM creditcards WHERE CustomerId = '$key'";
     $result = $mysqli->query($sql);
     $selectString = "<select id='CardSelect' name='Cards'>";
-    $selectString .= "<option value='NullCard'>Select a card</option>";
+    $selectString .= "<option value='select'>Select a card</option>";
     while ($row = $result->fetch_array(MYSQLI_NUM))
     {
       $oldstring = $row[2];

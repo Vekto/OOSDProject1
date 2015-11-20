@@ -29,55 +29,35 @@
   <![endif]-->
   <script>
     // customer registration form validation
-    function validator(myForm){
+    function validator(myForm)
+    {
       var errorMessage = "<p>Oops! The following fields must be filled out:<br />";
       var elements = myForm.elements;
-
-        if (getElementById("CardSelect") == "NullCard"){
+        if (myForm.elements[3].value == "select")
+        {
           errorMessage += "Select a Payment Method<br />";
         }
-        if (getElementById("TravCount") == "" || getElementById("TravCount") == 0){
+
+       if (myForm.elements[1].value < 1)
+        {
           errorMessage += "Pick Number of Travelers<br />";
         }
 
-
-      }
-
-      if (errorMessage == "<p>Oops! The following fields must be filled out:<br />"){
-        return true;
-      }
-      else{
+        if (errorMessage == "<p>Oops! The following fields must be filled out:<br />")
+        {
           errorMessage += "</p>";
-          document.getElementById("errorDisplay").innerHTML = errorMessage;
-          return false;
-        }
-      }
-
-      function regExValidator(myForm){
-        var emailRE = /^[a-z0-9_\.]+@([\-0-9a-z]+\.)+[a-z]{2,6}$/i;
-      	var postalRE = /^[A-Z]\d[A-Z]?\d[A-Z]\d$/;
-        var count = 0
-
-        if(!emailRE.test(myForm.CustEmail.value)){
-					alert("Invalid Email Format!");
-					myForm.CustEmail.focus();
-          count+=1;
-				}
-
-				if(!postalRE.test(myForm.CustPostal.value)){
-					alert("invalid postal Code");
-					myForm.CustPostal.focus();
-          count+=1;
-				}
-
-        if (count==0){
           return true;
         }
-        else{
-          return false;
+        else
+        {
+            alert(errorMessage);
+            errorMessage += "</p>";
+            document.getElementById("errorDisplay").innerHTML = errorMessage;
+            return false;
         }
+    }
 
-      }
+
     </script>
 </head>
 
@@ -94,7 +74,7 @@
 
 	      <!-- Form meant for user input to add entry into customer table in the database. -->
         <div id="errorDisplay">
-    </div>
+        </div>
 
     <div class="container">
       <?php

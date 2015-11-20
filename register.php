@@ -67,7 +67,6 @@ include('header.php');
           count+=1;
 
         }
-        alert(count);
         if (count==0){
           return true;
         }else{

@@ -2,7 +2,7 @@
   session_start();
   include("Functions.php");
   print_r($_SESSION);
-  //initialize
+  //initialize variables
   $package = getTravelPackages($_SESSION["packageid"]);
   $bookingNo =  makeBookingId();
   $today = date('Y-m-d h:i:s');
@@ -13,8 +13,10 @@
     "BookingNo" => $bookingNo,
     "TravelerCount" => $TravelerCount,
     "CustomerId" => $_SESSION["userid"],
+    "PackageId" => $_SESSION["packageid"],
     );
   $class = "";
+  //get the correct class ID
   switch ($_REQUEST["ClassMult"])
   {
     case 1:
@@ -31,15 +33,16 @@
   }
 
   addRecord($bookingArray,"bookings");
+  //get id of just the booking we just added
   $newBookingId = getBookingId($bookingNo);
-
+  //array for booking details table
   $bookingDetailsArray = Array("TripStart" => $package[0]['PkgStartDate'],
                                "TripEnd" => $package[0]['PkgEndDate'],
                                "BasePrice" => $package[0]['PkgBasePrice'],
                                "BookingId" => $newBookingId,
                                "ClassId" => $class,);
   addRecord($bookingDetailsArray,"bookingdetails");
-
+  //update session variables
   $_SESSION["message"] = "Booking Successful!";
   $_SESSION["lastpage"] = "index.php";
   header("Location: messages.php");
