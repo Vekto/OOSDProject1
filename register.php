@@ -21,7 +21,7 @@ include('header.php');
       var elements = myForm.elements;
 
       for (i=0; i<elements.length; i++){
-        if (elements[i].value == "Select a Country"){
+        if (elements[i].value == "Select a Country" || elements[i].value == "-----Territories-----"){
           errorMessage += "Country<br />";
         }
         if (elements[i].value == ""){
@@ -39,14 +39,17 @@ include('header.php');
 
       function regExValidator(myForm){
         var emailRE = /^[a-z0-9_\.]+@([\-0-9a-z]+\.)+[a-z]{2,6}$/i;
-      	var postalRE = /^[ABCEGHJ-NPRSTVXY]{1}\d{1}[A-Z]{1}\s?\d{1}[A-Z]{1}\d{1}$/;
+      	var postalRE = /^((\d{5}-\d{4})|(\d{5})|([AaBbCcEeGgHhJjKkLlMmNnPpRrSsTtVvXxYy]\d[A-Za-z]\s?\d[A-Za-z]\d))$/;
         var phoneRE = /(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})/;
-        var count = 0
-
+        var count = 0;
+          var custPass = myForm.CustPassword.value;
+          var confPass = myForm.ConfPassword.value;
+          alert(custPass);
+          alert(confPass);
         if(!emailRE.test(myForm.CustEmail.value)){
 					alert("Invalid Email Format!");
 					myForm.CustEmail.focus();
-          count+=1;
+          count +=1;
 
 				}
 				if(!postalRE.test(myForm.CustPostal.value)){
@@ -58,7 +61,7 @@ include('header.php');
         if(!phoneRE.test(myForm.CustHomePhone.value)){
           alert("invalid Home Phone");
           myForm.CustHomePhone.focus();
-          count+=1;
+          count +=1;
 
         }
         if(!phoneRE.test(myForm.CustBusPhone.value)){
@@ -67,9 +70,28 @@ include('header.php');
           count+=1;
 
         }
-        if (count==0){
+        if(myForm.CustProv.value == "0"){
+          alert("Select a Province");
+          myForm.CustProv.focus();
+          count+=1;
+        }
+
+        if(custPass != confPass){
+          alert("Passwords do not match!");
+          myForm.CustPassword.value = "";
+          myForm.ConfPassword.value = "";
+          myForm.CustPassword.focus();
+          count+=1;
+        }
+        alert(count);
+
+
+        if (count==0)
+        {
           return true;
-        }else{
+        }
+        else
+        {
           return false;
         }
 
@@ -81,7 +103,8 @@ include('header.php');
 
     </script>
     <style>
-    #errorMessage{
+    #errorMessage
+    {
       position:absolute;
       left: 475px;
       top:30px;
@@ -115,48 +138,68 @@ include('header.php');
       <legend>Customer Registration</legend> </br>
 
 		<label for="CustFirstName">First Name: </label>
-		<input type="text" name="CustFirstName" id="First Name" value="" /><br /><br />
+		<input type="text" required="required" name="CustFirstName" id="First Name" value="" /><br /><br />
 
 		<label for="CustLastName">Last Name: </label>
-		<input type="text" name="CustLastName" id="Last Name"value="" /><br /><br />
+		<input type="text" required="required" name="CustLastName" id="Last Name"value="" /><br /><br />
 
 		<label for="CustAddress">Address: </label>
-		<input type="text" name="CustAddress" id="Address" value="" /><br /><br />
+		<input type="text" required="required" name="CustAddress" id="Address" value="" /><br /><br />
 
 		<label for="CustCity">City: </label>
-		<input type="text" name="CustCity" id="City" value="" /><br /><br />
+		<input type="text" required="required" name="CustCity" id="City" value="" /><br /><br />
 
-		<label for="CustProv">Province/State: </label>
-		<input type="text" name="CustProv" id="Province/state" value="" /><br /><br />
+		<!--<label for="CustProv">Province/State: </label>
+		<input type="text" name="CustProv" id="Province/state" value="" /><br /><br />-->
+
+    <label for="CustProv">Province/State: </label>
+    <select name="CustProv">
+      <option value="0">Select a Province</option>
+      <option value="ca">Alberta</option>
+      <option value="ca">British Columbia</option>
+      <option value="ca">Manitoba</option>
+      <option value="ca">New Brunswick</option>
+      <option value="ca">Newfoundland</option>
+      <option value="ca">Nova Scotia</option>
+      <option value="ca">Ontario</option>
+      <option value="ca">Prince Edward Island</option>
+      <option value="ca">Quebec</option>
+      <option value="ca">Sakatchawan</option>
+      <<option value="0">-----Territories-----</option>
+      <option value="ca">Northwest Territories</option>
+      <option value="ca">Nunavut</option>
+      <option value="ca">Yukon</option>
+
+    </select><br /><br />
 
 		<label for="CustPostal">Postal Code: </label>
-		<input type="text" name="CustPostal" id="Postal Code" placeholder="ex. t2t-2m7" value="" /><br /><br />
+		<input type="text" required="required" name="CustPostal" id="Postal Code" placeholder="ex. t2t-2m7" value="" /><br /><br />
 
 		<label for="CustCountry">Country: </label>
 		<select name="CustCountry">
-		  <option>Select a Country</option>
-		  <option value="ca">Canada</option>
-		  <option value="us">United States</option>
-		  <option value="mx">Mexico</option>
-		  <option value="uk">United Kingdom</option>
+		  <option value="0">Select a Country</option>
+		  <option value="Canada">Canada</option>
 		</select><br /><br />
 
 		<label for="CustHomePhone">Home Phone: </label>
-		<input type="text" name="CustHomePhone" id="Home Phone" value="" /><br /><br />
+		<input type="text" required="required" name="CustHomePhone" id="Home Phone" value="" /><br /><br />
 
 		<label for="CustBusPhone">Business Phone: </label>
-		<input type="text" name="CustBusPhone" id="Business Phone" value="" /><br /><br />
+		<input type="text" required="required" name="CustBusPhone" id="Business Phone" value="" /><br /><br />
 
 		<label for="CustEmail">Email: </label>
-		<input type="text" name="CustEmail" id="Email" value="" /><br /><br />
+		<input type="text" required="required" name="CustEmail" id="Email" value="" /><br /><br />
 
 		<label for="CustUsername">Username: </label>
-		<input type="text" name="CustUsername" id="Username" value="" /><br /><br />
+		<input type="text" required="required" name="CustUsername" id="Username" value="" /><br /><br />
 
 		<label for="CustPassword">Password: </label>
-		<input type="password" name="CustPassword" id="Password" value="" /><br /><br />
+		<input type="password" required="required" name="CustPassword" id="Password" value="" /><br /><br />
 
-		<input type="submit" name='userAction' value='register' />
+    <label for="ConfPassword">Confirm Password: </label>
+		<input type="password" required="required" name="ConfPassword" id="Password2" value="" /><br /><br />
+
+		<input type="submit" name='userAction' value='Register' />
         <input type="reset" value="Reset" onclick="clearError()" />
 
 
