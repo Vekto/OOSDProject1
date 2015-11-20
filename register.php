@@ -44,8 +44,6 @@ include('header.php');
         var count = 0;
           var custPass = myForm.CustPassword.value;
           var confPass = myForm.ConfPassword.value;
-          alert(custPass);
-          alert(confPass);
         if(!emailRE.test(myForm.CustEmail.value)){
 					alert("Invalid Email Format!");
 					myForm.CustEmail.focus();
@@ -83,7 +81,6 @@ include('header.php');
           myForm.CustPassword.focus();
           count+=1;
         }
-        alert(count);
 
 
         if (count==0)
@@ -155,20 +152,20 @@ include('header.php');
     <label for="CustProv">Province/State: </label>
     <select name="CustProv">
       <option value="0">Select a Province</option>
-      <option value="ca">Alberta</option>
-      <option value="ca">British Columbia</option>
-      <option value="ca">Manitoba</option>
-      <option value="ca">New Brunswick</option>
-      <option value="ca">Newfoundland</option>
-      <option value="ca">Nova Scotia</option>
-      <option value="ca">Ontario</option>
-      <option value="ca">Prince Edward Island</option>
-      <option value="ca">Quebec</option>
-      <option value="ca">Sakatchawan</option>
+      <option value="AB">Alberta</option>
+      <option value="BC">British Columbia</option>
+      <option value="MB">Manitoba</option>
+      <option value="NB">New Brunswick</option>
+      <option value="NF">Newfoundland</option>
+      <option value="NS">Nova Scotia</option>
+      <option value="ON">Ontario</option>
+      <option value="PE">Prince Edward Island</option>
+      <option value="QC">Quebec</option>
+      <option value="SK">Sakatchawan</option>
       <<option value="0">-----Territories-----</option>
-      <option value="ca">Northwest Territories</option>
-      <option value="ca">Nunavut</option>
-      <option value="ca">Yukon</option>
+      <option value="NT">Northwest Territories</option>
+      <option value="NU">Nunavut</option>
+      <option value="YT">Yukon</option>
 
     </select><br /><br />
 

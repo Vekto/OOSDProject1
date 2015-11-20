@@ -1,6 +1,6 @@
 <?php
   session_start();
-
+  $_SESSION["lastpage"] = "edit.php";
   include("header.php");
   $mysqli = new mysqli("localhost", "root", "", "travelexperts");
 

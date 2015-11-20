@@ -17,7 +17,7 @@
   }
 
 
-// Adds a single row into a specified table
+// Add a single row into a specified table
   function addAgent($newRow, $newTable="customer"){
     include_once('testingVars.php');
     $link = agencyConnect();
@@ -43,10 +43,10 @@
 /*--Updates a table--------------------------------*/
 /*--Pass the function which table you are updating,*/
 /*--Followed by which Array you are wanting to use-*/
-/*--Followed by the Key Name(a string) for the table--------------*/
+/*--Followed by the Key Name(a string) for the table*/
  function updateTable($argTable, $argArray, $pKey)
  {
-    //$id=array_pop($argArray);
+     $id=array_pop($argArray);
      $link = agencyConnect();
      $sql = "UPDATE $argTable SET ";
      $keyvals = array();
@@ -192,16 +192,10 @@
     print($sql);
     $result = $link->query($sql);
     $link->close();
-    if ($result){
-      print($deleteSuccess);
-    }
-    else{
-      print($deleteFail);
-    }
     return $result;
   }
 
-  // Adds a customer by default.
+  // Adds a row, to cusomters by default.
   function addRecord($newRow, $newTable="customer")
   {
     $link = agencyConnect();
@@ -272,7 +266,7 @@
     return $contact;
   }
 
-  //Credit Jeremy Ruten, stackoverflow.com
+  //generates a 6 digit booking ID. Credit Jeremy Ruten, stackoverflow.com
   function makeBookingId()
   {
     $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';

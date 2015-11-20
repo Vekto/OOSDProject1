@@ -105,9 +105,9 @@
       <form action="confpage.php" onsubmit="return validator(this)" method="post" id="BookingForm" >
         <fieldset>
           <legend>Customer Registration</legend> </br>
-          Number of Travelers:<input id="TravCount" type="number" name="numTrav"/><br />
-          Class:<select id="ClassSelect" name="class">
-            <option value = "0">Select a Class</option>
+          Number of Travelers:<input id="TravCount" type="number" name="numTrav" required="required"/><br />
+          Class:<select id="ClassSelect" name="class" required="required">
+            <option value="1">Select a Class</option>
             <option value="1">Economy</option>
             <option value="1.5">Business</option>
             <option value="2">First Class</option>
