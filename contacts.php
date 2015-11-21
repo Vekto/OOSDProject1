@@ -1,3 +1,4 @@
+<!-- Used to print out agent information, mainly contact information for the customers. -->
 <?php
 	session_start();
 	include("header.php");

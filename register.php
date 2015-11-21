@@ -1,3 +1,4 @@
+<!-- Page built to allow customers to enter their own data into the databases. -->
 <?php
 session_start();
 include('header.php');

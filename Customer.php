@@ -1,3 +1,4 @@
+<!-- Comments relating to the customer class below. -->
 <?php
 
 	#Customer class, which includes variables, named after the same variables in the database for ease of modifying.
@@ -157,6 +158,7 @@
 			//print("This is a customer.");
 			return "Customer: " . $CustFirstName . ", " . $CustLastName . ", " . $CustAddress . ", " . $CustProv . ", " . $CustCity . ", " . $CustPostal . ", " . $CustCountry . ", " . $CustHomePhone . ", " . $CustBusPhone . ", " . $CustEmail . ", " . $CustUsername . "<br />";
 		}
+		//For the customerAdd() method, that is used for the database.
 		public function customerAdd()
 		{
 			 $a = $this->getFirstName();
