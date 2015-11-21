@@ -1,14 +1,13 @@
 <?php
+/*============================================================================*/
+//provides a method for users to edit their account information.              //
+/*============================================================================*/
+
   session_start();
   $_SESSION["lastpage"] = "edit.php";
   include("header.php");
+  //connect to DB and query for the logged in customer
   $mysqli = new mysqli("localhost", "root", "", "travelexperts");
-
-	/*$user = $mysqli->real_escape_string($_POST['user']);
-	$pass = $mysqli->real_escape_string($_POST['pass']); */
-
-
-	//$result = $mysqli->query("SELECT * FROM customers WHERE CustUserName ='$user' AND CustPassword = '$pass'");
 	$result = $mysqli->query("SELECT * FROM customers WHERE CustomerId = $_SESSION[userid]");
 
 	if ($result->num_rows > 0)
@@ -28,7 +27,7 @@
 			$CustEmail = $rows['CustEmail'];
 
 
-
+      //Print a form populated with the logged in user's account information for them to edit. Submitted to regHandler.php.
 			$output = "
       <div id='main_container'>
       <fieldset>
@@ -72,6 +71,7 @@
 		$output =  "Enter Username & Password";
 	}
 print($output);
+//close connection
 $mysqli->close();
 include("footer.php");
  ?>

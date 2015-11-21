@@ -82,7 +82,8 @@
   }
 
   //generates some javascript that will recieve the array of travel package data.
-  function getJsPkgArray(){
+  function getJsPkgArray()
+  {
     $pkgArray = getTravelPackages();
     $i=0;
     $script = "";
@@ -100,7 +101,8 @@
 
 
   //pulls relevant fields from the packages table and stores it in an array of associative arrays.
-  function getTravelPackages($pkgid=NULL){
+  function getTravelPackages($pkgid=NULL)
+  {
     $link = agencyConnect();
     $sql = "SELECT `PackageId`, `PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgImageUrl` FROM `packages`";
     $i = 0;
@@ -117,7 +119,8 @@
     $link->close();
     return $pkgArray;
   }
-  function getBookingDetails($bookingid=NULL){
+  function getBookingDetails($bookingid=NULL)
+  {
     $link = agencyConnect();
     $sql = "SELECT `ItineraryNo`, `TripStart`, `TripEnd` FROM `bookingdetails`";
     $i = 0;
@@ -188,7 +191,7 @@
         }
 
 
-    //retrieves credit cards of customer and displays only last 4 values.
+  //retrieves credit cards of customer and displays only last 4 values.
   function cardSelect($key)
   {
     $mysqli = agencyConnect();
@@ -306,7 +309,7 @@
     $booking = getBookingDetails($bookingid);
     $pkgArray = getPackageDetails($packageid);
 
-    //$contact .= "<tr><td>$row[2]</td><td>$row[2]</td><td>hi</td><td>hi</td><td>hi</td></tr>";
+
     $contact .= "<tr><td> $row[1] </td>  <td> $row[2] </td>  <td> '$pkgArray[0]' </td>  <td> " . substr("$pkgArray[1]",0,10) . " </td>  <td> " . substr("$pkgArray[2]",0,10) . " </td></tr>";
     }
     $contact .= "</table></div>";

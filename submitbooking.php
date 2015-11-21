@@ -1,4 +1,8 @@
 <?php
+/*=============================================================================*/
+//This script grabs all the variables and runs all the queries to get the      //
+//booking into the databse.                                                    //
+/*=============================================================================*/
   session_start();
   include("Functions.php");
   print_r($_SESSION);
