@@ -1,3 +1,5 @@
+<!--The customer registration form on the booking page allows customers to book a flight after they choose one of the packages. For the booking the users credit/mc needs to be in the database so it allows to add the card by clicking on the add card button. -->
+
 <?php
   session_start();
   include("Functions.php");
