@@ -13,22 +13,7 @@ $_SESSION["lastpage"] = "index.php";
 <!--[if lt IE 9]>
   <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
   <![endif]-->
-  <!--<style type="text/css">
-  #expand{
-  	display: none;
-  }
-  #expand2{
-  	display: none;
-  }
-  #expand3{
-  	display: none;
-  }
-  #expand4{
-  	display: none;
-  }-->
-
-
-  </style>
+  
   <!--IMAGE ROTATOR-->
 
   <script type="text/javascript">
@@ -42,9 +27,9 @@ path[2] = "Images/3.jpg";
 path[3] = "Images/4.jpg";
 
 
-function swapImage()
+function swapImage() 
 {
-   document.slide.src = path[i];
+   document.slide.src = path[i]; //The rotator will display first slide with name=slide and further check the condition if the next slide is  
 
    if(i < path.length - 1)
    {
@@ -54,14 +39,14 @@ function swapImage()
    {
     i = 0;
    }
-   setTimeout("swapImage()",3000);
+   setTimeout("swapImage()",3000); //swap image after every 3 seconds
 }
 </script>
  
   	
 </head>
 
-<body onLoad="swapImage()">
+<body onLoad="swapImage()"> <!--The rotator will load when the page loads in the browser-->
 <?php
   	include("header.php");
 

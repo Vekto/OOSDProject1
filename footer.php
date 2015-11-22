@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<!--Footer including copyright information and social media-->
 <html>
 <head>
 

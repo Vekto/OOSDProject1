@@ -1,3 +1,5 @@
+<!-- This file displays the user/customer information after they log-in. The form at the bottom of the page accepts user credit/Master card information includng card number and expiry date, and further stores it in the database-->
+
 <?php
 session_start();
 include("Functions.php");

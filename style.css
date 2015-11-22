@@ -1,3 +1,5 @@
+/*Common Style sheet for all files BY NEHA*/
+
 body{
 
 	background-color: #FFFFF7;
@@ -56,6 +58,27 @@ h1 a:hover{
 footer a:hover{
 	color: #33ccff;
 }
+/*STYLES FOR ALL BUTTONS*/
+
+button {
+  padding:10px;
+  background-color: #fff;
+  border: 1px solid #666;
+  color:#000;
+  text-decoration:none;
+  border-radius: 10px;
+  box-shadow: 1px 1px 4px black;
+  font-family: georgia;
+
+}
+button:hover {
+  color:#ffad33;
+}
+
+button:active {
+  color: #01A9DB;
+}
+
 
 /* --------CSS by Class below---------*/
 /*for header*/
@@ -215,43 +238,6 @@ footer a:hover{
 	top: 60px;
 }
 
-/* PACKAGES - DROPDOWN STYLES*/
-/*#package_wrapper {
-  width: 960px;
-  height: auto;
-}
-.block_content{
-	width: 800px;
-	height: 100px;
-	float: left;
-	display: block;
-	overflow: hidden;
-	position: relative;
-	margin: 0 4px 0 0;
-	background: cream;
-	border: 1px dotted black;
-}
-#block_common{
-	width: 800px;
-	height: 150px;
-	position: absolute;
-	display: block;
-	background: rgba(0,0,0,0.3);
-	-webkit-transition: top .3s ease-in-out;
-}
-.block_content:hover #block_common {
-	top: -140px;
-}
-.inner_content{
-	padding: 10px;
-	color: blue;
-}
-.inner_content h2{
-	margin: 0 0 5px 0;
-	color: green;
-	font-size: 14px;
-}*/
-
 /*Package slider on index page*/
 #expand{
   	display: none;
@@ -286,29 +272,28 @@ footer a:hover{
   }
 
 
-/*Package Slider*/
-
-
+/*PACKAGE DROPDOWN LIST*/
 
 .toggle-box {
-  display: none;
+  display: none; /*HIDES CHECKBOX*/
 }
 
-.toggle-box + label {
+/*STYLE FOR THE LABLE*/
+
+.toggle-box + label {	
   cursor: pointer;
   display: block;
   font-weight: bold;
   line-height: 21px;
   margin: 5px;
   padding: 20px;
-  /*background: #F5DEB3;*/
   background: rgba(255,255,255,0.9);
   height: 80px;
   width: 800px;
   border-radius: 10px;
   box-shadow: 2px 2px 5px black;
 }
-
+/*STYLE FOR THE INTERNAL DROPDOWN DIV */
 .toggle-box + label + div {
   display: none;
   margin-bottom: 10px;
@@ -317,6 +302,7 @@ footer a:hover{
   width: 800px;
 }
 
+/*WHEN THE CHECKBOX IS CHECKED THE INTERNAL DROPDOWN WILL DISPLAY AS A BLOCK WITH WHITE BACKGROUND */
 .toggle-box:checked + label + div {
   display: block;
   background: rgba(255,255,255,0.9);
@@ -326,43 +312,20 @@ footer a:hover{
 	float: right;
 }
 
-button {
-  padding:10px;
-  background-color: #fff;
-  border: 1px solid #666;
-  color:#000;
-  text-decoration:none;
-  border-radius: 10px;
-  box-shadow: 1px 1px 4px black;
-  font-family: georgia;
 
-}
-button:hover {
-  color:#ffad33;
-}
-
-button:active {
-  color: #01A9DB;
-}
-/*#pac2{
-	float: right;
-}
-#pac3{
-	float: right;
-}
-#pac4{
-	float: right;
-}*/
+/*TO CENTER ALL PACKAGES*/
 #center_packages{
 margin: 0 auto;
 	padding-left:6%;
 }
+
+/*STYLE BEFORE THE DROPDOWN */
 .toggle-box + label:before {
   background-color: #4F5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  color: #FFFFFF;
+  color: #ffffff;
   content: "+";
   display: block;
   float: left;
@@ -375,7 +338,7 @@ margin: 0 auto;
 }
 
 .toggle-box:checked + label:before {
-  content: "\2212";
+  content: "\2212"; 
 }
 .holiday{
 	text-align: center;
